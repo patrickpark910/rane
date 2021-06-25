@@ -22,7 +22,8 @@ class MCNP_InputFile:
 				 base_file,
 				 run_type,
 				 tasks,
-				 rod_positions={None:None},
+				 rod_heights={None:None},
+				 rod_bank_height=0,
 				 MCNP_files_folder=None,
 				 Results_folder=None,
 				 )		
@@ -30,7 +31,7 @@ class MCNP_InputFile:
 		self.base_file = base_file
         self.run_type = run_type
         self.tasks = tasks
-        self.sdm_config_ID = sdm_config_ID
+        self.rod_bank_height = rod_bank_height
 
         if not MCNP_files_folder:
             self.MCNP_files_folder = f'./MCNP_files/{run_type}/'
@@ -44,13 +45,14 @@ class MCNP_InputFile:
 
         self.create_paths()
 
-        self.parameters = {'reg' : self.safety_blade_bank_height,
-                           'safe' : self.control_blade_bank_height,
-                           'rod' : self.safety_blade_bank_height,
-                           'fuel':'c ',
-                           'tally': 'c ',
-                           'mode': ' n ',
-                           "fuel_temp": None
+        self.parameters = {'reg_height' : self.rod_bank_height,
+                           'safe_height': self.rod_bank_height,
+                           'shim_height': self.rod_bank_height,
+                           'fuel'  : 'c ',
+                           'tally' : 'c ',
+                           'mode'  : ' n ',
+                           'kcode' : None,
+                           'fuel_temp': None
                            }
 
 
@@ -69,13 +71,10 @@ class MCNP_InputFile:
 		Input file is configured with proper values for the run type
 		"""
         if run_type == 'rodcal':
-            for rod in RODS:
-                print(f'Setting {rod} to a height of {rod_positions[rod]} cm.')
-                if rod_ID in ['A','B']:
-                    self.parameters[f'control_rod{rod_ID}'] = rod_positions[rod]
-                elif rod_ID in ['1','2','3','4']:
-                    self.parameters[f'safety_rod{rod_ID}'] = rod_positions[rod]
-                    
+            for rod in RODS.lower():
+                print(f'Setting {rod} to a height of {rod_heights[rod]} cm.')
+                self.parameters[rod] = rod_heights[rod]
+
         elif run_type == 'burn':
             print('added burn card')
             with open(f'./src/mcnp/burn_card.inp', 'r') as template_file:

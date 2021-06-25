@@ -160,6 +160,7 @@ def ReedAutomatedNeutronicsEngine(argv):
             pass
 
         elif run_type == 'CriticalLoading':
+            pass
             fuel_to_remove = [] 
             while len(fuel_to_remove)==0:
                 user_input = input(f"Input core positions separated by a comma (ex: C1,C2,E4,F1), 'sop' to input the standard procedure for the 1/M experiment ({FUEL_REMOVED_SOP}), or 'quit' to quit: ")
@@ -184,7 +185,22 @@ def ReedAutomatedNeutronicsEngine(argv):
             pass
 
         elif run_type == 'RodCalibration':
-            pass
+            # calibrate individual shims
+            for rod in RODS:   
+                for rod_position in ROD_CAL_POSITIONS:
+                    if run_mcnp:
+                        current_run = MCNP_InputFile(base_file, cycle_number, cycle_state, run_type, tasks=tasks, shim_positions={rod: rod_position}, beam_tubes=beam_tubes)
+                        current_run.run_mcnp() 
+                    output_file = ShimCalibrationOutputFile(base_file, 
+                                                            cycle_number, 
+                                                            cycle_state, 
+                                                            run_type, 
+                                                            results_folder=None, 
+                                                            shim_positions={shim: shim_position}
+                                                            )
+                    output_file.extract_keff()
+                    output_file.process_shim_worth()
+            output_file.plot_shim_worth()
 
 
 
