@@ -22,6 +22,7 @@ class MCNP_InputFile:
 				 base_file,
 				 run_type,
 				 tasks,
+				 core_number=49,
 				 rod_heights={None:None},
 				 rod_bank_height=0,
 				 MCNP_files_folder=None,
@@ -31,7 +32,9 @@ class MCNP_InputFile:
 		self.base_file = base_file
         self.run_type = run_type
         self.tasks = tasks
+        self.core_number = core_number
         self.rod_bank_height = rod_bank_height
+        self.user = getpass(user)
 
         if not MCNP_files_folder:
             self.MCNP_files_folder = f'./MCNP_files/{run_type}/'
@@ -45,7 +48,8 @@ class MCNP_InputFile:
 
         self.create_paths()
 
-        self.parameters = {'reg_height' : self.rod_bank_height,
+        self.parameters = {'core_load'  : 49,
+        				   'reg_height' : self.rod_bank_height,
                            'safe_height': self.rod_bank_height,
                            'shim_height': self.rod_bank_height,
                            'fuel'  : 'c ',
@@ -68,35 +72,28 @@ class MCNP_InputFile:
                                            'geom_debug':25}[run_type] 
 		
 		"""
-		Input file is configured with proper values for the run type
+		'self.parameters' is configured with proper values for the run type
 		"""
         if run_type == 'rodcal':
             for rod in RODS.lower():
                 print(f'Setting {rod} to a height of {rod_heights[rod]} cm.')
                 self.parameters[rod] = rod_heights[rod]
 
-        elif run_type == 'burn':
-            print('added burn card')
-            with open(f'./src/mcnp/burn_card.inp', 'r') as template_file:
-                template_str = template_file.read()
-            self.parameters['burn_card'] = Template(template_str).render(burn_time=burn_time, pfrac=pfrac)
-        elif run_type == 'heat':
-            self.parameters['mode'] = ' n  p ' # neutrons and photons
 
-        # create input file
+        """
+		Create input file using 'self.parameters'
+        """
         template_file = f'{base_file}_{cycle_state}_cycle{cycle_number}.inp'
-        if run_type == 'rod':
-            self.input_file = self.tmp_directory+f'{run_type}{self.rod[-1]}_pos{abs(self.rod_pos)}{self.case}_{template_file}'
-        elif run_type == 'sdm':
-            self.input_file = self.tmp_directory+f'{run_type}{self.sdm_config_ID}{self.case}_{template_file}'
+        if run_type == 'rodcal':
+            self.input_filename = self.tmp_directory+f'{template_file.split('.')[0]}_{run_type}_a{self.parameters['safe_height']}_h{self.parameters['shim_height']}_r{self.parameters['reg_height']}.i'
         else:
-            self.input_file = self.tmp_directory+f'{run_type}{self.case}_{template_file}'
+            self.input_filename = self.tmp_directory+f'{template_file.split('.')[0]}_{run_type}.i'
 
-        self.outputBaseName = self.input_file.split('/')[3].split(".")[0]
-        self.outputFilename = f'{self.output_folder}o_{self.outputBaseName}.o'
+        self.output_basename = self.input_file.split('/')[-1].split(".")[0]
+        self.output_filename = f'{self.output_folder}o_{self.outputBaseName}.o'
 
         # skip run if input exists
-        if self.input_file.split('/')[-1] in os.listdir(self.MCNP_files_folder + 'input'):
+        if self.input_filename.split('/')[-1] in os.listdir(self.MCNP_files_folder + 'input'):
             return None
 
 
@@ -105,7 +102,7 @@ class MCNP_InputFile:
             template_str = template_file.read()
         
         # add tally string to end of input file (to allow substitution into tally definition)
-        if run_type not in ['burn','kcode', 'geom', 'geom_debug', 'kcde']:
+        if run_type not in ['rodcal']:
             with open(f'./src/tallies/{run_type}.tal', 'r') as tally_file:
                 tally_str = tally_file.read()        
         else:
@@ -160,9 +157,9 @@ class MCNP_InputFile:
             try:
                 filename = output_file+extension
                 shutil.move(os.path.join(src, filename), os.path.join(dst, filename))
-                print(f'moved {filename}')
+                print(f' Moved {filename}')
             except:
-                print(f'error moving {filename}')
+                print(f'   Warning. Error moving {filename}')
 
 
 
