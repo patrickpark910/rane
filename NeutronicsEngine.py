@@ -150,16 +150,16 @@ def ReedAutomatedNeutronicsEngine(argv):
         if run_type == 'BankedRods':
             BankedRods(rane_cwd, base_file_path=base_file_name, check_mcnp=check_mcnp, tasks=tasks, heights=[0,33,66,100])
 
-        elif run_type == 'Coef_Mod':
+        elif run_type == 'mod_temp':
             pass
 
-        elif run_type == 'Coef_PNTC':
+        elif run_type == 'fuel_temp':
             pass
 
-        elif run_type == 'Coef_Void':
+        elif run_type == 'void':
             pass
 
-        elif run_type == 'CriticalLoading':
+        elif run_type == 'cle':
             fuel_to_remove = [] 
             while len(fuel_to_remove)==0:
                 user_input = input(f"Input core positions separated by a comma (ex: C1,C2,E4,F1), 'sop' to input the standard procedure for the 1/M experiment ({FUEL_REMOVED_SOP}), or 'quit' to quit: ")
@@ -177,15 +177,27 @@ def ReedAutomatedNeutronicsEngine(argv):
 
             CriticalLoading(rane_cwd, base_file_path=base_file_name, check_mcnp=check_mcnp, tasks=tasks, fuel_to_remove=fuel_to_remove)
 
-        elif run_type == 'FuelMaterials':
+        elif run_type == 'fuel':
             pass
 
-        elif run_type == 'PowerDistribution':
+        elif run_type == 'ppf':
             pass
 
-        elif run_type == 'RodCalibration':
-            pass
-
+        elif run_type == 'rodcal':  
+            for rod_position in ROD_CAL_POSITIONS:
+                if run_mcnp:
+                    current_run = MCNP_InputFile(base_file, cycle_number, cycle_state, run_type, tasks=tasks, shim_positions={shim: shim_position}, beam_tubes=beam_tubes)
+                    current_run.run_mcnp() 
+                output_file = ShimCalibrationOutputFile(base_file, 
+                                                        cycle_number, 
+                                                        cycle_state, 
+                                                        run_type, 
+                                                        results_folder=None, 
+                                                        shim_positions={shim: shim_position}
+                                                        )
+                output_file.extract_keff()
+                output_file.process_shim_worth()
+            output_file.plot_shim_worth()
 
 
 
