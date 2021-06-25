@@ -1,0 +1,12 @@
+*.o
+*.msht
+*.r
+*.s
+*.pyc
+**/*.o
+**/*.msht
+**/*.r
+**/*.s
+**/*.pyc
+.idea/
+/References/
