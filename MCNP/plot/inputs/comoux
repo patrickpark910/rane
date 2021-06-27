@@ -1,0 +1,29 @@
+label 0 0
+basis 1 0 0  0 1 0  or 15.915600 34.40684  ex 23
+basis 1 0 0  0 1 0  or 0 15.915600 34.40684  ex 23
+basis 1 0 0  0 1 0  or 0 15.915600 34.40684  ex 2
+basis 1 0 0  0 1 0  or 0 15.915600 34.40684  ex 10
+basis 1 0 0  0 1 0  or 0 15.915600 34.40684  ex 2
+basis 0 1 0  0 0 1  or 0 15.915600 34.40684
+basis 0 1 0  0 0 1  or 0 15.915600 34.40684  ex 45
+basis 0 1 0  0 0 1  or 0 15.915600 34.40684  ex 25
+basis 0 1 0  0 0 1  or 0 15.915600 34.40684  ex 35
+basis 0 1 0  0 0 1  or 0 15.915600 34.40684  ex 45
+basis 0 1 0  0 0 1  or 0 15.915600 34.40684  ex 45 u 7202
+help
+level 7202
+level 1070
+level 18
+level 0
+level 1
+level 2
+level 3
+level 1
+basis 1 0 0  0 1 0  or 0 0 45  ex 60  level 0
+basis 1 0 0  0 1 0  or 0 0 45  ex 23  level 0
+basis 1 0 0  0 1 0  or 0 0 45  ex 23  level 1
+basis 0 1 0  0 0 1  or 0 0 34.40684  ex 23  level 1
+basis 1 0 0  0 1 0  or 0 0 45  ex 23  level 1
+basis 1 0 0  0 1 0  or 0 0 45  ex 23  level 2
+basis 1 0 0  0 1 0  or 0 0 45  ex 23  level 3
+basis 1 0 0  0 1 0  or 0 15.915600 34.40684  ex 2

@@ -1,17 +1,17 @@
-1 RRR TRIGA Core 49 - Patrick Park (2021-06-19)
+1 Reed TRIGA (2021-06-19) - Core 49 - Run Type: rodcal - Input File Created: 2021-06-26 14:54:03
 c    __   ___  ___  __      __   ___  __   ___       __   __           __   ___       __  ___  __   __  
 c   |__) |__  |__  |  \    |__) |__  /__` |__   /\  |__) /  ` |__|    |__) |__   /\  /  `  |  /  \ |__) 
 c   |  \ |___ |___ |__/    |  \ |___ .__/ |___ /--\ |  \ \__, |  |    |  \ |___ /--\ \__,  |  \__/ |  \
 c
 c
-c  Reed Research Reactor TRIGA input deck
-c  Created by Malcolm McCarthy, SRO, Physics '18 (malcolm@malcolmm.com)
-c  with help from Robert Shickler of Oregon State University
+c   Reed Research Reactor TRIGA input deck
+c   Created by Malcolm McCarthy, SRO, Physics '18 (malcolm@malcolmm.com)
+c   with help from Robert Shickler of Oregon State University
+c 
+c   Edited by Patrick Park, SRO, 3-2 Physics '23 (pjp2136@columbia.edu)
+c   Last major update: Jun 19, 2021
 c
-c  Edited by Patrick Park, SRO, 3-2 Physics '23 (pjp2136@columbia.edu)
-c  Last major update: Jun 19, 2021
-c
-c  _____________________________________
+c   ___________________________________
 c   Guide to reading the RRR input deck 
 c
 c   __________
@@ -238,12 +238,12 @@ c C ring
 301 0 10 -11 -20 trcl=( 0.00000  7.98068 0)     imp:n=1 fill=4086 $  
 302 0 10 -11 -20 trcl=( 3.99034  6.91134 0)     imp:n=1 fill=4070 $  
 303 0 10 -11 -20 trcl=( 6.91134  3.99034 0)     imp:n=1 fill=8102 $  
-304 0 10 -11 -20 trcl=( 7.98068  0.00000 0)     imp:n=1 fill=3856 $  
-c safe rod
+304 0 10 -11 -20 trcl=( 7.98068  0.00000 0)     imp:n=1 fill=3856 $ 
+c safe rod 
 306 0 10 -11 -20 trcl=( 3.99034 -6.91134 0)     imp:n=1 fill=8103 $  
 307 0 10 -11 -20 trcl=( 0.00000 -7.98068 0)     imp:n=1 fill=4117 $  
-308 0 10 -11 -20 trcl=(-3.99034 -6.91134 0)     imp:n=1 fill=8105 $  
-c shim rod
+308 0 10 -11 -20 trcl=(-3.99034 -6.91134 0)     imp:n=1 fill=8105 $ 
+c shim rod 
 310 0 10 -11 -20 trcl=(-7.98068  0.00000 0)     imp:n=1 fill=8736 $  
 311 0 10 -11 -20 trcl=(-6.91130  3.99030 0)     imp:n=1 fill=8735 $  
 312 0 10 -11 -20 trcl=(-3.99030  6.91130 0)     imp:n=1 fill=1070 $  
@@ -5211,13 +5211,13 @@ c
 c
 c pz surfaces
 c
-812301   pz   62.8153   $ top of control rod
-812302   pz   62.0533   $ top of main section
-812303   pz   61.4183   $ top of poison portion
-812304   pz   15.4327   $ bottom of poison portion
-812305   pz   14.7077   $ bottom of main section
-812306   pz   14.3013   $ bottom of outer lower cone
-812307   pz   13.7425   $ bottom of control rod
+812301   pz   66.6153   $ top of control rod
+812302   pz   65.8533   $ top of main section
+812303   pz   65.2183   $ top of poison portion
+812304   pz   19.2327   $ bottom of poison portion
+812305   pz   18.5077   $ bottom of main section
+812306   pz   18.1013   $ bottom of outer lower cone
+812307   pz   17.5425   $ bottom of control rod
 c
 c
 c k/z surfaces
@@ -5245,13 +5245,13 @@ c
 c
 c pz surfaces
 c
-822301   pz   62.8153   $ top of control rod
-822302   pz   62.0533   $ top of main section
-822303   pz   61.4183   $ top of poison portion
-822304   pz   15.4327   $ bottom of poison portion
-822305   pz   14.7077   $ bottom of main section
-822306   pz   14.3013   $ bottom of outer lower cone
-822307   pz   13.7425   $ bottom of control rod
+822301   pz   100.81530000000001   $ top of control rod
+822302   pz   100.05330000000001   $ top of main section
+822303   pz   99.4183   $ top of poison portion
+822304   pz   53.4327   $ bottom of poison portion
+822305   pz   52.7077   $ bottom of main section
+822306   pz   52.3013   $ bottom of outer lower cone
+822307   pz   51.7425   $ bottom of control rod
 c
 c
 c k/z surfaces
@@ -5279,13 +5279,13 @@ c
 c
 c pz surfaces
 c
-832301   pz   62.8153   $ top of control rod
-832302   pz   62.0533   $ top of main section
-832303   pz   61.4183   $ top of poison portion
-832304   pz   15.4327   $ bottom of poison portion
-832305   pz   14.7077   $ bottom of main section
-832306   pz   14.3013   $ bottom of outer lower cone
-832307   pz   13.7425   $ bottom of control rod
+832301   pz   100.81530000000001   $ top of control rod
+832302   pz   100.05330000000001   $ top of main section
+832303   pz   99.4183   $ top of poison portion
+832304   pz   53.4327   $ bottom of poison portion
+832305   pz   52.7077   $ bottom of main section
+832306   pz   52.3013   $ bottom of outer lower cone
+832307   pz   51.7425   $ bottom of control rod
 c
 c
 c k/z surfaces
@@ -5689,913 +5689,816 @@ c --Begin Fuel Materials--
 c materials auto-generated from 'Core Burnup History 20201117.xlsx'                 
 c                 
 c
-c --- 7202 - SS clad (TOS210C219) fuel meat materials ---                        
-m7202  92235.80c -36.395024    $ mass frac (g) | atom frac: 9.324675e+22                        
-       92238.80c -154.119236   $ mass frac (g) | atom frac: 3.898773e+23                        
-       94239.80c -0.089411     $ mass frac (g) | atom frac: 2.252371e+20                        
-       40000.66c -2031.471299  $ mass frac (g) | atom frac: 1.341042e+25                        
-        1001.80c -35.352230    $ mass frac (g) | atom frac: 2.112141e+25                        
-mt7202 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 7945 - SS clad (TOS210D210R) fuel meat materials ---                        
-m7945  92235.80c -36.565275    $ mass frac (g) | atom frac: 9.368295e+22                        
-       92238.80c -152.106266   $ mass frac (g) | atom frac: 3.847851e+23                        
-       94239.80c -0.080249     $ mass frac (g) | atom frac: 2.021554e+20                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt7945 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 7946 - SS clad (TOS210D210R) fuel meat materials ---                        
-m7946  92235.80c -36.478748    $ mass frac (g) | atom frac: 9.346126e+22                        
-       92238.80c -151.112849   $ mass frac (g) | atom frac: 3.822720e+23                        
-       94239.80c -0.084914     $ mass frac (g) | atom frac: 2.139078e+20                        
-       40000.66c -1999.729560  $ mass frac (g) | atom frac: 1.320088e+25                        
-        1001.80c -34.799852    $ mass frac (g) | atom frac: 2.079139e+25                        
-mt7946 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 8102 - SS clad (TOS210D210R) fuel meat materials ---                        
-m8102  92235.80c -38.224573    $ mass frac (g) | atom frac: 9.793419e+22                        
-       92238.80c -151.556725   $ mass frac (g) | atom frac: 3.833949e+23                        
-       94239.80c -0.044081     $ mass frac (g) | atom frac: 1.110440e+20                        
-       40000.66c -2015.600430  $ mass frac (g) | atom frac: 1.330565e+25                        
-        1001.80c -35.076041    $ mass frac (g) | atom frac: 2.095640e+25                        
-mt8102 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 8103 - SS clad (TOS210D210R) fuel meat materials ---                        
-m8103  92235.80c -38.224573    $ mass frac (g) | atom frac: 9.793419e+22                        
-       92238.80c -151.556725   $ mass frac (g) | atom frac: 3.833949e+23                        
-       94239.80c -0.044081     $ mass frac (g) | atom frac: 1.110440e+20                        
-       40000.66c -2015.600430  $ mass frac (g) | atom frac: 1.330565e+25                        
-        1001.80c -35.076041    $ mass frac (g) | atom frac: 2.095640e+25                        
-mt8103 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 8104 - SS clad (TOS210D210R) fuel meat materials ---                        
-m8104  92235.80c -38.154012    $ mass frac (g) | atom frac: 9.775341e+22                        
-       92238.80c -151.561932   $ mass frac (g) | atom frac: 3.834081e+23                        
-       94239.80c -0.048046     $ mass frac (g) | atom frac: 1.210340e+20                        
-       40000.66c -2015.600430  $ mass frac (g) | atom frac: 1.330565e+25                        
-        1001.80c -35.076041    $ mass frac (g) | atom frac: 2.095640e+25                        
-mt8104 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 8105 - SS clad (TOS210D210R) fuel meat materials ---                        
-m8105  92235.80c -38.229808    $ mass frac (g) | atom frac: 9.794761e+22                        
-       92238.80c -151.556335   $ mass frac (g) | atom frac: 3.833939e+23                        
-       94239.80c -0.043790     $ mass frac (g) | atom frac: 1.103110e+20                        
-       40000.66c -2015.600430  $ mass frac (g) | atom frac: 1.330565e+25                        
-        1001.80c -35.076041    $ mass frac (g) | atom frac: 2.095640e+25                        
-mt8105 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 9678 - SS clad (TOS210D210R) fuel meat materials ---                        
-m9678  92235.80c -36.303133    $ mass frac (g) | atom frac: 9.301132e+22                        
-       92238.80c -150.632246   $ mass frac (g) | atom frac: 3.810562e+23                        
-       94239.80c -0.062947     $ mass frac (g) | atom frac: 1.585710e+20                        
-       40000.66c -1988.831563  $ mass frac (g) | atom frac: 1.312894e+25                        
-        1001.80c -34.610202    $ mass frac (g) | atom frac: 2.067808e+25                        
-mt9678 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 9679 - SS clad (TOS210D210R) fuel meat materials ---                        
-m9679  92235.80c -36.332238    $ mass frac (g) | atom frac: 9.308589e+22                        
-       92238.80c -150.752312   $ mass frac (g) | atom frac: 3.813600e+23                        
-       94239.80c -0.062997     $ mass frac (g) | atom frac: 1.586959e+20                        
-       40000.66c -1990.418650  $ mass frac (g) | atom frac: 1.313942e+25                        
-        1001.80c -34.637821    $ mass frac (g) | atom frac: 2.069458e+25                        
-mt9679 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 1070 - SS clad (TOS210D210R) fuel meat materials ---                        
-m1070  92235.80c -37.206096    $ mass frac (g) | atom frac: 9.532478e+22                        
-       92238.80c -153.045581   $ mass frac (g) | atom frac: 3.871613e+23                        
-       94239.80c -0.020426     $ mass frac (g) | atom frac: 5.145615e+19                        
-       40000.66c -2016.446876  $ mass frac (g) | atom frac: 1.331124e+25                        
-        1001.80c -35.090771    $ mass frac (g) | atom frac: 2.096520e+25                        
-mt1070 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3671 - SS clad (T0S210D210) fuel meat materials ---                        
-m3671  92235.80c -32.169337    $ mass frac (g) | atom frac: 8.242023e+22                        
-       92238.80c -154.707305   $ mass frac (g) | atom frac: 3.913650e+23                        
-       94239.80c -0.627136     $ mass frac (g) | atom frac: 1.579829e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3671 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3673 - SS clad (T0S210D210) fuel meat materials ---                        
-m3673  92235.80c -33.946324    $ mass frac (g) | atom frac: 8.697300e+22                        
-       92238.80c -154.608631   $ mass frac (g) | atom frac: 3.911154e+23                        
-       94239.80c -0.460418     $ mass frac (g) | atom frac: 1.159846e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3673 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3674 - SS clad (T0S210D210) fuel meat materials ---                        
-m3674  92235.80c -33.736470    $ mass frac (g) | atom frac: 8.643534e+22                        
-       92238.80c -154.619323   $ mass frac (g) | atom frac: 3.911424e+23                        
-       94239.80c -0.484488     $ mass frac (g) | atom frac: 1.220481e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3674 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3676 - SS clad (T0S210D210) fuel meat materials ---                        
-m3676  92235.80c -33.851744    $ mass frac (g) | atom frac: 8.673068e+22                        
-       92238.80c -154.614136   $ mass frac (g) | atom frac: 3.911293e+23                        
-       94239.80c -0.469518     $ mass frac (g) | atom frac: 1.182769e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3676 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3677 - SS clad (T0S210D210) fuel meat materials ---                        
-m3677  92235.80c -32.075352    $ mass frac (g) | atom frac: 8.217943e+22                        
-       92238.80c -154.712752   $ mass frac (g) | atom frac: 3.913787e+23                        
-       94239.80c -0.634863     $ mass frac (g) | atom frac: 1.599294e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3677 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3679 - SS clad (T0S210D210) fuel meat materials ---                        
-m3679  92235.80c -32.041523    $ mass frac (g) | atom frac: 8.209276e+22                        
-       92238.80c -154.714510   $ mass frac (g) | atom frac: 3.913832e+23                        
-       94239.80c -0.637965     $ mass frac (g) | atom frac: 1.607108e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3679 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3682 - SS clad (T0S210D210) fuel meat materials ---                        
-m3682  92235.80c -32.908916    $ mass frac (g) | atom frac: 8.431509e+22                        
-       92238.80c -154.667369   $ mass frac (g) | atom frac: 3.912639e+23                        
-       94239.80c -0.558943     $ mass frac (g) | atom frac: 1.408042e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3682 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3683 - SS clad (T0S210D210) fuel meat materials ---                        
-m3683  92235.80c -34.000992    $ mass frac (g) | atom frac: 8.711307e+22                        
-       92238.80c -154.603872   $ mass frac (g) | atom frac: 3.911033e+23                        
-       94239.80c -0.459682     $ mass frac (g) | atom frac: 1.157993e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3683 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3685 - SS clad (T0S210D210) fuel meat materials ---                        
-m3685  92235.80c -32.861538    $ mass frac (g) | atom frac: 8.419370e+22                        
-       92238.80c -154.670733   $ mass frac (g) | atom frac: 3.912725e+23                        
-       94239.80c -0.561771     $ mass frac (g) | atom frac: 1.415167e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3685 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3721 - SS clad (T0S210D210) fuel meat materials ---                        
-m3721  92235.80c -30.430327    $ mass frac (g) | atom frac: 7.796476e+22                        
-       92238.80c -150.678129   $ mass frac (g) | atom frac: 3.811723e+23                        
-       94239.80c -0.696301     $ mass frac (g) | atom frac: 1.754063e+21                        
-       40000.66c -1957.407241  $ mass frac (g) | atom frac: 1.292150e+25                        
-        1001.80c -34.063347    $ mass frac (g) | atom frac: 2.035136e+25                        
-mt3721 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3743 - SS clad (T0S210D210) fuel meat materials ---                        
-m3743  92235.80c -31.634671    $ mass frac (g) | atom frac: 8.105038e+22                        
-       92238.80c -150.619263   $ mass frac (g) | atom frac: 3.810234e+23                        
-       94239.80c -0.582348     $ mass frac (g) | atom frac: 1.467001e+21                        
-       40000.66c -1957.407241  $ mass frac (g) | atom frac: 1.292150e+25                        
-        1001.80c -34.063347    $ mass frac (g) | atom frac: 2.035136e+25                        
-mt3743 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3748 - SS clad (T0S210D210) fuel meat materials ---                        
-m3748  92235.80c -35.156331    $ mass frac (g) | atom frac: 9.007313e+22                        
-       92238.80c -150.410186   $ mass frac (g) | atom frac: 3.804945e+23                        
-       94239.80c -0.240617     $ mass frac (g) | atom frac: 6.061419e+20                        
-       40000.66c -1957.407241  $ mass frac (g) | atom frac: 1.292150e+25                        
-        1001.80c -34.063347    $ mass frac (g) | atom frac: 2.035136e+25                        
-mt3748 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3774 - SS clad (T0S210D210) fuel meat materials ---                        
-m3774  92235.80c -31.583642    $ mass frac (g) | atom frac: 8.091964e+22                        
-       92238.80c -154.734318   $ mass frac (g) | atom frac: 3.914333e+23                        
-       94239.80c -0.685243     $ mass frac (g) | atom frac: 1.726206e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3774 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3810 - SS clad (T0S210D210) fuel meat materials ---                        
-m3810  92235.80c -31.652935    $ mass frac (g) | atom frac: 8.109717e+22                        
-       92238.80c -154.733432   $ mass frac (g) | atom frac: 3.914311e+23                        
-       94239.80c -0.675074     $ mass frac (g) | atom frac: 1.700589e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3810 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3835 - SS clad (T0S210D210) fuel meat materials ---                        
-m3835  92235.80c -35.834258    $ mass frac (g) | atom frac: 9.181003e+22                        
-       92238.80c -158.617683   $ mass frac (g) | atom frac: 4.012571e+23                        
-       94239.80c -0.375955     $ mass frac (g) | atom frac: 9.470749e+20                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt3835 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3840 - SS clad (T0S210D210) fuel meat materials ---                        
-m3840  92235.80c -35.201785    $ mass frac (g) | atom frac: 9.018959e+22                        
-       92238.80c -154.532838   $ mass frac (g) | atom frac: 3.909236e+23                        
-       94239.80c -0.338123     $ mass frac (g) | atom frac: 8.517703e+20                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3840 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3851 - SS clad (T0S210D210) fuel meat materials ---                        
-m3851  92235.80c -35.141414    $ mass frac (g) | atom frac: 9.003491e+22                        
-       92238.80c -154.537025   $ mass frac (g) | atom frac: 3.909342e+23                        
-       94239.80c -0.342243     $ mass frac (g) | atom frac: 8.621487e+20                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3851 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3852 - SS clad (T0S210D210) fuel meat materials ---                        
-m3852  92235.80c -36.160800    $ mass frac (g) | atom frac: 9.264666e+22                        
-       92238.80c -154.471789   $ mass frac (g) | atom frac: 3.907692e+23                        
-       94239.80c -0.241645     $ mass frac (g) | atom frac: 6.087314e+20                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3852 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3853 - SS clad (T0S210D210) fuel meat materials ---                        
-m3853  92235.80c -34.518302    $ mass frac (g) | atom frac: 8.843845e+22                        
-       92238.80c -154.574921   $ mass frac (g) | atom frac: 3.910301e+23                        
-       94239.80c -0.404448     $ mass frac (g) | atom frac: 1.018851e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3853 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3854 - SS clad (T0S210D210) fuel meat materials ---                        
-m3854  92235.80c -31.279554    $ mass frac (g) | atom frac: 8.014054e+22                        
-       92238.80c -154.751945   $ mass frac (g) | atom frac: 3.914779e+23                        
-       94239.80c -0.708933     $ mass frac (g) | atom frac: 1.785883e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3854 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3855 - SS clad (T0S210D210) fuel meat materials ---                        
-m3855  92235.80c -31.854259    $ mass frac (g) | atom frac: 8.161298e+22                        
-       92238.80c -154.720763   $ mass frac (g) | atom frac: 3.913990e+23                        
-       94239.80c -0.660609     $ mass frac (g) | atom frac: 1.664150e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3855 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3856 - SS clad (T0S210D210) fuel meat materials ---                        
-m3856  92235.80c -35.552544    $ mass frac (g) | atom frac: 9.108826e+22                        
-       92238.80c -154.511373   $ mass frac (g) | atom frac: 3.908693e+23                        
-       94239.80c -0.300381     $ mass frac (g) | atom frac: 7.566940e+20                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3856 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3858 - SS clad (T0S210D210) fuel meat materials ---                        
-m3858  92235.80c -30.981471    $ mass frac (g) | atom frac: 7.937683e+22                        
-       92238.80c -154.766761   $ mass frac (g) | atom frac: 3.915154e+23                        
-       94239.80c -0.735190     $ mass frac (g) | atom frac: 1.852027e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3858 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3862 - SS clad (T0S210D210) fuel meat materials ---                        
-m3862  92235.80c -30.737324    $ mass frac (g) | atom frac: 7.875131e+22                        
-       92238.80c -154.778308   $ mass frac (g) | atom frac: 3.915446e+23                        
-       94239.80c -0.757012     $ mass frac (g) | atom frac: 1.907000e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3862 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3864 - SS clad (T0S210D210) fuel meat materials ---                        
-m3864  92235.80c -32.880597    $ mass frac (g) | atom frac: 8.424253e+22                        
-       92238.80c -158.782782   $ mass frac (g) | atom frac: 4.016748e+23                        
-       94239.80c -0.660796     $ mass frac (g) | atom frac: 1.664621e+21                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt3864 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3865 - SS clad (T0S210D210) fuel meat materials ---                        
-m3865  92235.80c -35.856442    $ mass frac (g) | atom frac: 9.186687e+22                        
-       92238.80c -154.491383   $ mass frac (g) | atom frac: 3.908187e+23                        
-       94239.80c -0.272989     $ mass frac (g) | atom frac: 6.876911e+20                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3865 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3866 - SS clad (T0S210D210) fuel meat materials ---                        
-m3866  92235.80c -36.814545    $ mass frac (g) | atom frac: 9.432160e+22                        
-       92238.80c -158.556351   $ mass frac (g) | atom frac: 4.011019e+23                        
-       94239.80c -0.276757     $ mass frac (g) | atom frac: 6.971836e+20                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt3866 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3868 - SS clad (T0S210D210) fuel meat materials ---                        
-m3868  92235.80c -34.567644    $ mass frac (g) | atom frac: 8.856487e+22                        
-       92238.80c -154.571746   $ mass frac (g) | atom frac: 3.910220e+23                        
-       94239.80c -0.400331     $ mass frac (g) | atom frac: 1.008479e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3868 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3870 - SS clad (T0S210D210) fuel meat materials ---                        
-m3870  92235.80c -30.856296    $ mass frac (g) | atom frac: 7.905612e+22                        
-       92238.80c -154.769351   $ mass frac (g) | atom frac: 3.915219e+23                        
-       94239.80c -0.750613     $ mass frac (g) | atom frac: 1.890880e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3870 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3872 - SS clad (T0S210D210) fuel meat materials ---                        
-m3872  92235.80c -31.375998    $ mass frac (g) | atom frac: 8.038764e+22                        
-       92238.80c -158.859333   $ mass frac (g) | atom frac: 4.018684e+23                        
-       94239.80c -0.792077     $ mass frac (g) | atom frac: 1.995334e+21                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt3872 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 3874 - SS clad (T0S210D210) fuel meat materials ---                        
-m3874  92235.80c -37.539032    $ mass frac (g) | atom frac: 9.617779e+22                        
-       92238.80c -154.379256   $ mass frac (g) | atom frac: 3.905351e+23                        
-       94239.80c -0.099298     $ mass frac (g) | atom frac: 2.501436e+20                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt3874 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4046 - SS clad (T0S210D210) fuel meat materials ---                        
-m4046  92235.80c -33.105331    $ mass frac (g) | atom frac: 8.481832e+22                        
-       92238.80c -158.773517   $ mass frac (g) | atom frac: 4.016513e+23                        
-       94239.80c -0.635996     $ mass frac (g) | atom frac: 1.602148e+21                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt4046 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4049 - SS clad (T0S210D210) fuel meat materials ---                        
-m4049  92235.80c -32.792316    $ mass frac (g) | atom frac: 8.401635e+22                        
-       92238.80c -158.789783   $ mass frac (g) | atom frac: 4.016925e+23                        
-       94239.80c -0.664816     $ mass frac (g) | atom frac: 1.674748e+21                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt4049 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4050 - SS clad (T0S210D210) fuel meat materials ---                        
-m4050  92235.80c -31.146797    $ mass frac (g) | atom frac: 7.980041e+22                        
-       92238.80c -158.866068   $ mass frac (g) | atom frac: 4.018854e+23                        
-       94239.80c -0.816509     $ mass frac (g) | atom frac: 2.056881e+21                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt4050 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4053 - SS clad (T0S210D210) fuel meat materials ---                        
-m4053  92235.80c -36.007346    $ mass frac (g) | atom frac: 9.225349e+22                        
-       92238.80c -158.607175   $ mass frac (g) | atom frac: 4.012305e+23                        
-       94239.80c -0.358204     $ mass frac (g) | atom frac: 9.023579e+20                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt4053 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4054 - SS clad (T0S210D210) fuel meat materials ---                        
-m4054  92235.80c -32.872532    $ mass frac (g) | atom frac: 8.422187e+22                        
-       92238.80c -154.670130   $ mass frac (g) | atom frac: 3.912709e+23                        
-       94239.80c -0.560744     $ mass frac (g) | atom frac: 1.412578e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4054 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4055 - SS clad (T0S210D210) fuel meat materials ---                        
-m4055  92235.80c -35.980563    $ mass frac (g) | atom frac: 9.218487e+22                        
-       92238.80c -158.608835   $ mass frac (g) | atom frac: 4.012347e+23                        
-       94239.80c -0.360844     $ mass frac (g) | atom frac: 9.090086e+20                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt4055 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4057 - SS clad (T0S210D210) fuel meat materials ---                        
-m4057  92235.80c -35.411837    $ mass frac (g) | atom frac: 9.072776e+22                        
-       92238.80c -154.519677   $ mass frac (g) | atom frac: 3.908903e+23                        
-       94239.80c -0.317330     $ mass frac (g) | atom frac: 7.993919e+20                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4057 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4060 - SS clad (T0S210D210) fuel meat materials ---                        
-m4060  92235.80c -30.842106    $ mass frac (g) | atom frac: 7.901977e+22                        
-       92238.80c -154.770014   $ mass frac (g) | atom frac: 3.915236e+23                        
-       94239.80c -0.751878     $ mass frac (g) | atom frac: 1.894068e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4060 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4061 - SS clad (T0S210D210) fuel meat materials ---                        
-m4061  92235.80c -35.466571    $ mass frac (g) | atom frac: 9.086799e+22                        
-       92238.80c -158.639268   $ mass frac (g) | atom frac: 4.013117e+23                        
-       94239.80c -0.414699     $ mass frac (g) | atom frac: 1.044674e+21                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt4061 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4062 - SS clad (T0S210D210) fuel meat materials ---                        
-m4062  92235.80c -34.857231    $ mass frac (g) | atom frac: 8.930681e+22                        
-       92238.80c -154.554316   $ mass frac (g) | atom frac: 3.909779e+23                        
-       94239.80c -0.371338     $ mass frac (g) | atom frac: 9.354445e+20                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4062 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4063 - SS clad (T0S210D210) fuel meat materials ---                        
-m4063  92235.80c -29.940015    $ mass frac (g) | atom frac: 7.670854e+22                        
-       92238.80c -154.810467   $ mass frac (g) | atom frac: 3.916259e+23                        
-       94239.80c -0.831360     $ mass frac (g) | atom frac: 2.094291e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4063 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4064 - SS clad (T0S210D210) fuel meat materials ---                        
-m4064  92235.80c -34.178164    $ mass frac (g) | atom frac: 8.756699e+22                        
-       92238.80c -150.471929   $ mass frac (g) | atom frac: 3.806507e+23                        
-       94239.80c -0.340096     $ mass frac (g) | atom frac: 8.567406e+20                        
-       40000.66c -1957.407241  $ mass frac (g) | atom frac: 1.292150e+25                        
-        1001.80c -34.063347    $ mass frac (g) | atom frac: 2.035136e+25                        
-mt4064 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4065 - SS clad (T0S210D210) fuel meat materials ---                        
-m4065  92235.80c -32.642035    $ mass frac (g) | atom frac: 8.363132e+22                        
-       92238.80c -150.564326   $ mass frac (g) | atom frac: 3.808844e+23                        
-       94239.80c -0.485984     $ mass frac (g) | atom frac: 1.224249e+21                        
-       40000.66c -1957.407241  $ mass frac (g) | atom frac: 1.292150e+25                        
-        1001.80c -34.063347    $ mass frac (g) | atom frac: 2.035136e+25                        
-mt4065 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4066 - SS clad (T0S210D210) fuel meat materials ---                        
-m4066  92235.80c -31.067914    $ mass frac (g) | atom frac: 7.959830e+22                        
-       92238.80c -154.759372   $ mass frac (g) | atom frac: 3.914967e+23                        
-       94239.80c -0.731709     $ mass frac (g) | atom frac: 1.843259e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4066 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4068 - SS clad (T0S210D210) fuel meat materials ---                        
-m4068  92235.80c -32.811963    $ mass frac (g) | atom frac: 8.406668e+22                        
-       92238.80c -158.786293   $ mass frac (g) | atom frac: 4.016836e+23                        
-       94239.80c -0.667095     $ mass frac (g) | atom frac: 1.680490e+21                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt4068 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4069 - SS clad (T0S210D210) fuel meat materials ---                        
-m4069  92235.80c -34.856774    $ mass frac (g) | atom frac: 8.930564e+22                        
-       92238.80c -154.554162   $ mass frac (g) | atom frac: 3.909776e+23                        
-       94239.80c -0.372074     $ mass frac (g) | atom frac: 9.372975e+20                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4069 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4070 - SS clad (T0S210D210) fuel meat materials ---                        
-m4070  92235.80c -33.160542    $ mass frac (g) | atom frac: 8.495977e+22                        
-       92238.80c -158.771998   $ mass frac (g) | atom frac: 4.016475e+23                        
-       94239.80c -0.628374     $ mass frac (g) | atom frac: 1.582946e+21                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt4070 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4071 - SS clad (T0S210D210) fuel meat materials ---                        
-m4071  92235.80c -30.869327    $ mass frac (g) | atom frac: 7.908951e+22                        
-       92238.80c -158.882205   $ mass frac (g) | atom frac: 4.019263e+23                        
-       94239.80c -0.836768     $ mass frac (g) | atom frac: 2.107914e+21                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt4071 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4074 - SS clad (T0S210D210) fuel meat materials ---                        
-m4074  92235.80c -35.143635    $ mass frac (g) | atom frac: 9.004060e+22                        
-       92238.80c -154.536458   $ mass frac (g) | atom frac: 3.909328e+23                        
-       94239.80c -0.343862     $ mass frac (g) | atom frac: 8.662276e+20                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4074 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4077 - SS clad (T0S210D210) fuel meat materials ---                        
-m4077  92235.80c -32.110492    $ mass frac (g) | atom frac: 8.226946e+22                        
-       92238.80c -154.710375   $ mass frac (g) | atom frac: 3.913727e+23                        
-       94239.80c -0.632567     $ mass frac (g) | atom frac: 1.593509e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4077 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4081 - SS clad (T0S210D210) fuel meat materials ---                        
-m4081  92235.80c -32.207277    $ mass frac (g) | atom frac: 8.251744e+22                        
-       92238.80c -154.702670   $ mass frac (g) | atom frac: 3.913532e+23                        
-       94239.80c -0.628256     $ mass frac (g) | atom frac: 1.582649e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4081 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4082 - SS clad (T0S210D210) fuel meat materials ---                        
-m4082  92235.80c -32.484163    $ mass frac (g) | atom frac: 8.322684e+22                        
-       92238.80c -154.688158   $ mass frac (g) | atom frac: 3.913165e+23                        
-       94239.80c -0.602693     $ mass frac (g) | atom frac: 1.518253e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4082 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4083 - SS clad (T0S210D210) fuel meat materials ---                        
-m4083  92235.80c -32.037647    $ mass frac (g) | atom frac: 8.208283e+22                        
-       92238.80c -158.827952   $ mass frac (g) | atom frac: 4.017890e+23                        
-       94239.80c -0.732882     $ mass frac (g) | atom frac: 1.846216e+21                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt4083 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4085 - SS clad (T0S210D210) fuel meat materials ---                        
-m4085  92235.80c -34.695493    $ mass frac (g) | atom frac: 8.889243e+22                        
-       92238.80c -150.439860   $ mass frac (g) | atom frac: 3.805696e+23                        
-       94239.80c -0.286822     $ mass frac (g) | atom frac: 7.225380e+20                        
-       40000.66c -1957.407241  $ mass frac (g) | atom frac: 1.292150e+25                        
-        1001.80c -34.063347    $ mass frac (g) | atom frac: 2.035136e+25                        
-mt4085 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4086 - SS clad (T0S210D210) fuel meat materials ---                        
-m4086  92235.80c -32.028441    $ mass frac (g) | atom frac: 8.205925e+22                        
-       92238.80c -154.715706   $ mass frac (g) | atom frac: 3.913862e+23                        
-       94239.80c -0.638303     $ mass frac (g) | atom frac: 1.607959e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4086 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4087 - SS clad (T0S210D210) fuel meat materials ---                        
-m4087  92235.80c -33.815533    $ mass frac (g) | atom frac: 8.663791e+22                        
-       92238.80c -154.614598   $ mass frac (g) | atom frac: 3.911304e+23                        
-       94239.80c -0.477433     $ mass frac (g) | atom frac: 1.202709e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4087 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4088 - SS clad (T0S210D210) fuel meat materials ---                        
-m4088  92235.80c -31.377672    $ mass frac (g) | atom frac: 8.039193e+22                        
-       92238.80c -150.632856   $ mass frac (g) | atom frac: 3.810578e+23                        
-       94239.80c -0.606158     $ mass frac (g) | atom frac: 1.526982e+21                        
-       40000.66c -1957.407241  $ mass frac (g) | atom frac: 1.292150e+25                        
-        1001.80c -34.063347    $ mass frac (g) | atom frac: 2.035136e+25                        
-mt4088 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4090 - SS clad (T0S210D210) fuel meat materials ---                        
-m4090  92235.80c -33.147143    $ mass frac (g) | atom frac: 8.492544e+22                        
-       92238.80c -158.768986   $ mass frac (g) | atom frac: 4.016399e+23                        
-       94239.80c -0.636317     $ mass frac (g) | atom frac: 1.602957e+21                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt4090 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4091 - SS clad (T0S210D210) fuel meat materials ---                        
-m4091  92235.80c -35.549088    $ mass frac (g) | atom frac: 9.107940e+22                        
-       92238.80c -158.635084   $ mass frac (g) | atom frac: 4.013011e+23                        
-       94239.80c -0.403878     $ mass frac (g) | atom frac: 1.017415e+21                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt4091 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4094 - SS clad (T0S210D210) fuel meat materials ---                        
-m4094  92235.80c -35.111748    $ mass frac (g) | atom frac: 8.995891e+22                        
-       92238.80c -154.538872   $ mass frac (g) | atom frac: 3.909389e+23                        
-       94239.80c -0.345172     $ mass frac (g) | atom frac: 8.695293e+20                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4094 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4095 - SS clad (T0S210D210) fuel meat materials ---                        
-m4095  92235.80c -33.397046    $ mass frac (g) | atom frac: 8.556571e+22                        
-       92238.80c -154.640871   $ mass frac (g) | atom frac: 3.911969e+23                        
-       94239.80c -0.511219     $ mass frac (g) | atom frac: 1.287821e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4095 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4103 - SS clad (T0S210D210) fuel meat materials ---                        
-m4103  92235.80c -32.312488    $ mass frac (g) | atom frac: 8.278699e+22                        
-       92238.80c -154.700311   $ mass frac (g) | atom frac: 3.913473e+23                        
-       94239.80c -0.612957     $ mass frac (g) | atom frac: 1.544110e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4103 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4104 - SS clad (T0S210D210) fuel meat materials ---                        
-m4104  92235.80c -32.036539    $ mass frac (g) | atom frac: 8.207999e+22                        
-       92238.80c -154.714768   $ mass frac (g) | atom frac: 3.913838e+23                        
-       94239.80c -0.638439     $ mass frac (g) | atom frac: 1.608301e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4104 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4106 - SS clad (T0S210D210) fuel meat materials ---                        
-m4106  92235.80c -32.515482    $ mass frac (g) | atom frac: 8.330708e+22                        
-       92238.80c -150.571117   $ mass frac (g) | atom frac: 3.809016e+23                        
-       94239.80c -0.499011     $ mass frac (g) | atom frac: 1.257067e+21                        
-       40000.66c -1957.407241  $ mass frac (g) | atom frac: 1.292150e+25                        
-        1001.80c -34.063347    $ mass frac (g) | atom frac: 2.035136e+25                        
-mt4106 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4107 - SS clad (T0S210D210) fuel meat materials ---                        
-m4107  92235.80c -33.539348    $ mass frac (g) | atom frac: 8.593030e+22                        
-       92238.80c -154.630359   $ mass frac (g) | atom frac: 3.911703e+23                        
-       94239.80c -0.503731     $ mass frac (g) | atom frac: 1.268957e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4107 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4110 - SS clad (T0S210D210) fuel meat materials ---                        
-m4110  92235.80c -34.423049    $ mass frac (g) | atom frac: 8.819441e+22                        
-       92238.80c -158.701576   $ mass frac (g) | atom frac: 4.014693e+23                        
-       94239.80c -0.511726     $ mass frac (g) | atom frac: 1.289097e+21                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt4110 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4111 - SS clad (T0S210D210) fuel meat materials ---                        
-m4111  92235.80c -33.874940    $ mass frac (g) | atom frac: 8.679011e+22                        
-       92238.80c -154.612845   $ mass frac (g) | atom frac: 3.911260e+23                        
-       94239.80c -0.467136     $ mass frac (g) | atom frac: 1.176770e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4111 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4113 - SS clad (T0S210D210) fuel meat materials ---                        
-m4113  92235.80c -33.718839    $ mass frac (g) | atom frac: 8.639017e+22                        
-       92238.80c -158.738549   $ mass frac (g) | atom frac: 4.015629e+23                        
-       94239.80c -0.583213     $ mass frac (g) | atom frac: 1.469182e+21                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt4113 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4114 - SS clad (T0S210D210) fuel meat materials ---                        
-m4114  92235.80c -35.126419    $ mass frac (g) | atom frac: 8.999649e+22                        
-       92238.80c -154.537695   $ mass frac (g) | atom frac: 3.909359e+23                        
-       94239.80c -0.344850     $ mass frac (g) | atom frac: 8.687162e+20                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4114 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4117 - SS clad (T0S210D210) fuel meat materials ---                        
-m4117  92235.80c -35.228758    $ mass frac (g) | atom frac: 9.025869e+22                        
-       92238.80c -154.531812   $ mass frac (g) | atom frac: 3.909210e+23                        
-       94239.80c -0.332544     $ mass frac (g) | atom frac: 8.377163e+20                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4117 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4118 - SS clad (T0S210D210) fuel meat materials ---                        
-m4118  92235.80c -35.973281    $ mass frac (g) | atom frac: 9.216622e+22                        
-       92238.80c -158.609565   $ mass frac (g) | atom frac: 4.012366e+23                        
-       94239.80c -0.360411     $ mass frac (g) | atom frac: 9.079180e+20                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt4118 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4119 - SS clad (T0S210D210) fuel meat materials ---                        
-m4119  92235.80c -32.546817    $ mass frac (g) | atom frac: 8.338736e+22                        
-       92238.80c -154.684835   $ mass frac (g) | atom frac: 3.913081e+23                        
-       94239.80c -0.596878     $ mass frac (g) | atom frac: 1.503605e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4119 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4120 - SS clad (T0S210D210) fuel meat materials ---                        
-m4120  92235.80c -35.696086    $ mass frac (g) | atom frac: 9.145602e+22                        
-       92238.80c -158.626145   $ mass frac (g) | atom frac: 4.012785e+23                        
-       94239.80c -0.389502     $ mass frac (g) | atom frac: 9.812009e+20                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt4120 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4121 - SS clad (T0S210D210) fuel meat materials ---                        
-m4121  92235.80c -35.924345    $ mass frac (g) | atom frac: 9.204084e+22                        
-       92238.80c -158.612313   $ mass frac (g) | atom frac: 4.012435e+23                        
-       94239.80c -0.366379     $ mass frac (g) | atom frac: 9.229512e+20                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt4121 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4122 - SS clad (T0S210D210) fuel meat materials ---                        
-m4122  92235.80c -32.411550    $ mass frac (g) | atom frac: 8.304080e+22                        
-       92238.80c -150.576978   $ mass frac (g) | atom frac: 3.809164e+23                        
-       94239.80c -0.508870     $ mass frac (g) | atom frac: 1.281902e+21                        
-       40000.66c -1957.407241  $ mass frac (g) | atom frac: 1.292150e+25                        
-        1001.80c -34.063347    $ mass frac (g) | atom frac: 2.035136e+25                        
-mt4122 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4123 - SS clad (T0S210D210) fuel meat materials ---                        
-m4123  92235.80c -30.408410    $ mass frac (g) | atom frac: 7.790860e+22                        
-       92238.80c -158.897943   $ mass frac (g) | atom frac: 4.019661e+23                        
-       94239.80c -0.880903     $ mass frac (g) | atom frac: 2.219096e+21                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt4123 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4125 - SS clad (T0S210D210) fuel meat materials ---                        
-m4125  92235.80c -30.657961    $ mass frac (g) | atom frac: 7.854797e+22                        
-       92238.80c -154.781566   $ mass frac (g) | atom frac: 3.915528e+23                        
-       94239.80c -0.764600     $ mass frac (g) | atom frac: 1.926117e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4125 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4126 - SS clad (T0S210D210) fuel meat materials ---                        
-m4126  92235.80c -33.148467    $ mass frac (g) | atom frac: 8.492883e+22                        
-       92238.80c -154.652222   $ mass frac (g) | atom frac: 3.912256e+23                        
-       94239.80c -0.540682     $ mass frac (g) | atom frac: 1.362040e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4126 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4127 - SS clad (T0S210D210) fuel meat materials ---                        
-m4127  92235.80c -34.094829    $ mass frac (g) | atom frac: 8.735348e+22                        
-       92238.80c -154.599929   $ mass frac (g) | atom frac: 3.910933e+23                        
-       94239.80c -0.446149     $ mass frac (g) | atom frac: 1.123900e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4127 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4129 - SS clad (T0S210D210) fuel meat materials ---                        
-m4129  92235.80c -36.344351    $ mass frac (g) | atom frac: 9.311693e+22                        
-       92238.80c -154.459928   $ mass frac (g) | atom frac: 3.907392e+23                        
-       94239.80c -0.221892     $ mass frac (g) | atom frac: 5.589728e+20                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4129 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4130 - SS clad (T0S210D210) fuel meat materials ---                        
-m4130  92235.80c -35.975319    $ mass frac (g) | atom frac: 9.217144e+22                        
-       92238.80c -158.608984   $ mass frac (g) | atom frac: 4.012351e+23                        
-       94239.80c -0.362087     $ mass frac (g) | atom frac: 9.121396e+20                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt4130 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4131 - SS clad (T0S210D210) fuel meat materials ---                        
-m4131  92235.80c -36.025309    $ mass frac (g) | atom frac: 9.229952e+22                        
-       92238.80c -154.480791   $ mass frac (g) | atom frac: 3.907920e+23                        
-       94239.80c -0.254114     $ mass frac (g) | atom frac: 6.401428e+20                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4131 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4132 - SS clad (T0S210D210) fuel meat materials ---                        
-m4132  92235.80c -34.740079    $ mass frac (g) | atom frac: 8.900666e+22                        
-       92238.80c -150.436883   $ mass frac (g) | atom frac: 3.805620e+23                        
-       94239.80c -0.283082     $ mass frac (g) | atom frac: 7.131171e+20                        
-       40000.66c -1957.407241  $ mass frac (g) | atom frac: 1.292150e+25                        
-        1001.80c -34.063347    $ mass frac (g) | atom frac: 2.035136e+25                        
-mt4132 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4133 - SS clad (T0S210D210) fuel meat materials ---                        
-m4133  92235.80c -36.742981    $ mass frac (g) | atom frac: 9.413825e+22                        
-       92238.80c -158.560745   $ mass frac (g) | atom frac: 4.011131e+23                        
-       94239.80c -0.285129     $ mass frac (g) | atom frac: 7.182734e+20                        
-       40000.66c -2063.213038  $ mass frac (g) | atom frac: 1.361996e+25                        
-        1001.80c -35.904609    $ mass frac (g) | atom frac: 2.145143e+25                        
-mt4133 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 4134 - SS clad (T0S210D210) fuel meat materials ---                        
-m4134  92235.80c -34.553719    $ mass frac (g) | atom frac: 8.852919e+22                        
-       92238.80c -154.572785   $ mass frac (g) | atom frac: 3.910247e+23                        
-       94239.80c -0.401001     $ mass frac (g) | atom frac: 1.010167e+21                        
-       40000.66c -2010.310140  $ mass frac (g) | atom frac: 1.327073e+25                        
-        1001.80c -34.983978    $ mass frac (g) | atom frac: 2.090139e+25                        
-mt4134 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 8732 - SS clad (T13S210D210) fuel meat materials ---                        
-m8732  92235.80c -37.627082    $ mass frac (g) | atom frac: 9.640338e+22                        
-       92238.80c -151.480687   $ mass frac (g) | atom frac: 3.832026e+23                        
-       94239.80c -0.015813     $ mass frac (g) | atom frac: 3.983383e+19                        
-       40000.66c -1973.278111  $ mass frac (g) | atom frac: 1.302627e+25                        
-        1001.80c -34.339536    $ mass frac (g) | atom frac: 2.051637e+25                        
-mt8732 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 8733 - SS clad (T13S210D210) fuel meat materials ---                        
-m8733  92235.80c -37.761810    $ mass frac (g) | atom frac: 9.674856e+22                        
-       92238.80c -152.049711   $ mass frac (g) | atom frac: 3.846420e+23                        
-       94239.80c -0.016558     $ mass frac (g) | atom frac: 4.171174e+19                        
-       40000.66c -1980.684517  $ mass frac (g) | atom frac: 1.307516e+25                        
-        1001.80c -34.468425    $ mass frac (g) | atom frac: 2.059337e+25                        
-mt8733 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 8734 - SS clad (T13S210D210) fuel meat materials ---                        
-m8734  92235.80c -37.615467    $ mass frac (g) | atom frac: 9.637362e+22                        
-       92238.80c -151.440185   $ mass frac (g) | atom frac: 3.831001e+23                        
-       94239.80c -0.015970     $ mass frac (g) | atom frac: 4.022927e+19                        
-       40000.66c -1972.749082  $ mass frac (g) | atom frac: 1.302277e+25                        
-        1001.80c -34.330330    $ mass frac (g) | atom frac: 2.051087e+25                        
-mt8734 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 8735 - SS clad (T13S210D210) fuel meat materials ---                        
-m8735  92235.80c -38.336434    $ mass frac (g) | atom frac: 9.822079e+22                        
-       92238.80c -154.447264   $ mass frac (g) | atom frac: 3.907071e+23                        
-       94239.80c -0.017742     $ mass frac (g) | atom frac: 4.469424e+19                        
-       40000.66c -2011.897227  $ mass frac (g) | atom frac: 1.328120e+25                        
-        1001.80c -35.011597    $ mass frac (g) | atom frac: 2.091790e+25                        
-mt8735 h/zr.10t zr/h.10t                        
-c                        
-c
-c --- 8736 - SS clad (T13S210D210) fuel meat materials ---                        
-m8736  92235.80c -38.206628    $ mass frac (g) | atom frac: 9.788822e+22                        
-       92238.80c -153.919220   $ mass frac (g) | atom frac: 3.893713e+23                        
-       94239.80c -0.017551     $ mass frac (g) | atom frac: 4.421188e+19                        
-       40000.66c -2005.019850  $ mass frac (g) | atom frac: 1.323580e+25                        
-        1001.80c -34.891915    $ mass frac (g) | atom frac: 2.084639e+25                        
-mt8736 h/zr.10t zr/h.10t                        
+c materials auto-generated from './Source/Fuel/Core Burnup History 20201117.xlsx'c
+m7202    92235.80c 9.324675e+22 $ 36.395024 g
+         92238.80c 3.898773e+23 $ 154.119236 g
+         94239.80c 2.252371e+20 $ 0.089411 g
+         40000.66c 1.331289e+25 $ 2016.697323 g
+          1001.80c 2.096780e+25 $ 35.095129 g
+mt7202 h/zr.10t zr/h.10t
+c 
+c c
+m7945    92235.80c 9.368295e+22 $ 36.565275 g
+         92238.80c 3.847851e+23 $ 152.106266 g
+         94239.80c 2.021554e+20 $ 0.080249 g
+         40000.66c 1.318354e+25 $ 1997.103346 g
+          1001.80c 2.076408e+25 $ 34.754150 g
+mt7945 h/zr.10t zr/h.10t
+c 
+c c
+m7946    92235.80c 9.346126e+22 $ 36.478748 g
+         92238.80c 3.822720e+23 $ 151.112849 g
+         94239.80c 2.139078e+20 $ 0.084914 g
+         40000.66c 1.310844e+25 $ 1985.726276 g
+          1001.80c 2.064579e+25 $ 34.556163 g
+mt7946 h/zr.10t zr/h.10t
+c 
+c c
+m8102    92235.80c 9.793419e+22 $ 38.224573 g
+         92238.80c 3.833949e+23 $ 151.556725 g
+         94239.80c 1.110440e+20 $ 0.044081 g
+         40000.66c 1.325853e+25 $ 2008.462543 g
+          1001.80c 2.088218e+25 $ 34.951826 g
+mt8102 h/zr.10t zr/h.10t
+c 
+c c
+m8103    92235.80c 9.793419e+22 $ 38.224573 g
+         92238.80c 3.833949e+23 $ 151.556725 g
+         94239.80c 1.110440e+20 $ 0.044081 g
+         40000.66c 1.325853e+25 $ 2008.462543 g
+          1001.80c 2.088218e+25 $ 34.951826 g
+mt8103 h/zr.10t zr/h.10t
+c 
+c c
+m8104    92235.80c 9.775341e+22 $ 38.154012 g
+         92238.80c 3.834081e+23 $ 151.561932 g
+         94239.80c 1.210340e+20 $ 0.048046 g
+         40000.66c 1.325424e+25 $ 2007.813021 g
+          1001.80c 2.087543e+25 $ 34.940522 g
+mt8104 h/zr.10t zr/h.10t
+c 
+c c
+m8105    92235.80c 9.794761e+22 $ 38.229808 g
+         92238.80c 3.833939e+23 $ 151.556335 g
+         94239.80c 1.103110e+20 $ 0.043790 g
+         40000.66c 1.325885e+25 $ 2008.510731 g
+          1001.80c 2.088269e+25 $ 34.952664 g
+mt8105 h/zr.10t zr/h.10t
+c 
+c c
+m9678    92235.80c 9.301132e+22 $ 36.303133 g
+         92238.80c 3.810562e+23 $ 150.632246 g
+         94239.80c 1.585710e+20 $ 0.062947 g
+         40000.66c 1.306107e+25 $ 1978.550689 g
+          1001.80c 2.057119e+25 $ 34.431291 g
+mt9678 h/zr.10t zr/h.10t
+c 
+c c
+m9679    92235.80c 9.308589e+22 $ 36.332238 g
+         92238.80c 3.813600e+23 $ 150.752312 g
+         94239.80c 1.586959e+20 $ 0.062997 g
+         40000.66c 1.307149e+25 $ 1980.129534 g
+          1001.80c 2.058760e+25 $ 34.458767 g
+mt9679 h/zr.10t zr/h.10t
+c 
+c c
+m1070    92235.80c 9.532478e+22 $ 37.206096 g
+         92238.80c 3.871613e+23 $ 153.045581 g
+         94239.80c 5.145615e+19 $ 0.020426 g
+         40000.66c 1.328973e+25 $ 2013.189154 g
+          1001.80c 2.093133e+25 $ 35.034079 g
+mt1070 h/zr.10t zr/h.10t
+c 
+c c
+m3671    92235.80c 8.242023e+22 $ 32.169337 g
+         92238.80c 3.913650e+23 $ 154.707305 g
+         94239.80c 1.579829e+21 $ 0.627136 g
+         40000.66c 1.309638e+25 $ 1983.898674 g
+          1001.80c 2.062679e+25 $ 34.524358 g
+mt3671 h/zr.10t zr/h.10t
+c 
+c c
+m3673    92235.80c 8.697300e+22 $ 33.946324 g
+         92238.80c 3.911154e+23 $ 154.608631 g
+         94239.80c 1.159846e+21 $ 0.460418 g
+         40000.66c 1.320195e+25 $ 1999.892216 g
+          1001.80c 2.079308e+25 $ 34.802682 g
+mt3673 h/zr.10t zr/h.10t
+c 
+c c
+m3674    92235.80c 8.643534e+22 $ 33.736470 g
+         92238.80c 3.911424e+23 $ 154.619323 g
+         94239.80c 1.220481e+21 $ 0.484488 g
+         40000.66c 1.318972e+25 $ 1998.039634 g
+          1001.80c 2.077382e+25 $ 34.770443 g
+mt3674 h/zr.10t zr/h.10t
+c 
+c c
+m3676    92235.80c 8.673068e+22 $ 33.851744 g
+         92238.80c 3.911293e+23 $ 154.614136 g
+         94239.80c 1.182769e+21 $ 0.469518 g
+         40000.66c 1.319637e+25 $ 1999.046032 g
+          1001.80c 2.078428e+25 $ 34.787957 g
+mt3676 h/zr.10t zr/h.10t
+c 
+c c
+m3677    92235.80c 8.217943e+22 $ 32.075352 g
+         92238.80c 3.913787e+23 $ 154.712752 g
+         94239.80c 1.599294e+21 $ 0.634863 g
+         40000.66c 1.309073e+25 $ 1983.043637 g
+          1001.80c 2.061790e+25 $ 34.509479 g
+mt3677 h/zr.10t zr/h.10t
+c 
+c c
+m3679    92235.80c 8.209276e+22 $ 32.041523 g
+         92238.80c 3.913832e+23 $ 154.714510 g
+         94239.80c 1.607108e+21 $ 0.637965 g
+         40000.66c 1.308871e+25 $ 1982.737127 g
+          1001.80c 2.061472e+25 $ 34.504145 g
+mt3679 h/zr.10t zr/h.10t
+c 
+c c
+m3682    92235.80c 8.431509e+22 $ 32.908916 g
+         92238.80c 3.912639e+23 $ 154.667369 g
+         94239.80c 1.408042e+21 $ 0.558943 g
+         40000.66c 1.314048e+25 $ 1990.579771 g
+          1001.80c 2.069626e+25 $ 34.640625 g
+mt3682 h/zr.10t zr/h.10t
+c 
+c c
+m3683    92235.80c 8.711307e+22 $ 34.000992 g
+         92238.80c 3.911033e+23 $ 154.603872 g
+         94239.80c 1.157993e+21 $ 0.459682 g
+         40000.66c 1.320539e+25 $ 2000.412497 g
+          1001.80c 2.079849e+25 $ 34.811736 g
+mt3683 h/zr.10t zr/h.10t
+c 
+c c
+m3685    92235.80c 8.419370e+22 $ 32.861538 g
+         92238.80c 3.912725e+23 $ 154.670733 g
+         94239.80c 1.415167e+21 $ 0.561771 g
+         40000.66c 1.313760e+25 $ 1990.144008 g
+          1001.80c 2.069173e+25 $ 34.633041 g
+mt3685 h/zr.10t zr/h.10t
+c 
+c c
+m3721    92235.80c 7.796476e+22 $ 30.430327 g
+         92238.80c 3.811723e+23 $ 150.678129 g
+         94239.80c 1.754063e+21 $ 0.696301 g
+         40000.66c 1.269832e+25 $ 1923.599716 g
+          1001.80c 1.999986e+25 $ 33.475019 g
+mt3721 h/zr.10t zr/h.10t
+c 
+c c
+m3743    92235.80c 8.105038e+22 $ 31.634671 g
+         92238.80c 3.810234e+23 $ 150.619263 g
+         94239.80c 1.467001e+21 $ 0.582348 g
+         40000.66c 1.277037e+25 $ 1934.513848 g
+          1001.80c 2.011333e+25 $ 33.664950 g
+mt3743 h/zr.10t zr/h.10t
+c 
+c c
+m3748    92235.80c 9.007313e+22 $ 35.156331 g
+         92238.80c 3.804945e+23 $ 150.410186 g
+         94239.80c 6.061419e+20 $ 0.240617 g
+         40000.66c 1.297787e+25 $ 1965.947189 g
+          1001.80c 2.044015e+25 $ 34.211961 g
+mt3748 h/zr.10t zr/h.10t
+c 
+c c
+m3774    92235.80c 8.091964e+22 $ 31.583642 g
+         92238.80c 3.914333e+23 $ 154.734318 g
+         94239.80c 1.726206e+21 $ 0.685243 g
+         40000.66c 1.306141e+25 $ 1978.602288 g
+          1001.80c 2.057172e+25 $ 34.432189 g
+mt3774 h/zr.10t zr/h.10t
+c 
+c c
+m3810    92235.80c 8.109717e+22 $ 31.652935 g
+         92238.80c 3.914311e+23 $ 154.733432 g
+         94239.80c 1.700589e+21 $ 0.675074 g
+         40000.66c 1.306548e+25 $ 1979.218480 g
+          1001.80c 2.057813e+25 $ 34.442912 g
+mt3810 h/zr.10t zr/h.10t
+c 
+c c
+m3835    92235.80c 9.181003e+22 $ 35.834258 g
+         92238.80c 4.012571e+23 $ 158.617683 g
+         94239.80c 9.470749e+20 $ 0.375955 g
+         40000.66c 1.360794e+25 $ 2061.392087 g
+          1001.80c 2.143250e+25 $ 35.872920 g
+mt3835 h/zr.10t zr/h.10t
+c 
+c c
+m3840    92235.80c 9.018959e+22 $ 35.201785 g
+         92238.80c 3.909236e+23 $ 154.532838 g
+         94239.80c 8.517703e+20 $ 0.338123 g
+         40000.66c 1.327581e+25 $ 2011.079837 g
+          1001.80c 2.090940e+25 $ 34.997372 g
+mt3840 h/zr.10t zr/h.10t
+c 
+c c
+m3851    92235.80c 9.003491e+22 $ 35.141414 g
+         92238.80c 3.909342e+23 $ 154.537025 g
+         94239.80c 8.621487e+20 $ 0.342243 g
+         40000.66c 1.327217e+25 $ 2010.528963 g
+          1001.80c 2.090367e+25 $ 34.987786 g
+mt3851 h/zr.10t zr/h.10t
+c 
+c c
+m3852    92235.80c 9.264666e+22 $ 36.160800 g
+         92238.80c 3.907692e+23 $ 154.471789 g
+         94239.80c 6.087314e+20 $ 0.241645 g
+         40000.66c 1.333179e+25 $ 2019.560044 g
+          1001.80c 2.099757e+25 $ 35.144947 g
+mt3852 h/zr.10t zr/h.10t
+c 
+c c
+m3853    92235.80c 8.843845e+22 $ 34.518302 g
+         92238.80c 3.910301e+23 $ 154.574921 g
+         94239.80c 1.018851e+21 $ 0.404448 g
+         40000.66c 1.323564e+25 $ 2004.995211 g
+          1001.80c 2.084613e+25 $ 34.891486 g
+mt3853 h/zr.10t zr/h.10t
+c 
+c c
+m3854    92235.80c 8.014054e+22 $ 31.279554 g
+         92238.80c 3.914779e+23 $ 154.751945 g
+         94239.80c 1.785883e+21 $ 0.708933 g
+         40000.66c 1.304306e+25 $ 1975.822018 g
+          1001.80c 2.054282e+25 $ 34.383806 g
+mt3854 h/zr.10t zr/h.10t
+c 
+c c
+m3855    92235.80c 8.161298e+22 $ 31.854259 g
+         92238.80c 3.913990e+23 $ 154.720763 g
+         94239.80c 1.664150e+21 $ 0.660609 g
+         40000.66c 1.307765e+25 $ 1981.061513 g
+          1001.80c 2.059729e+25 $ 34.474985 g
+mt3855 h/zr.10t zr/h.10t
+c 
+c c
+m3856    92235.80c 9.108826e+22 $ 35.552544 g
+         92238.80c 3.908693e+23 $ 154.511373 g
+         94239.80c 7.566940e+20 $ 0.300381 g
+         40000.66c 1.329617e+25 $ 2014.164615 g
+          1001.80c 2.094147e+25 $ 35.051055 g
+mt3856 h/zr.10t zr/h.10t
+c 
+c c
+m3858    92235.80c 7.937683e+22 $ 30.981471 g
+         92238.80c 3.915154e+23 $ 154.766761 g
+         94239.80c 1.852027e+21 $ 0.735190 g
+         40000.66c 1.302511e+25 $ 1973.102692 g
+          1001.80c 2.051454e+25 $ 34.336484 g
+mt3858 h/zr.10t zr/h.10t
+c 
+c c
+m3862    92235.80c 7.875131e+22 $ 30.737324 g
+         92238.80c 3.915446e+23 $ 154.778308 g
+         94239.80c 1.907000e+21 $ 0.757012 g
+         40000.66c 1.301039e+25 $ 1970.872549 g
+          1001.80c 2.049136e+25 $ 34.297674 g
+mt3862 h/zr.10t zr/h.10t
+c 
+c c
+m3864    92235.80c 8.424253e+22 $ 32.880597 g
+         92238.80c 4.016748e+23 $ 158.782782 g
+         94239.80c 1.664621e+21 $ 0.660796 g
+         40000.66c 1.343306e+25 $ 2034.901257 g
+          1001.80c 2.115707e+25 $ 35.411919 g
+mt3864 h/zr.10t zr/h.10t
+c 
+c c
+m3865    92235.80c 9.186687e+22 $ 35.856442 g
+         92238.80c 3.908187e+23 $ 154.491383 g
+         94239.80c 6.876911e+20 $ 0.272989 g
+         40000.66c 1.331409e+25 $ 2016.878709 g
+          1001.80c 2.096969e+25 $ 35.098286 g
+mt3865 h/zr.10t zr/h.10t
+c 
+c c
+m3866    92235.80c 9.432160e+22 $ 36.814545 g
+         92238.80c 4.011019e+23 $ 158.556351 g
+         94239.80c 6.971836e+20 $ 0.276757 g
+         40000.66c 1.366519e+25 $ 2070.065584 g
+          1001.80c 2.152268e+25 $ 36.023859 g
+mt3866 h/zr.10t zr/h.10t
+c 
+c c
+m3868    92235.80c 8.856487e+22 $ 34.567644 g
+         92238.80c 3.910220e+23 $ 154.571746 g
+         94239.80c 1.008479e+21 $ 0.400331 g
+         40000.66c 1.323858e+25 $ 2005.440112 g
+          1001.80c 2.085076e+25 $ 34.899228 g
+mt3868 h/zr.10t zr/h.10t
+c 
+c c
+m3870    92235.80c 7.905612e+22 $ 30.856296 g
+         92238.80c 3.915219e+23 $ 154.769351 g
+         94239.80c 1.890880e+21 $ 0.750613 g
+         40000.66c 1.301762e+25 $ 1971.968873 g
+          1001.80c 2.050276e+25 $ 34.316753 g
+mt3870 h/zr.10t zr/h.10t
+c 
+c c
+m3872    92235.80c 8.038764e+22 $ 31.375998 g
+         92238.80c 4.018684e+23 $ 158.859333 g
+         94239.80c 1.995334e+21 $ 0.792077 g
+         40000.66c 1.334249e+25 $ 2021.180709 g
+          1001.80c 2.101442e+25 $ 35.173151 g
+mt3872 h/zr.10t zr/h.10t
+c 
+c c
+m3874    92235.80c 9.617779e+22 $ 37.539032 g
+         92238.80c 3.905351e+23 $ 154.379256 g
+         94239.80c 2.501436e+20 $ 0.099298 g
+         40000.66c 1.341165e+25 $ 2031.657371 g
+          1001.80c 2.112334e+25 $ 35.355468 g
+mt3874 h/zr.10t zr/h.10t
+c 
+c c
+m4046    92235.80c 8.481832e+22 $ 33.105331 g
+         92238.80c 4.016513e+23 $ 158.773517 g
+         94239.80c 1.602148e+21 $ 0.635996 g
+         40000.66c 1.344638e+25 $ 2036.918647 g
+          1001.80c 2.117805e+25 $ 35.447027 g
+mt4046 h/zr.10t zr/h.10t
+c 
+c c
+m4049    92235.80c 8.401635e+22 $ 32.792316 g
+         92238.80c 4.016925e+23 $ 158.789783 g
+         94239.80c 1.674748e+21 $ 0.664816 g
+         40000.66c 1.342766e+25 $ 2034.083810 g
+          1001.80c 2.114857e+25 $ 35.397694 g
+mt4049 h/zr.10t zr/h.10t
+c 
+c c
+m4050    92235.80c 7.980041e+22 $ 31.146797 g
+         92238.80c 4.018854e+23 $ 158.866068 g
+         94239.80c 2.056881e+21 $ 0.816509 g
+         40000.66c 1.332866e+25 $ 2019.085402 g
+          1001.80c 2.099263e+25 $ 35.136688 g
+mt4050 h/zr.10t zr/h.10t
+c 
+c c
+m4053    92235.80c 9.225349e+22 $ 36.007346 g
+         92238.80c 4.012305e+23 $ 158.607175 g
+         94239.80c 9.023579e+20 $ 0.358204 g
+         40000.66c 1.361805e+25 $ 2062.924458 g
+          1001.80c 2.144843e+25 $ 35.899587 g
+mt4053 h/zr.10t zr/h.10t
+c 
+c c
+m4054    92235.80c 8.422187e+22 $ 32.872532 g
+         92238.80c 3.912709e+23 $ 154.670130 g
+         94239.80c 1.412578e+21 $ 0.560744 g
+         40000.66c 1.313826e+25 $ 1990.243070 g
+          1001.80c 2.069276e+25 $ 34.634765 g
+mt4054 h/zr.10t zr/h.10t
+c 
+c c
+m4055    92235.80c 9.218487e+22 $ 35.980563 g
+         92238.80c 4.012347e+23 $ 158.608835 g
+         94239.80c 9.090086e+20 $ 0.360844 g
+         40000.66c 1.361648e+25 $ 2062.686579 g
+          1001.80c 2.144596e+25 $ 35.895447 g
+mt4055 h/zr.10t zr/h.10t
+c 
+c c
+m4057    92235.80c 9.072776e+22 $ 35.411837 g
+         92238.80c 3.908903e+23 $ 154.519677 g
+         94239.80c 7.993919e+20 $ 0.317330 g
+         40000.66c 1.328811e+25 $ 2012.943066 g
+          1001.80c 2.092877e+25 $ 35.029797 g
+mt4057 h/zr.10t zr/h.10t
+c 
+c c
+m4060    92235.80c 7.901977e+22 $ 30.842106 g
+         92238.80c 3.915236e+23 $ 154.770014 g
+         94239.80c 1.894068e+21 $ 0.751878 g
+         40000.66c 1.301677e+25 $ 1971.839138 g
+          1001.80c 2.050141e+25 $ 34.314495 g
+mt4060 h/zr.10t zr/h.10t
+c 
+c c
+m4061    92235.80c 9.086799e+22 $ 35.466571 g
+         92238.80c 4.013117e+23 $ 158.639268 g
+         94239.80c 1.044674e+21 $ 0.414699 g
+         40000.66c 1.358647e+25 $ 2058.140051 g
+          1001.80c 2.139869e+25 $ 35.816327 g
+mt4061 h/zr.10t zr/h.10t
+c 
+c c
+m4062    92235.80c 8.930681e+22 $ 34.857231 g
+         92238.80c 3.909779e+23 $ 154.554316 g
+         94239.80c 9.354445e+20 $ 0.371338 g
+         40000.66c 1.325556e+25 $ 2008.012939 g
+          1001.80c 2.087751e+25 $ 34.944001 g
+mt4062 h/zr.10t zr/h.10t
+c 
+c c
+m4063    92235.80c 7.670854e+22 $ 29.940015 g
+         92238.80c 3.916259e+23 $ 154.810467 g
+         94239.80c 2.094291e+21 $ 0.831360 g
+         40000.66c 1.296214e+25 $ 1963.563456 g
+          1001.80c 2.041536e+25 $ 34.170479 g
+mt4063 h/zr.10t zr/h.10t
+c 
+c c
+m4064    92235.80c 8.756699e+22 $ 34.178164 g
+         92238.80c 3.806507e+23 $ 150.471929 g
+         94239.80c 8.567406e+20 $ 0.340096 g
+         40000.66c 1.292081e+25 $ 1957.303433 g
+          1001.80c 2.035028e+25 $ 34.061540 g
+mt4064 h/zr.10t zr/h.10t
+c 
+c c
+m4065    92235.80c 8.363132e+22 $ 32.642035 g
+         92238.80c 3.808844e+23 $ 150.564326 g
+         94239.80c 1.224249e+21 $ 0.485984 g
+         40000.66c 1.283016e+25 $ 1943.571491 g
+          1001.80c 2.020751e+25 $ 33.822573 g
+mt4065 h/zr.10t zr/h.10t
+c 
+c c
+m4066    92235.80c 7.959830e+22 $ 31.067914 g
+         92238.80c 3.914967e+23 $ 154.759372 g
+         94239.80c 1.843259e+21 $ 0.731709 g
+         40000.66c 1.303039e+25 $ 1973.902307 g
+          1001.80c 2.052286e+25 $ 34.350399 g
+mt4066 h/zr.10t zr/h.10t
+c 
+c c
+m4068    92235.80c 8.406668e+22 $ 32.811963 g
+         92238.80c 4.016836e+23 $ 158.786293 g
+         94239.80c 1.680490e+21 $ 0.667095 g
+         40000.66c 1.342895e+25 $ 2034.278869 g
+          1001.80c 2.115060e+25 $ 35.401088 g
+mt4068 h/zr.10t zr/h.10t
+c 
+c c
+m4069    92235.80c 8.930564e+22 $ 34.856774 g
+         92238.80c 3.909776e+23 $ 154.554162 g
+         94239.80c 9.372975e+20 $ 0.372074 g
+         40000.66c 1.325557e+25 $ 2008.014256 g
+          1001.80c 2.087752e+25 $ 34.944024 g
+mt4069 h/zr.10t zr/h.10t
+c 
+c c
+m4070    92235.80c 8.495977e+22 $ 33.160542 g
+         92238.80c 4.016475e+23 $ 158.771998 g
+         94239.80c 1.582946e+21 $ 0.628374 g
+         40000.66c 1.344960e+25 $ 2037.406090 g
+          1001.80c 2.118311e+25 $ 35.455509 g
+mt4070 h/zr.10t zr/h.10t
+c 
+c c
+m4071    92235.80c 7.908951e+22 $ 30.869327 g
+         92238.80c 4.019263e+23 $ 158.882205 g
+         94239.80c 2.107914e+21 $ 0.836768 g
+         40000.66c 1.331182e+25 $ 2016.534692 g
+          1001.80c 2.096611e+25 $ 35.092299 g
+mt4071 h/zr.10t zr/h.10t
+c 
+c c
+m4074    92235.80c 9.004060e+22 $ 35.143635 g
+         92238.80c 3.909328e+23 $ 154.536458 g
+         94239.80c 8.662276e+20 $ 0.343862 g
+         40000.66c 1.327240e+25 $ 2010.563593 g
+          1001.80c 2.090403e+25 $ 34.988389 g
+mt4074 h/zr.10t zr/h.10t
+c 
+c c
+m4077    92235.80c 8.226946e+22 $ 32.110492 g
+         92238.80c 3.913727e+23 $ 154.710375 g
+         94239.80c 1.593509e+21 $ 0.632567 g
+         40000.66c 1.309286e+25 $ 1983.365991 g
+          1001.80c 2.062125e+25 $ 34.515088 g
+mt4077 h/zr.10t zr/h.10t
+c 
+c c
+m4081    92235.80c 8.251744e+22 $ 32.207277 g
+         92238.80c 3.913532e+23 $ 154.702670 g
+         94239.80c 1.582649e+21 $ 0.628256 g
+         40000.66c 1.309878e+25 $ 1984.262897 g
+          1001.80c 2.063058e+25 $ 34.530697 g
+mt4081 h/zr.10t zr/h.10t
+c 
+c c
+m4082    92235.80c 8.322684e+22 $ 32.484163 g
+         92238.80c 3.913165e+23 $ 154.688158 g
+         94239.80c 1.518253e+21 $ 0.602693 g
+         40000.66c 1.311532e+25 $ 1986.768489 g
+          1001.80c 2.065663e+25 $ 34.574300 g
+mt4082 h/zr.10t zr/h.10t
+c 
+c c
+m4083    92235.80c 8.208283e+22 $ 32.037647 g
+         92238.80c 4.017890e+23 $ 158.827952 g
+         94239.80c 1.846216e+21 $ 0.732882 g
+         40000.66c 1.338237e+25 $ 2027.222997 g
+          1001.80c 2.107724e+25 $ 35.278300 g
+mt4083 h/zr.10t zr/h.10t
+c 
+c c
+m4085    92235.80c 8.889243e+22 $ 34.695493 g
+         92238.80c 3.805696e+23 $ 150.439860 g
+         94239.80c 7.225380e+20 $ 0.286822 g
+         40000.66c 1.295098e+25 $ 1961.874097 g
+          1001.80c 2.039780e+25 $ 34.141080 g
+mt4085 h/zr.10t zr/h.10t
+c 
+c c
+m4086    92235.80c 8.205925e+22 $ 32.028441 g
+         92238.80c 3.913862e+23 $ 154.715706 g
+         94239.80c 1.607959e+21 $ 0.638303 g
+         40000.66c 1.308790e+25 $ 1982.614946 g
+          1001.80c 2.061344e+25 $ 34.502018 g
+mt4086 h/zr.10t zr/h.10t
+c 
+c c
+m4087    92235.80c 8.663791e+22 $ 33.815533 g
+         92238.80c 3.911304e+23 $ 154.614598 g
+         94239.80c 1.202709e+21 $ 0.477433 g
+         40000.66c 1.319442e+25 $ 1998.751533 g
+          1001.80c 2.078122e+25 $ 34.782832 g
+mt4087 h/zr.10t zr/h.10t
+c 
+c c
+m4088    92235.80c 8.039193e+22 $ 31.377672 g
+         92238.80c 3.810578e+23 $ 150.632856 g
+         94239.80c 1.526982e+21 $ 0.606158 g
+         40000.66c 1.275503e+25 $ 1932.190393 g
+          1001.80c 2.008918e+25 $ 33.624516 g
+mt4088 h/zr.10t zr/h.10t
+c 
+c c
+m4090    92235.80c 8.492544e+22 $ 33.147143 g
+         92238.80c 4.016399e+23 $ 158.768986 g
+         94239.80c 1.602957e+21 $ 0.636317 g
+         40000.66c 1.344900e+25 $ 2037.316506 g
+          1001.80c 2.118218e+25 $ 35.453950 g
+mt4090 h/zr.10t zr/h.10t
+c 
+c c
+m4091    92235.80c 9.107940e+22 $ 35.549088 g
+         92238.80c 4.013011e+23 $ 158.635084 g
+         94239.80c 1.017415e+21 $ 0.403878 g
+         40000.66c 1.359118e+25 $ 2058.854372 g
+          1001.80c 2.140611e+25 $ 35.828758 g
+mt4091 h/zr.10t zr/h.10t
+c 
+c c
+m4094    92235.80c 8.995891e+22 $ 35.111748 g
+         92238.80c 3.909389e+23 $ 154.538872 g
+         94239.80c 8.695293e+20 $ 0.345172 g
+         40000.66c 1.327043e+25 $ 2010.265621 g
+          1001.80c 2.090093e+25 $ 34.983203 g
+mt4094 h/zr.10t zr/h.10t
+c 
+c c
+m4095    92235.80c 8.556571e+22 $ 33.397046 g
+         92238.80c 3.911969e+23 $ 154.640871 g
+         94239.80c 1.287821e+21 $ 0.511219 g
+         40000.66c 1.316939e+25 $ 1994.959159 g
+          1001.80c 2.074179e+25 $ 34.716836 g
+mt4095 h/zr.10t zr/h.10t
+c 
+c c
+m4103    92235.80c 8.278699e+22 $ 32.312488 g
+         92238.80c 3.913473e+23 $ 154.700311 g
+         94239.80c 1.544110e+21 $ 0.612957 g
+         40000.66c 1.310490e+25 $ 1985.189263 g
+          1001.80c 2.064021e+25 $ 34.546817 g
+mt4103 h/zr.10t zr/h.10t
+c 
+c c
+m4104    92235.80c 8.207999e+22 $ 32.036539 g
+         92238.80c 3.913838e+23 $ 154.714768 g
+         94239.80c 1.608301e+21 $ 0.638439 g
+         40000.66c 1.308841e+25 $ 1982.692141 g
+          1001.80c 2.061425e+25 $ 34.503362 g
+mt4104 h/zr.10t zr/h.10t
+c 
+c c
+m4106    92235.80c 8.330708e+22 $ 32.515482 g
+         92238.80c 3.809016e+23 $ 150.571117 g
+         94239.80c 1.257067e+21 $ 0.499011 g
+         40000.66c 1.282271e+25 $ 1942.442175 g
+          1001.80c 2.019576e+25 $ 33.802921 g
+mt4106 h/zr.10t zr/h.10t
+c 
+c c
+m4107    92235.80c 8.593030e+22 $ 33.539348 g
+         92238.80c 3.911703e+23 $ 154.630359 g
+         94239.80c 1.268957e+21 $ 0.503731 g
+         40000.66c 1.317807e+25 $ 1996.274338 g
+          1001.80c 2.075546e+25 $ 34.739723 g
+mt4107 h/zr.10t zr/h.10t
+c 
+c c
+m4110    92235.80c 8.819441e+22 $ 34.423049 g
+         92238.80c 4.014693e+23 $ 158.701576 g
+         94239.80c 1.289097e+21 $ 0.511726 g
+         40000.66c 1.352471e+25 $ 2048.784844 g
+          1001.80c 2.130142e+25 $ 35.653525 g
+mt4110 h/zr.10t zr/h.10t
+c 
+c c
+m4111    92235.80c 8.679011e+22 $ 33.874940 g
+         92238.80c 3.911260e+23 $ 154.612845 g
+         94239.80c 1.176770e+21 $ 0.467136 g
+         40000.66c 1.319773e+25 $ 1999.252604 g
+          1001.80c 2.078643e+25 $ 34.791552 g
+mt4111 h/zr.10t zr/h.10t
+c 
+c c
+m4113    92235.80c 8.639017e+22 $ 33.718839 g
+         92238.80c 4.015629e+23 $ 158.738549 g
+         94239.80c 1.469182e+21 $ 0.583213 g
+         40000.66c 1.348310e+25 $ 2042.481471 g
+          1001.80c 2.123588e+25 $ 35.543832 g
+mt4113 h/zr.10t zr/h.10t
+c 
+c c
+m4114    92235.80c 8.999649e+22 $ 35.126419 g
+         92238.80c 3.909359e+23 $ 154.537695 g
+         94239.80c 8.687162e+20 $ 0.344850 g
+         40000.66c 1.327135e+25 $ 2010.404980 g
+          1001.80c 2.090238e+25 $ 34.985628 g
+mt4114 h/zr.10t zr/h.10t
+c 
+c c
+m4117    92235.80c 9.025869e+22 $ 35.228758 g
+         92238.80c 3.909210e+23 $ 154.531812 g
+         94239.80c 8.377163e+20 $ 0.332544 g
+         40000.66c 1.327723e+25 $ 2011.295340 g
+          1001.80c 2.091164e+25 $ 35.001123 g
+mt4117 h/zr.10t zr/h.10t
+c 
+c c
+m4118    92235.80c 9.216622e+22 $ 35.973281 g
+         92238.80c 4.012366e+23 $ 158.609565 g
+         94239.80c 9.079180e+20 $ 0.360411 g
+         40000.66c 1.361599e+25 $ 2062.612668 g
+          1001.80c 2.144519e+25 $ 35.894161 g
+mt4118 h/zr.10t zr/h.10t
+c 
+c c
+m4119    92235.80c 8.338736e+22 $ 32.546817 g
+         92238.80c 3.913081e+23 $ 154.684835 g
+         94239.80c 1.503605e+21 $ 0.596878 g
+         40000.66c 1.311906e+25 $ 1987.334734 g
+          1001.80c 2.066252e+25 $ 34.584154 g
+mt4119 h/zr.10t zr/h.10t
+c 
+c c
+m4120    92235.80c 9.145602e+22 $ 35.696086 g
+         92238.80c 4.012785e+23 $ 158.626145 g
+         94239.80c 9.812009e+20 $ 0.389502 g
+         40000.66c 1.359982e+25 $ 2060.163008 g
+          1001.80c 2.141972e+25 $ 35.851531 g
+mt4120 h/zr.10t zr/h.10t
+c 
+c c
+m4121    92235.80c 9.204084e+22 $ 35.924345 g
+         92238.80c 4.012435e+23 $ 158.612313 g
+         94239.80c 9.229512e+20 $ 0.366379 g
+         40000.66c 1.361318e+25 $ 2062.187118 g
+          1001.80c 2.144076e+25 $ 35.886756 g
+mt4121 h/zr.10t zr/h.10t
+c 
+c c
+m4122    92235.80c 8.304080e+22 $ 32.411550 g
+         92238.80c 3.809164e+23 $ 150.576978 g
+         94239.80c 1.281902e+21 $ 0.508870 g
+         40000.66c 1.281655e+25 $ 1941.508847 g
+          1001.80c 2.018606e+25 $ 33.786679 g
+mt4122 h/zr.10t zr/h.10t
+c 
+c c
+m4123    92235.80c 7.790860e+22 $ 30.408410 g
+         92238.80c 4.019661e+23 $ 158.897943 g
+         94239.80c 2.219096e+21 $ 0.880903 g
+         40000.66c 1.328381e+25 $ 2012.291415 g
+          1001.80c 2.092199e+25 $ 35.018457 g
+mt4123 h/zr.10t zr/h.10t
+c 
+c c
+m4125    92235.80c 7.854797e+22 $ 30.657961 g
+         92238.80c 3.915528e+23 $ 154.781566 g
+         94239.80c 1.926117e+21 $ 0.764600 g
+         40000.66c 1.300560e+25 $ 1970.147611 g
+          1001.80c 2.048382e+25 $ 34.285058 g
+mt4125 h/zr.10t zr/h.10t
+c 
+c c
+m4126    92235.80c 8.492883e+22 $ 33.148467 g
+         92238.80c 3.912256e+23 $ 154.652222 g
+         94239.80c 1.362040e+21 $ 0.540682 g
+         40000.66c 1.315488e+25 $ 1992.760879 g
+          1001.80c 2.071893e+25 $ 34.678581 g
+mt4126 h/zr.10t zr/h.10t
+c 
+c c
+m4127    92235.80c 8.735348e+22 $ 34.094829 g
+         92238.80c 3.910933e+23 $ 154.599929 g
+         94239.80c 1.123900e+21 $ 0.446149 g
+         40000.66c 1.321072e+25 $ 2001.220438 g
+          1001.80c 2.080689e+25 $ 34.825796 g
+mt4127 h/zr.10t zr/h.10t
+c 
+c c
+m4129    92235.80c 9.311693e+22 $ 36.344351 g
+         92238.80c 3.907392e+23 $ 154.459928 g
+         94239.80c 5.589728e+20 $ 0.221892 g
+         40000.66c 1.334240e+25 $ 2021.167638 g
+          1001.80c 2.101428e+25 $ 35.172923 g
+mt4129 h/zr.10t zr/h.10t
+c 
+c c
+m4130    92235.80c 9.217144e+22 $ 35.975319 g
+         92238.80c 4.012351e+23 $ 158.608984 g
+         94239.80c 9.121396e+20 $ 0.362087 g
+         40000.66c 1.361621e+25 $ 2062.645819 g
+          1001.80c 2.144553e+25 $ 35.894738 g
+mt4130 h/zr.10t zr/h.10t
+c 
+c c
+m4131    92235.80c 9.229952e+22 $ 36.025309 g
+         92238.80c 3.907920e+23 $ 154.480791 g
+         94239.80c 6.401428e+20 $ 0.254114 g
+         40000.66c 1.332382e+25 $ 2018.353645 g
+          1001.80c 2.098502e+25 $ 35.123953 g
+mt4131 h/zr.10t zr/h.10t
+c 
+c c
+m4132    92235.80c 8.900666e+22 $ 34.740079 g
+         92238.80c 3.805620e+23 $ 150.436883 g
+         94239.80c 7.131171e+20 $ 0.283082 g
+         40000.66c 1.295363e+25 $ 1962.274781 g
+          1001.80c 2.040197e+25 $ 34.148053 g
+mt4132 h/zr.10t zr/h.10t
+c 
+c c
+m4133    92235.80c 9.413825e+22 $ 36.742981 g
+         92238.80c 4.011131e+23 $ 158.560745 g
+         94239.80c 7.182734e+20 $ 0.285129 g
+         40000.66c 1.366109e+25 $ 2069.443463 g
+          1001.80c 2.151621e+25 $ 36.013033 g
+mt4133 h/zr.10t zr/h.10t
+c 
+c c
+m4134    92235.80c 8.852919e+22 $ 34.553719 g
+         92238.80c 3.910247e+23 $ 154.572785 g
+         94239.80c 1.010167e+21 $ 0.401001 g
+         40000.66c 1.323772e+25 $ 2005.310858 g
+          1001.80c 2.084942e+25 $ 34.896979 g
+mt4134 h/zr.10t zr/h.10t
+c 
+c c
+m8732    92235.80c 9.640338e+22 $ 37.627082 g
+         92238.80c 3.832026e+23 $ 151.480687 g
+         94239.80c 3.983383e+19 $ 0.015813 g
+         40000.66c 1.320951e+25 $ 2001.037126 g
+          1001.80c 2.080498e+25 $ 34.822606 g
+mt8732 h/zr.10t zr/h.10t
+c 
+c c
+m8733    92235.80c 9.674856e+22 $ 37.761810 g
+         92238.80c 3.846420e+23 $ 152.049711 g
+         94239.80c 4.171174e+19 $ 0.016558 g
+         40000.66c 1.325872e+25 $ 2008.491114 g
+          1001.80c 2.088248e+25 $ 34.952323 g
+mt8733 h/zr.10t zr/h.10t
+c 
+c c
+m8734    92235.80c 9.637362e+22 $ 37.615467 g
+         92238.80c 3.831001e+23 $ 151.440185 g
+         94239.80c 4.022927e+19 $ 0.015970 g
+         40000.66c 1.320588e+25 $ 2000.487359 g
+          1001.80c 2.079927e+25 $ 34.813039 g
+mt8734 h/zr.10t zr/h.10t
+c 
+c c
+m8735    92235.80c 9.822079e+22 $ 38.336434 g
+         92238.80c 3.907071e+23 $ 154.447264 g
+         94239.80c 4.469424e+19 $ 0.017742 g
+         40000.66c 1.346640e+25 $ 2039.951004 g
+          1001.80c 2.120957e+25 $ 35.499797 g
+mt8735 h/zr.10t zr/h.10t
+c 
+c c
+m8736    92235.80c 9.788822e+22 $ 38.206628 g
+         92238.80c 3.893713e+23 $ 153.919220 g
+         94239.80c 4.421188e+19 $ 0.017551 g
+         40000.66c 1.342043e+25 $ 2032.988537 g
+          1001.80c 2.113718e+25 $ 35.378634 g
+mt8736 h/zr.10t zr/h.10t
+c 
+c 
+c             
 c                        
 c
 c --End Fuel Materials--
@@ -6866,9 +6769,9 @@ c
 c
 c
 c
-mode n                                                  $ neutrons! 
+mode  n                                                 $ neutrons! 
 c
-kcode    20000 1 5 105 $ kcode card, NIST default is 20000 neutrons, discard 5, run 105 total active cycles
+kcode 20000 1 5 105 $ kcode card, NIST default is 20000 neutrons, discard 5, run 105 total active cycles
 kopts kinetics=yes precursor=yes
 c
 c esplt:n  2 0.1 2 0.001 2 0.0001 2 0.000001 0.75 5e-7    $ split energy

@@ -1,0 +1,6 @@
+c Arguments for f684
+fm684:n -3164.0625 7202 (-6 -8)
+c -3164: multiplier to convert n/cm^2/fission_neutron --> Watts/cm^3
+c  7202: sample material in cell
+c    -6: identifier for mascroscopic fission cross-section (barns*fissions/neutrons/atom)
+c    -8: identifier for fission energy (MeV/fission)

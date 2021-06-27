@@ -1,0 +1,18 @@
+basis 1 0 0  010 or 0 0 45 ex 60 label 0 0 scale 1 mesh 1
+basis 1 0 0  010 origin 0 0 45 ex 60 label 0 0 scale 1 mesh 1
+basis 1 0 0  0 1 0 or 0 0 45 ex 60 label 0 0 scale 1 mesh 1
+basis 1 0 0  0 0 1
+basis 0 1 0  0 0 1
+or 0 0 38.40684
+or 0 0 34.40684
+basis 1 0 0  0 1 0  or 0 0 45  ex 25  label 0 0  scales 1
+basis 1 0 0  0 1 0  or 0 0 45  ex 22  label 0 0  scales 1
+basis 1 0 0  0 1 0  or 0 0 45  ex 24  label 0 0  scales 1
+basis 1 0 0  0 1 0  or 0 0 45  ex 25  label 0 0  scales 1
+basis 1 0 0  0 1 0  or 0 0 45  ex 23  label 0 0  scales 1
+basis 0 1 0  0 0 1  or 0 0 45  ex 23  label 0 0  scales 1
+basis 0 1 0  0 0 1  or 0 0 45  ex 23 46  label 0 0  scales 1
+basis 0 1 0  0 0 1  or 0 0 45  ex 46  label 0 0  scales 1
+basis 0 1 0  0 0 1  or 0 0 34.40684  ex 23  label 0 0  scales 1
+basis 1 0 0  0 1 0  or 0 0 45  ex 23  label 0 0  scales 1
+end end

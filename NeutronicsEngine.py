@@ -5,6 +5,7 @@ import argparse
 
 sys.path.insert(0, "./Python")
 from Parameters import *
+from MCNP_InputFile import *
 from MCNP_InputFunctions import *
 from MCNP_OutputFunctions import *
 from BankedRods import *
@@ -13,7 +14,9 @@ from BankedRods import *
 # from Coef_Void import *
 from CriticalLoading import *
 # from FuelMaterials import *
-# from RodCalibration import *
+from RodCalibration import *
+
+from plotStyles import *
 
 """
 This file uses PEP8 Python Style Guidelines.
@@ -27,13 +30,13 @@ with whom I worked with in May-November 2020.
 """
 def ReedAutomatedNeutronicsEngine(argv):
     print(RANE_INTRO)
-    print("Type 'python NeutronicsEngine.py -h' for help.")
+    print(" Type 'python3 NeutronicsEngine.py -h' for help.")
     run_types = None
     tasks = None 
     cores = os.cpu_count() # number of cores available
     check_mcnp = True
     if shutil.which('mcnp6') is None: 
-        print("MCNP6 is not available on this device.")
+        print(" MCNP6 is not available on this device.")
         check_mcnp = False
 
     """
@@ -45,13 +48,13 @@ def ReedAutomatedNeutronicsEngine(argv):
     with 'None' if no option is selected for that argument and a default is 
     not specified in the add_argument.
     """
-    parser = argparse.ArgumentParser(description='Description of your program')
+    parser = argparse.ArgumentParser(description=' Description of your program')
     parser.add_argument('-r', 
-                        help="R = g \n h \n c")
+                        help=" R = g \n h \n c")
     parser.add_argument('-t',
-                        help=f"T = integer from 1 to {cores}. Number of CPU cores to be used for MCNP.")
+                        help=f" T = integer from 1 to {cores}. Number of CPU cores to be used for MCNP.")
     parser.add_argument('-m',
-                        help='M = 1: run mcnp, 0: do not run mcnp (default: 1)',
+                        help=' M = 1: run mcnp, 0: do not run mcnp (default: 1)',
                         default = check_mcnp)
     args_dict = vars(parser.parse_args())
     print(os.getcwd())
@@ -61,22 +64,15 @@ def ReedAutomatedNeutronicsEngine(argv):
     """
     # -r
     if args_dict['r'] is None:
-        print("No run types selected.")
+        print("   Fatal. No run types selected.")
         sys.exit()
 
-    run_types_dict = {'BankedRods': 'banked rods', 
-                      'Coef_Mod': 'moderator temperature coefficient',
-                      'Coef_PNTC': 'fuel temperature coefficient (pntc)',
-                      'Coef_Void': 'void coefficient',
-                      'CriticalLoading': 'critical loading experiment',
-                      'FuelMaterials': 'fuel material cards',
-                      'PowerDistribution': 'power distribution (power peaking factors)',
-                      'RodCalibration': 'rod calibration'}
+
 
     run_types = list(args_dict['r'].split(','))
     for run_type in run_types:
-        if run_type.lower() in ['b','br','banked','bankedrods']: 
-            run_types = ['BankedRods' if x==run_type else x for x in run_types]
+        if run_type.lower() in ['b','br','bank','banked','bankedrods']: 
+            run_types = ['banked' if x==run_type else x for x in run_types]
         
         elif run_type.lower() in ['cm','mod','coef_mod']: 
             run_types = ['Coef_Mod' if x==run_type else x for x in run_types]
@@ -93,11 +89,14 @@ def ReedAutomatedNeutronicsEngine(argv):
         elif run_type.lower() in ['f','fm','fuel','fuelmats','fuelmaterials']: 
             run_types = ['FuelMaterials' if x==run_type else x for x in run_types]
         
-        elif run_type.lower() in ['p','pd','ppf','powerpeaking','powerpeakingfactor','powerdistribution']: 
-            run_types = ['PowerDistribution' if x==run_type else x for x in run_types]
-        
+        elif run_type.lower() in ['pl', 'plo', 'plot']: 
+            run_types = ['plot' if x==run_type else x for x in run_types]
+
+        elif run_type.lower() in ['pd','ppf','powerpeaking','powerpeakingfactor','powerdistribution']: 
+            run_types = ['power' if x==run_type else x for x in run_types]
+
         elif run_type.lower() in ['r','rc','rodcal','rodcalibration']: 
-            run_types = ['RodCalibration' if x==run_type else x for x in run_types]
+            run_types = ['rodcal' if x==run_type else x for x in run_types]
         
         else: 
             print(f"\n  Warning. Run type '{run_type}' not recognized.")
@@ -105,7 +104,7 @@ def ReedAutomatedNeutronicsEngine(argv):
     
     print("\nRANE will calculate the following:")
     for run_type in run_types:
-        print(f"    {run_types_dict[run_type]}")
+        print(f"    {RUN_DESCRIPTIONS_DICT[run_type]}")
     proceed = None
     while proceed is None:
         proceed = input(f"\nProceed (Y/N)? ")
@@ -146,9 +145,31 @@ def ReedAutomatedNeutronicsEngine(argv):
     rane_cwd = os.getcwd()
     base_file_name = "ReedCore49.i" #find_base_file(rane_cwd)
     for run_type in run_types:
-        print(f"\nCurrently calculating: {run_types_dict[run_type]}.")
-        if run_type == 'BankedRods':
-            BankedRods(rane_cwd, base_file_path=base_file_name, check_mcnp=check_mcnp, tasks=tasks, heights=[0,33,66,100])
+        print(f"\nCurrently calculating: {RUN_DESCRIPTIONS_DICT[run_type]}.")
+        if run_type == 'banked':
+            # calibrate all rods as single bank
+            for rod_height in ROD_CAL_HEIGHTS:
+                rod_heights_dict = {'safe': rod_height, 'shim': rod_height, 'reg': rod_height, 'bank': rod_height}
+                if check_mcnp:
+                    current_run = MCNP_InputFile(run_type,
+                                                 tasks,
+                                                 template_filepath=None,
+                                                 core_number=49,
+                                                 delete_extensions=['.r','.s'],
+                                                 rod_heights=rod_heights_dict,
+                                                 fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
+                                                 )
+                    current_run.run_mcnp() 
+                if not current_run.mcnp_skipped: 
+                    current_run.delete_mcnp_files(current_run.user_temp_folder, current_run.delete_extensions)
+                    current_run.move_mcnp_files()
+                output_file = RodCalibration(run_type, 
+                                             rod_heights=rod_heights_dict,
+                                             rod_being_calibrated='bank'
+                                             )
+                output_file.process_rod_worth()
+            output_file.process_rod_params()
+            output_file.plot_rod_worth()
 
         elif run_type == 'Coef_Mod':
             pass
@@ -181,26 +202,51 @@ def ReedAutomatedNeutronicsEngine(argv):
         elif run_type == 'FuelMaterials':
             pass
 
+        elif run_type == 'plot':
+            # plot the geometry and save plot figures
+            if check_mcnp:
+                print(f' Running geometry plotter.')
+                current_run = MCNP_InputFile(run_type,
+                                             tasks,
+                                             template_filepath=None,
+                                             core_number=49,
+                                             delete_extensions=['.c','.o','.s'],
+                                             rod_heights={'safe': 0, 'shim': 0, 'reg':0}, # defaults to all rods down
+                                             fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx"
+                                             )
+                current_run.run_geometry_plotter()
+            else:
+                print('\n   fatal. no plotting is available without mcnp6\n')
+                sys.exit(2)
+
+
         elif run_type == 'PowerDistribution':
             pass
 
-        elif run_type == 'RodCalibration':
-            # calibrate individual shims
+        elif run_type == 'rodcal':
+            # calibrate individual rods
             for rod in RODS:   
-                for rod_position in ROD_CAL_POSITIONS:
-                    if run_mcnp:
-                        current_run = MCNP_InputFile(base_file, cycle_number, cycle_state, run_type, tasks=tasks, shim_positions={rod: rod_position}, beam_tubes=beam_tubes)
+                for rod_height in ROD_CAL_HEIGHTS:
+                    rod_heights_dict = {'safe': ROD_CAL_BANK_HEIGHT, 'shim': ROD_CAL_BANK_HEIGHT, 'reg': ROD_CAL_BANK_HEIGHT}
+                    rod_heights_dict[rod] = rod_height
+                    if check_mcnp:
+                        current_run = MCNP_InputFile(run_type,
+                                                     tasks,
+                                                     template_filepath=None,
+                                                     core_number=49,
+                                                     rod_heights=rod_heights_dict,
+                                                     fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
+                                                     )
                         current_run.run_mcnp() 
-                    output_file = ShimCalibrationOutputFile(base_file, 
-                                                            cycle_number, 
-                                                            cycle_state, 
-                                                            run_type, 
-                                                            results_folder=None, 
-                                                            shim_positions={shim: shim_position}
-                                                            )
-                    output_file.extract_keff()
-                    output_file.process_shim_worth()
-            output_file.plot_shim_worth()
+                        if not current_run.mcnp_skipped: 
+                            current_run.move_mcnp_files()
+                    output_file = RodCalibration(run_type, 
+                                                 rod_heights=rod_heights_dict,
+                                                 rod_being_calibrated=rod
+                                                 )
+                    output_file.process_rod_worth()
+            output_file.process_rod_params()
+            output_file.plot_rod_worth()
 
 
 

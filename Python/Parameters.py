@@ -1,6 +1,30 @@
 RANE_INTRO = "\n\n      _/_/_/         _/_/_/       _/      _/     _/_/_/_/_/\n    _/     _/     _/      _/     _/_/    _/     _/\n   _/_/_/_/      _/_/_/_/_/     _/  _/  _/     _/_/_/_/_/\n  _/   _/       _/      _/     _/    _/_/     _/\n _/     _/     _/      _/     _/      _/     _/_/_/_/_/\n\n"
 RANE_INSTRUCTIONS_SHORT = "Usage: NeutronicsEngine.py -r <run_type> -t <tasks> -m <run mcnp>"
 RANE_INSTRUCTIONS_LONG = "Instructions for Reed Automated Neutronics Engine"
+RUN_DESCRIPTIONS_DICT  = {'banked': 'banked rods', 
+                          'Coef_Mod': 'moderator temperature coefficient',
+                          'Coef_PNTC': 'fuel temperature coefficient (pntc)',
+                          'Coef_Void': 'void coefficient',
+                          'CriticalLoading': 'critical loading experiment',
+                          'FuelMaterials': 'fuel material cards',
+                          'plot': 'plot geometry and take images',
+                          'PowerDistribution': 'power distribution (power peaking factors)',
+                          'rodcal': 'rod calibration'}
+
+
+AMU_U235 = 235.0439299
+AMU_U238 = 238.05078826
+AMU_PU239 = 239.0521634
+AMU_ZR = 91.224
+AMU_H = 1.00794
+AVO = 6.022e23
+RATIO_HZR = 1.575 # TS allows 1.55 to 1.60. This is an ATOM ratio
+BETA_EFF = 0.0075
+CM_PER_INCH = 2.54
+CM_PER_PERCENT_HEIGHT = 0.38
+MEV_PER_KELVIN = 8.617e-11
+REACT_ADD_RATE_LIMIT_DOLLARS = 0.16
+
 
 PYTHON_FOLDER_NAME = "Python"
 MCNP_FOLDER_NAME = "MCNP"
@@ -16,14 +40,12 @@ KEFF_CSV_NAME = "keff.csv"
 RHO_CSV_NAME = "rho.csv"
 PARAMS_XLSX_NAME = "params.xlsx"
 
-BETA_EFF = 0.0075
-CM_PER_INCH = 2.54
-CM_PER_PERCENT_HEIGHT = 0.38
-MEV_PER_KELVIN = 8.617e-11
-REACT_ADD_RATE_LIMIT_DOLLARS = 0.16
+
 
 FUEL_REMOVED_SOP = "C10,D15,D14,F20,D16,E19,C11,F21"
-ROD_CAL_POSITIONS = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+ROD_MOTOR_SPEEDS_INCH_PER_MIN = {"safe":19,"shim":11,"reg":24,"bank":0}
+ROD_CAL_HEIGHTS = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+ROD_CAL_BANK_HEIGHT = 100
 
 CELL_NUM_TO_CORE_RING_DICT = {2:"B",3:"C",4:"D",5:"E",6:"F"}
 CORE_POS = ['A1', 'B1', 'B2', 'B3', 'B4', 'B5', 'B6',

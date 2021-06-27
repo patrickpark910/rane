@@ -2,11 +2,15 @@
 *.msht
 *.r
 *.s
+*.ps
+*.tiff
 *.pyc
 **/*.o
 **/*.msht
 **/*.r
 **/*.s
+**/*.ps
 **/*.pyc
+**/*.tiff
 .idea/
 /References/
