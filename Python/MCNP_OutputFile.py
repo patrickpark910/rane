@@ -55,14 +55,12 @@ class MCNP_OutputFile:
         self.inputs_folder = f"{self.MCNP_folder}/inputs"
         self.output_folder = f"{self.MCNP_folder}/outputs"
 
-        self.base_filename = f"{self.template_filepath.split('/')[-1].split('.')[0]}_core{self.core_number}_{run_type}"
-        
-        
+        self.base_filename = f"{self.template_filepath.split('/')[-1].split('.')[0]}_core{self.core_number}_{self.run_type}"
 
         """
         Determine the output file name depending on run type and parameters
         """
-        if run_type in ['banked', 'rodcal']:
+        if run_type in ['banked', 'kntc', 'rodcal']:
             self.output_filename = f"o_{self.base_filename}"\
                                    f"_a{str(self.rod_heights_dict['safe']).zfill(3)}"\
                                    f"_h{str(self.rod_heights_dict['shim']).zfill(3)}"\

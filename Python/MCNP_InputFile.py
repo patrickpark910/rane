@@ -14,6 +14,7 @@ import glob
 import getpass
 import math
 import xlrd, openpyxl
+import multiprocessing
 from datetime import datetime
 from Parameters import *
 from Utilities import *
@@ -44,10 +45,6 @@ class MCNP_InputFile:
         self.username = getpass.getuser()
         self.fuel_filepath = fuel_filepath
         self.source_folder = source_folder
-
-        self.keep_runtape_file = False
-        if run_type in ['powr', 'unpt']:
-            self.keep_runtape_file = True
 
         if not template_filepath: self.template_filepath = f"./Source/reed.template"
         else: self.template_filepath = template_filepath
@@ -91,6 +88,7 @@ class MCNP_InputFile:
         self.parameters['fuel_mats']    = self.fuel_mat_cards
         self.parameters['n_per_cycle']  = 20000
         self.parameters['kcode_cycles'] = {'banked':105, 
+                                           'kntc':205,
                                            'plot':105,
                                            'rodcal':105, 
                                            'sdm' :105}[self.run_type] 
@@ -105,7 +103,7 @@ class MCNP_InputFile:
 
         self.base_filename = f"{self.template_filepath.split('/')[-1].split('.')[0]}_core{self.core_number}_{run_type}"
         
-        if run_type in ['banked', 'rodcal']:
+        if run_type in ['banked', 'kntc','rodcal']:
             self.input_filename = f"{self.base_filename}"\
                                   f"_a{str(self.parameters['safe_height']).zfill(3)}"\
                                   f"_h{str(self.parameters['shim_height']).zfill(3)}"\
@@ -134,7 +132,6 @@ class MCNP_InputFile:
         
         template.stream(**self.parameters).dump(self.input_filepath) 
         print(f" Input file created at {self.input_filepath}")
-
 
 
     def read_core_config(self):
@@ -204,12 +201,20 @@ class MCNP_InputFile:
 
 
 
-    def delete_mcnp_files(self, target_folder_filepath, extensions_to_delete):
+    def delete_mcnp_files(self, folder=None, extensions_to_delete=None):
         # Default args are False unless specified in command
         # NB: os.remove(f'*.r') does not work bc os.remove does not take wildcards (*)
-        target_folder_filepath = self.user_temp_folder
+        if not folder:
+            folder = self.user_temp_folder
+
+        if not extensions_to_delete:
+            if self.run_type in ['banked', 'kntc', 'rodcal']:
+                extensions_to_delete = ['.r','.s']
+            if self.run_type in ['plot']:
+                extensions_to_delete = ['.c','.o','.s']
+
         for ext in extensions_to_delete:
-            for file in glob.glob(f'{target_folder_filepath}/*{ext}'): 
+            for file in glob.glob(f'{folder}/*{ext}'): 
                 try:
                     os.remove(file) 
                 except:
@@ -227,6 +232,10 @@ class MCNP_InputFile:
         else:
             print(f'   comment. skipping this mcnp run since results for {self.input_filename} already exist.')
             self.mcnp_skipped = True
+
+        if not self.mcnp_skipped:
+            self.delete_mcnp_files()
+            self.move_mcnp_files()
 
     def read_fuel_data(self):
         fuel_wb_name = self.fuel_filepath

@@ -6,13 +6,10 @@ import argparse
 sys.path.insert(0, "./Python")
 from Parameters import *
 from MCNP_InputFile import *
-from MCNP_InputFunctions import *
-from MCNP_OutputFunctions import *
-from BankedRods import *
 # from Coef_Mod import *
 # from Coef_PNTC import *
 # from Coef_Void import *
-from CriticalLoading import *
+from Kinetics import *
 # from FuelMaterials import *
 from RodCalibration import *
 
@@ -88,6 +85,9 @@ def ReedAutomatedNeutronicsEngine(argv):
         
         elif run_type.lower() in ['f','fm','fuel','fuelmats','fuelmaterials']: 
             run_types = ['FuelMaterials' if x==run_type else x for x in run_types]
+
+        elif run_type.lower() in ['k', 'kntc', 'kin', 'kine', 'kinetic', 'kinetics']: 
+            run_types = ['kntc' if x==run_type else x for x in run_types]
         
         elif run_type.lower() in ['pl', 'plo', 'plot']: 
             run_types = ['plot' if x==run_type else x for x in run_types]
@@ -121,7 +121,7 @@ def ReedAutomatedNeutronicsEngine(argv):
         pass
     else:
         print("\nNo <tasks> specified, or invalid <tasks> in '-t <tasks>'.")
-        tasks = get_tasks() # MCNP_Functions.py
+        tasks = get_tasks() # Utilities.py
 
     # -m
     if args_dict['m'] in [1, '1', 't', 'T', "true", "True"] and shutil.which('mcnp6') is None:
@@ -160,13 +160,7 @@ def ReedAutomatedNeutronicsEngine(argv):
                                                  fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
                                                  )
                     current_run.run_mcnp() 
-                if not current_run.mcnp_skipped: 
-                    current_run.delete_mcnp_files(current_run.user_temp_folder, current_run.delete_extensions)
-                    current_run.move_mcnp_files()
-                output_file = RodCalibration(run_type, 
-                                             rod_heights=rod_heights_dict,
-                                             rod_being_calibrated='bank'
-                                             )
+                output_file = RodCalibration(run_type, rod_heights=rod_heights_dict, rod_being_calibrated='bank')
                 output_file.process_rod_worth()
             output_file.process_rod_params()
             output_file.plot_rod_worth()
@@ -202,6 +196,20 @@ def ReedAutomatedNeutronicsEngine(argv):
         elif run_type == 'FuelMaterials':
             pass
 
+        elif run_type == 'kntc':
+            rod_heights_dict = {'safe': 100, 'shim': 100, 'reg': 100}
+            if check_mcnp:
+                current_run = MCNP_InputFile(run_type,
+                                             tasks,
+                                             template_filepath=None,
+                                             core_number=49,
+                                             rod_heights=rod_heights_dict,
+                                             fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
+                                             )
+                current_run.run_mcnp() 
+            output_file = KineticsOutputFile(run_type, rod_heights=rod_heights_dict)
+            output_file.find_kinetic_parameters()
+
         elif run_type == 'plot':
             # plot the geometry and save plot figures
             if check_mcnp:
@@ -210,7 +218,6 @@ def ReedAutomatedNeutronicsEngine(argv):
                                              tasks,
                                              template_filepath=None,
                                              core_number=49,
-                                             delete_extensions=['.c','.o','.s'],
                                              rod_heights={'safe': 0, 'shim': 0, 'reg':0}, # defaults to all rods down
                                              fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx"
                                              )
@@ -220,7 +227,7 @@ def ReedAutomatedNeutronicsEngine(argv):
                 sys.exit(2)
 
 
-        elif run_type == 'PowerDistribution':
+        elif run_type == 'power':
             pass
 
         elif run_type == 'rodcal':

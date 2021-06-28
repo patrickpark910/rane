@@ -7,6 +7,7 @@ RUN_DESCRIPTIONS_DICT  = {'banked': 'banked rods',
                           'Coef_Void': 'void coefficient',
                           'CriticalLoading': 'critical loading experiment',
                           'FuelMaterials': 'fuel material cards',
+                          'kntc': 'kinetics parameters',
                           'plot': 'plot geometry and take images',
                           'PowerDistribution': 'power distribution (power peaking factors)',
                           'rodcal': 'rod calibration'}

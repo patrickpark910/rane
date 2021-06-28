@@ -1,4 +1,21 @@
 from Parameters import *
+import multiprocessing
+
+def get_tasks():
+    cores = multiprocessing.cpu_count()
+    tasks = input(f"How many CPU cores should be used? Free: {cores}. Use: ")
+    if not tasks:
+        print(f'The number of tasks is set to the available number of cores: {cores}.')
+        tasks = cores
+    else:
+        try:
+            tasks = int(tasks)
+            if tasks < 1 or tasks > multiprocessing.cpu_count():
+                raise
+        except:
+            print(f'Number of tasks is inappropriate. Using maximum number of CPU cores: {cores}')
+            tasks = cores
+    return tasks  # Integer between 1 and total number of cores available.
 
 def get_mass_fracs(row):
     fe_id = row['I']
@@ -16,3 +33,4 @@ def get_mass_fracs(row):
     g_Zr = a_Zr * AMU_ZR / AVO
     g_H = a_H * AMU_H / AVO
     return fe_id, g_U235, g_U238, g_Pu239, g_Zr, g_H, a_U235, a_U238, a_Pu239, a_Zr, a_H
+

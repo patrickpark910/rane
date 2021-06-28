@@ -12,5 +12,7 @@
 **/*.ps
 **/*.pyc
 **/*.tiff
+**/__pycache__/
+/__pycache__/
 .idea/
 /References/
