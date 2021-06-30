@@ -95,19 +95,22 @@ def ReedAutomatedNeutronicsEngine(argv):
         elif run_type.lower() in ['pd','ppf','powerpeaking','powerpeakingfactor','powerdistribution']: 
             run_types = ['power' if x==run_type else x for x in run_types]
 
-        elif run_type.lower() in ['r','rc','rodcal','rodcalibration']: 
+        elif run_type.lower() in ['rod','rodcal','rodcalibration']: 
             run_types = ['rodcal' if x==run_type else x for x in run_types]
+
+        elif run_type.lower() in ['rcty', 'rctvty', 'reactivity', 'ReactivityCoefficients']
+            run_types = ['rcty' if x==run_type else x for x in run_types]
         
         else: 
             print(f"\n  Warning. Run type '{run_type}' not recognized.")
             run_types = [x for x in run_types if x != run_type]
     
-    print("\nRANE will calculate the following:")
+    print("\n RANE will calculate the following:")
     for run_type in run_types:
         print(f"    {RUN_DESCRIPTIONS_DICT[run_type]}")
     proceed = None
     while proceed is None:
-        proceed = input(f"\nProceed (Y/N)? ")
+        proceed = input(f"\n Proceed (Y/N)? ")
         if proceed.lower() == "y":
             pass
         elif proceed.lower() == "n":
@@ -120,7 +123,7 @@ def ReedAutomatedNeutronicsEngine(argv):
     if isinstance(args_dict['t'], int) and int(args_dict['t']) <= cores:
         pass
     else:
-        print("\nNo <tasks> specified, or invalid <tasks> in '-t <tasks>'.")
+        print("\n No <tasks> specified, or invalid <tasks> in '-t <tasks>'.")
         tasks = get_tasks() # Utilities.py
 
     # -m
@@ -145,7 +148,7 @@ def ReedAutomatedNeutronicsEngine(argv):
     rane_cwd = os.getcwd()
     base_file_name = "ReedCore49.i" #find_base_file(rane_cwd)
     for run_type in run_types:
-        print(f"\nCurrently calculating: {RUN_DESCRIPTIONS_DICT[run_type]}.")
+        print(f"\n Currently calculating: {RUN_DESCRIPTIONS_DICT[run_type]}.")
         if run_type == 'banked':
             # calibrate all rods as single bank
             for rod_height in ROD_CAL_HEIGHTS:
@@ -165,14 +168,51 @@ def ReedAutomatedNeutronicsEngine(argv):
             output_file.process_rod_params()
             output_file.plot_rod_worth()
 
-        elif run_type == 'Coef_Mod':
-            pass
-
-        elif run_type == 'Coef_PNTC':
-            pass
-
-        elif run_type == 'Coef_Void':
-            pass
+        elif run_type == 'rcty':
+            # moderator (h2o) temperature coefficient
+            rcty_type = 'mod'
+            for h2o_temp_K in list(H2O_TEMPS_K_DICT.values()):
+                if check_mcnp:
+                    current_run = MCNP_InputFile(run_type,
+                                                 tasks,
+                                                 template_filepath=None,
+                                                 core_number=49,
+                                                 rod_heights=rod_heights_dict,
+                                                 fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
+                                                 h2o_temp_K=h2o_temp_K,
+                                                 rcty_type=rcty_type,
+                                                 )
+                    current_run.run_mcnp() 
+            # fuel temperature coefficient
+            rcty_type = 'fuel'
+            for h2o_temp_K in list(H2O_TEMPS_K_DICT.values()):
+                for fuel_temp_K in list():
+                    if check_mcnp:
+                        current_run = MCNP_InputFile(run_type,
+                                                     tasks,
+                                                     template_filepath=None,
+                                                     core_number=49,
+                                                     rod_heights=rod_heights_dict,
+                                                     fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
+                                                     h2o_temp_K=h2o_temp_K,
+                                                     rcty_type=rcty_type,
+                                                     )
+                        current_run.run_mcnp() 
+            # void coefficient
+            rcty_type = 'void'
+            for h2o_density in H2O_VOID_DENSITIES:
+                if check_mcnp:
+                    current_run = MCNP_InputFile(run_type,
+                                                 tasks,
+                                                 template_filepath=None,
+                                                 core_number=49,
+                                                 rod_heights=rod_heights_dict,
+                                                 fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
+                                                 h2o_temp_K=h2o_temp_K,
+                                                 h2o_density=h2o_density,
+                                                 rcty_type=rcty_type,
+                                                 )
+                    current_run.run_mcnp() 
 
         elif run_type == 'CriticalLoading':
             pass
@@ -207,7 +247,7 @@ def ReedAutomatedNeutronicsEngine(argv):
                                              fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
                                              )
                 current_run.run_mcnp() 
-            output_file = KineticsOutputFile(run_type, rod_heights=rod_heights_dict)
+            output_file = Kinetics(run_type, rod_heights=rod_heights_dict)
             output_file.find_kinetic_parameters()
 
         elif run_type == 'plot':

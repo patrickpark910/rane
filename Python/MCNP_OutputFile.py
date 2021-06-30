@@ -59,30 +59,44 @@ class MCNP_OutputFile:
 
         """
         Determine the output file name depending on run type and parameters
+        Should be identical to how they were defined in MCNP_InputFile.py
         """
         if run_type in ['banked', 'kntc', 'rodcal']:
             self.output_filename = f"o_{self.base_filename}"\
                                    f"_a{str(self.rod_heights_dict['safe']).zfill(3)}"\
                                    f"_h{str(self.rod_heights_dict['shim']).zfill(3)}"\
                                    f"_r{str(self.rod_heights_dict['reg']).zfill(3)}.o"
+        
+        elif run_type in ['rcty']:
+            self.output_filename = f"o_{self.base_filename}"\
+                                   f"_{str(self.rcty_type)}"\
+                                   f"_a{str(self.parameters['safe_height']).zfill(3)}"\
+                                   f"_h{str(self.parameters['shim_height']).zfill(3)}"\
+                                   f"_r{str(self.parameters['reg_height']).zfill(3)}.o"
+
         elif run_type == 'sdm':
-            self.output_file = f'o_{run_type}{self.sdm_config_ID}_{base_file}_{cycle_state}_cycle{cycle_number}.o'
+            self.output_filename = f"o_{self.base_filename}"\
+                                   f"_{self.sdm_config_ID}"\
+                                   f"_a{str(self.parameters['safe_height']).zfill(3)}"\
+                                   f"_h{str(self.parameters['shim_height']).zfill(3)}"\
+                                   f"_r{str(self.parameters['reg_height']).zfill(3)}.o"
+
         else:
-            self.output_file = f'o_{run_type}_{base_file}_{cycle_state}_cycle{cycle_number}.o'
+            self.output_filename = f'o_{self.base_filename}.o'
         
         self.output_filepath = f"{self.output_folder}/{self.output_filename}"
 
         print(f'\n extracting data from: {self.output_filename}')
 
         if os.path.exists(self.results_folder):
-            if self.run_type in ['banked', 'kntc', 'powr', 'heat', 'rodcal', 'sdm', 'kcde']:
+            if self.run_type in ['banked', 'kntc', 'power', 'rcty', 'rodcal', 'sdm']:
                 try: 
                     self.extract_keff()
                 except: 
-                    print(f"   warning. keff not found in {self.output_filepath}")
-                    print(f"   warning. skipping {self.output_filepath}")
+                    print(f"\n   warning. keff not found in {self.output_filepath}")
+                    print(f"\n   warning. skipping {self.output_filepath}\n")
         else:
-            print(f'   fatal. cannot find {self.results_folder}')
+            print(f'\n   fatal. cannot find {self.results_folder}\n')
             sys.exit(2)
 
 

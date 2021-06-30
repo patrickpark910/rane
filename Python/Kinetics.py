@@ -23,7 +23,7 @@ from Parameters import *
 from plotStyles import *
 
 
-class KineticsOutputFile(MCNP_OutputFile):
+class Kinetics(MCNP_OutputFile):
 
     def find_kinetic_parameters(self):
 
@@ -50,7 +50,7 @@ class KineticsOutputFile(MCNP_OutputFile):
             for col in cols:
                 df_kntc[col] = 0.0 
         
-        """ Example section of the MCNP output:
+        """ Example section of the MCNP output to extract data from:
 
                             estimate      std. dev.
  

@@ -32,7 +32,10 @@ class MCNP_InputFile:
                        fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
                        MCNP_folder=None,
                        results_folder=None,
-                       source_folder=f"./Source"
+                       source_folder=f"./Source",
+                       h2o_temp_K=294,
+                       h2o_density=1.0,
+                       rcty_type=None,
                        ):     
 
         self.datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -45,6 +48,8 @@ class MCNP_InputFile:
         self.username = getpass.getuser()
         self.fuel_filepath = fuel_filepath
         self.source_folder = source_folder
+        self.h2o_temp_K = h2o_temp_K
+        self.h2o_density = float(h2o_density)
 
         if not template_filepath: self.template_filepath = f"./Source/reed.template"
         else: self.template_filepath = template_filepath
@@ -54,6 +59,9 @@ class MCNP_InputFile:
 
         if not results_folder: self.results_folder = f'./Results/{run_type}'
         else: self.results_folder = results_folder
+
+        if rcty_type is not None:
+          self.rcty_type = rcty_type
 
         self.temp_folder = f'./MCNP/temp/'
         self.user_temp_folder = f'./MCNP/temp/{self.username}'
@@ -82,16 +90,22 @@ class MCNP_InputFile:
                            'mode'  : ' n ',
                            'kcode' : None,
                            'fuel_temp': None,
-                           'fuel_mat_temps': "c "
+                           'fuel_mat_lib': "c "
+                           'h2o_mat_lib': str(H2O_TEMPS_K_DICT[h2o_temp_K])
                            }
 
         self.parameters['fuel_mats']    = self.fuel_mat_cards
-        self.parameters['n_per_cycle']  = 20000
+        self.parameters['n_per_cycle']  = {'banked':20000, 
+                                           'kntc':  20000,
+                                           'plot':  20000,
+                                           'rodcal':20000, 
+                                           'rcty':  20000,
+                                           'sdm' :  20000}[self.run_type] 
         self.parameters['kcode_cycles'] = {'banked':105, 
-                                           'kntc':205,
-                                           'plot':105,
+                                           'kntc':  205,
+                                           'plot':  105,
                                            'rodcal':105, 
-                                           'sdm' :105}[self.run_type] 
+                                           'sdm' :  105}[self.run_type] 
         
         """
         'self.parameters' is configured with proper values for the run type
@@ -108,6 +122,12 @@ class MCNP_InputFile:
                                   f"_a{str(self.parameters['safe_height']).zfill(3)}"\
                                   f"_h{str(self.parameters['shim_height']).zfill(3)}"\
                                   f"_r{str(self.parameters['reg_height']).zfill(3)}.i"
+        elif run_type in ['rcty']:
+            self.input_filename = f"{self.base_filename}"\
+                        f"_{str(self.rcty_type)}"\
+                        f"_a{str(self.parameters['safe_height']).zfill(3)}"\
+                        f"_h{str(self.parameters['shim_height']).zfill(3)}"\
+                        f"_r{str(self.parameters['reg_height']).zfill(3)}.i"
         elif run_type == 'invMexp':
             pass
         else:
@@ -120,6 +140,9 @@ class MCNP_InputFile:
         with open(self.template_filepath, 'r') as template_file:
             template_str = template_file.read()
         
+        """
+        ADD TALLIES
+        """
         # add tally string to end of input file (to allow substitution into tally definition)
         if run_type in ['flux','ppf']:
             with open(f'./src/tallies/{run_type}.tal', 'r') as tally_file:
