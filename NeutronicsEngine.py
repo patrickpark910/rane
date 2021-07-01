@@ -213,6 +213,20 @@ def ReedAutomatedNeutronicsEngine(argv):
                                                  rcty_type=rcty_type,
                                                  )
                     current_run.run_mcnp() 
+            rcty_type = 'void_ct'
+            if check_mcnp:
+                current_run = MCNP_InputFile(run_type,
+                                             tasks,
+                                             template_filepath=None,
+                                             core_number=49,
+                                             rod_heights=rod_heights_dict,
+                                             fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
+                                             h2o_temp_K=h2o_temp_K,
+                                             h2o_density=h2o_density,
+                                             rcty_type=rcty_type,
+                                             ct_cell_mat=102,
+                                             )
+                current_run.run_mcnp() 
 
         elif run_type == 'CriticalLoading':
             pass

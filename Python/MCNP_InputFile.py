@@ -18,7 +18,6 @@ import multiprocessing
 from datetime import datetime
 from Parameters import *
 from Utilities import *
-# from neutron_science_config import *
 
 class MCNP_InputFile:
 
@@ -36,6 +35,7 @@ class MCNP_InputFile:
                        h2o_temp_K=294,
                        h2o_density=1.0,
                        rcty_type=None,
+                       ct_cell_mat=102
                        ):     
 
         self.datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -50,6 +50,8 @@ class MCNP_InputFile:
         self.source_folder = source_folder
         self.h2o_temp_K = h2o_temp_K
         self.h2o_density = float(h2o_density)
+        self.rcty_type = rcty_type
+        self.ct_cell_mat = ct_cell_mat
 
         if not template_filepath: self.template_filepath = f"./Source/reed.template"
         else: self.template_filepath = template_filepath
@@ -58,10 +60,7 @@ class MCNP_InputFile:
         else: self.MCNP_folder = MCNP_folder
 
         if not results_folder: self.results_folder = f'./Results/{run_type}'
-        else: self.results_folder = results_folder
-
-        if rcty_type is not None:
-          self.rcty_type = rcty_type
+        else: self.results_folder = results_folder          
 
         self.temp_folder = f'./MCNP/temp/'
         self.user_temp_folder = f'./MCNP/temp/{self.username}'
@@ -89,9 +88,11 @@ class MCNP_InputFile:
                            'tally' : 'c ',
                            'mode'  : ' n ',
                            'kcode' : None,
-                           'fuel_temp': None,
-                           'fuel_mat_lib': "c "
-                           'h2o_mat_lib': str(H2O_TEMPS_K_DICT[h2o_temp_K])
+                           'uzrh_temp_MeV': "", # leave empty for 20 C room temp (default)
+                           'uzrh_mat_lib': "c ",
+                           'h2o_temp_MeV': "", # leave empty for 20 C room temp (default)
+                           'h2o_mat_lib': str(H2O_TEMPS_K_DICT[h2o_temp_K]),
+                           'ct_cell_mat': self.ct_cell_mat,
                            }
 
         self.parameters['fuel_mats']    = self.fuel_mat_cards
@@ -106,10 +107,6 @@ class MCNP_InputFile:
                                            'plot':  105,
                                            'rodcal':105, 
                                            'sdm' :  105}[self.run_type] 
-        
-        """
-        'self.parameters' is configured with proper values for the run type
-        """
 
         """
         Create input file using 'self.parameters'
@@ -141,7 +138,7 @@ class MCNP_InputFile:
             template_str = template_file.read()
         
         """
-        ADD TALLIES
+        Add tallies
         """
         # add tally string to end of input file (to allow substitution into tally definition)
         if run_type in ['flux','ppf']:
@@ -149,10 +146,9 @@ class MCNP_InputFile:
                 tally_str = tally_file.read()        
         else:
             tally_str = ''
-        template = Template(template_str+tally_str)
 
         # print(self.parameters)
-        
+        template = Template(template_str+tally_str)
         template.stream(**self.parameters).dump(self.input_filepath) 
         print(f" Input file created at {self.input_filepath}")
 
@@ -247,7 +243,7 @@ class MCNP_InputFile:
 
     def run_mcnp(self):
         """
-            Runs MCNP
+        Runs MCNP
         """
         self.mcnp_skipped = False
         if self.output_filename not in os.listdir(self.outputs_folder):
@@ -305,12 +301,7 @@ class MCNP_InputFile:
 
         self.fuel_mat_cards = fuel_mat_cards
 
-        """
-        Sub-helper function
-        """
-
     
-
     def run_geometry_plotter(self, debug=False):
         """
             Plots geometry to file, converts PostScript file to tiff, crops images
