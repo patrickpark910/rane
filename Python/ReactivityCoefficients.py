@@ -34,6 +34,8 @@ class ReactivityCoefficients(MCNP_OutputFile):
     self.params_filename = f'{self.base_filename}_{self.run_type}_{self.rcty_type}_params.csv'
     self.params_filepath = f"{self.results_folder}/{self.params_filename}"
 
+    self.extract_keff()
+
     def process_rcty_keff(self):
         print(f'\n processing: {self.output_filename}')
 

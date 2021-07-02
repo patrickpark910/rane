@@ -98,7 +98,7 @@ def ReedAutomatedNeutronicsEngine(argv):
         elif run_type.lower() in ['rod','rodcal','rodcalibration']: 
             run_types = ['rodcal' if x==run_type else x for x in run_types]
 
-        elif run_type.lower() in ['rcty', 'rctvty', 'reactivity', 'ReactivityCoefficients']
+        elif run_type.lower() in ['rcty', 'rctvty', 'reactivity', 'ReactivityCoefficients']:
             run_types = ['rcty' if x==run_type else x for x in run_types]
         
         else: 

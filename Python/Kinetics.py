@@ -26,7 +26,7 @@ from plotStyles import *
 class Kinetics(MCNP_File):
 
     print(f'\n extracting data from: {self.output_filename}')
-    self.extract_keff()
+    self.extract_keff() # gets self.keff, self.keff_unc or raises warnings if not found
 
     def find_kinetic_parameters(self):
 
