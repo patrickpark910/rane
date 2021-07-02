@@ -253,15 +253,14 @@ def ReedAutomatedNeutronicsEngine(argv):
 
         elif run_type == 'kntc':
             rod_heights_dict = {'safe': 100, 'shim': 100, 'reg': 100}
+            current_run = MCNP_File(run_type,
+                                     tasks,
+                                     print_input=check_mcnp,
+                                     template_filepath=None,
+                                     core_number=49,
+                                     rod_heights=rod_heights_dict,
+                                     fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",)
             if check_mcnp:
-                current_run = MCNP_File(run_type,
-                                         tasks,
-                                         print_input=True,
-                                         template_filepath=None,
-                                         core_number=49,
-                                         rod_heights=rod_heights_dict,
-                                         fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
-                                         )
                 current_run.run_mcnp() 
             output_file = Kinetics(current_run)
             output_file.find_kinetic_parameters()
