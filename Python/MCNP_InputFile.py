@@ -21,8 +21,9 @@ from Utilities import *
 
 class MCNP_InputFile:
 
-    def __init__(self, run_type,
+    def __init__(self, 
                        tasks,
+                       run_type,
                        template_filepath=None,
                        core_number=49,
                        delete_extensions=['.s'],
@@ -32,12 +33,16 @@ class MCNP_InputFile:
                        MCNP_folder=None,
                        results_folder=None,
                        source_folder=f"./Source",
-                       h2o_temp_K=294,
-                       h2o_density=1.0,
-                       rcty_type=None,
-                       ct_cell_mat=102
+                       ct_mat=102,      # used in: rcty
+                       h2o_temp_K=294,  # used in: rcty
+                       h2o_density=1.0, # used in: rcty
+                       rcty_type=None,  # used in: rcty
                        ):     
 
+        """
+        Define core parameters
+        """
+        self.read_core_config()
         self.datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.template_filepath = template_filepath
         self.run_type = run_type
@@ -51,8 +56,31 @@ class MCNP_InputFile:
         self.h2o_temp_K = h2o_temp_K
         self.h2o_density = float(h2o_density)
         self.rcty_type = rcty_type
-        self.ct_cell_mat = ct_cell_mat
+        self.ct_mat = ct_mat
 
+        try:
+          self.h2o_mt_lib = H2O_TEMPS_K_DICT[self.h2o_temp_K]
+        except:
+          self.h2o_mt_lib = H2O_TEMPS_K_DICT[find_closest_value(h2o_temp_K,list(H2O_TEMPS_K_DICT.keys()))]
+          print(f"\n   warning. light water S(a,B) data at {h2o_temp_K} does not exist")
+          print(f"   warning.   using closest available S(a,B) data at temperature: {self.h2o_temp_K} K\n")
+
+        # read fuel data
+        try:
+            self.read_fuel_data()
+        except:
+            print(f"\n   warning. fuel file not found or recognized at {self.read_fuel_data()}")
+            print(f"   warning.   trying ./Source/Fuel/Core Burnup History 20201117.xlsx\n")
+            self.fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx"
+            try:
+              self.read_fuel_data()
+            except:
+              print(f"\n   fatal. fuel file not found or recognized at {self.read_fuel_data()}\n")
+              sys.exit()
+
+        """
+        Define necessary directories
+        """
         if not template_filepath: self.template_filepath = f"./Source/reed.template"
         else: self.template_filepath = template_filepath
 
@@ -69,30 +97,26 @@ class MCNP_InputFile:
 
         self.create_paths()
 
-        self.read_core_config()
-        
-        if os.path.exists(self.fuel_filepath):
-            self.read_fuel_data()
-        else:
-            print("   Fatal. Fuel file not found.")
-            sys.exit(2)
-
+        """
+        Load variables into dictionary to be pasted into the template
+        """
         self.parameters = {'datetime': self.datetime,
                            'run_type': self.run_type,
                            'run_desc': RUN_DESCRIPTIONS_DICT[self.run_type],
                            'core_number': self.core_number,
                            'core_config': self.core_config_dict,
-                           'safe_height': self.rod_heights_dict['safe'],
-                           'shim_height': self.rod_heights_dict['shim'],
-                           'reg_height' : self.rod_heights_dict['reg'],
+                           'safe_height': self.rod_heights_dict['safe'], # 0-100, exact coords calculated in template
+                           'shim_height': self.rod_heights_dict['shim'], # 0-100, exact coords calculated in template
+                           'reg_height' : self.rod_heights_dict['reg'],  # 0-100, exact coords calculated in template
                            'tally' : 'c ',
                            'mode'  : ' n ',
-                           'kcode' : None,
-                           'uzrh_temp_MeV': "", # leave empty for 20 C room temp (default)
-                           'uzrh_mat_lib': "c ",
-                           'h2o_temp_MeV': "", # leave empty for 20 C room temp (default)
-                           'h2o_mat_lib': str(H2O_TEMPS_K_DICT[h2o_temp_K]),
-                           'ct_cell_mat': self.ct_cell_mat,
+                           'ct_mat': 102,
+                           'ct_mat_density': f'-{self.h2o_density}',
+                           'h2o_density': f'-{self.h2o_density}', # - for mass density, + for atom density
+                           'h2o_temp_MeV': round(self.h2o_temp_K * MEV_PER_KELVIN, 16),
+                           'h2o_mt_lib': self.h2o_mt_lib,
+                           'uzrh_mt_lib': "c ",
+                           'uzrh_temp_MeV': round(uzrh_temp_K * MEV_PER_KELVIN, 16),
                            }
 
         self.parameters['fuel_mats']    = self.fuel_mat_cards
@@ -111,7 +135,6 @@ class MCNP_InputFile:
         """
         Create input file using 'self.parameters'
         """
-
         self.base_filename = f"{self.template_filepath.split('/')[-1].split('.')[0]}_core{self.core_number}_{run_type}"
         
         if run_type in ['banked', 'kntc','rodcal']:

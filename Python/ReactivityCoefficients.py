@@ -131,7 +131,7 @@ class ReactivityCoefficients(MCNP_OutputFile):
 
         df_keff.set_index(self.index_header, inplace=True)
         df_rho.set_index(self.index_header, inplace=True)
-
+    
         rods = [c for c in df_rho.columns.values.tolist() if "unc" not in c]
         heights = list(df_keff.index.values)
 

@@ -171,7 +171,7 @@ def ReedAutomatedNeutronicsEngine(argv):
         elif run_type == 'rcty':
             # moderator (h2o) temperature coefficient
             rcty_type = 'mod'
-            for h2o_temp_K in list(H2O_TEMPS_K_DICT.values()):
+            for h2o_temp_C in H2O_MOD_TEMPS_C:
                 if check_mcnp:
                     current_run = MCNP_InputFile(run_type,
                                                  tasks,
@@ -179,7 +179,7 @@ def ReedAutomatedNeutronicsEngine(argv):
                                                  core_number=49,
                                                  rod_heights=rod_heights_dict,
                                                  fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
-                                                 h2o_temp_K=h2o_temp_K,
+                                                 h2o_temp_K=h2o_temp_C+273.15,
                                                  rcty_type=rcty_type,
                                                  )
                     current_run.run_mcnp() 

@@ -23,7 +23,7 @@ RATIO_HZR = 1.575 # TS allows 1.55 to 1.60. This is an ATOM ratio
 BETA_EFF = 0.0075
 CM_PER_INCH = 2.54
 CM_PER_PERCENT_HEIGHT = 0.38
-MEV_PER_KELVIN = 8.617e-11
+MEV_PER_KELVIN = 8.617328149741e-11
 REACT_ADD_RATE_LIMIT_DOLLARS = 0.16
 
 """ SETUP """
@@ -86,6 +86,7 @@ RODS = ["safe", "shim", "reg"]  # must be in lower case
 MOTOR_SPEEDS_DICT = {"safe": 19, "shim": 11, "reg": 24}  # inches/min
 
 H2O_VOID_DENSITIES = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+H2O_MOD_TEMPS_C = [1, 10, 20, 25, 35, 45, 50, 55, 65, 75, 80, 85, 90, 95, 99]
 
 
 

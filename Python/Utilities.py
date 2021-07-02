@@ -1,6 +1,9 @@
 from Parameters import *
 import multiprocessing
 
+def find_closest_value(K, lst):
+    return lst[min(range(len(lst)), key=lambda i: abs(lst[i] - K))]
+
 def get_tasks():
     cores = multiprocessing.cpu_count()
     tasks = input(f"How many CPU cores should be used? Free: {cores}. Use: ")
