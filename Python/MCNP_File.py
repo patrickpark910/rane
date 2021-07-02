@@ -36,6 +36,7 @@ class MCNP_File:
                        ct_mat=102,      # used in: rcty
                        h2o_temp_K=294,  # used in: rcty
                        h2o_density=1.0, # used in: rcty
+                       uzrh_temp_K=294,  # used in: rcty
                        rcty_type=None,  # used in: rcty
                        ):     
 
@@ -55,15 +56,47 @@ class MCNP_File:
         self.source_folder = source_folder
         self.h2o_temp_K = h2o_temp_K
         self.h2o_density = float(h2o_density)
+        self.uzrh_temp_K = uzrh_temp_K
         self.rcty_type = rcty_type
         self.ct_mat = ct_mat
 
+        """
+        Find data libraries
+        """
+        # find mat libraries
+        mat_list = [(self.u235_mat_lib, U235_TEMPS_K_DICT, 'U-235'), 
+                     (self.u238_mat_lib, U238_TEMPS_K_DICT, 'U-238'),
+                     (self.pu239_mat_lib, PU239_TEMPS_K_DICT, 'Pu-239'),
+                     (self.zr_mat_lib, ZR_TEMPS_K_DICT, 'zirconium'),
+                     (self.h_mat_lib, H_TEMPS_K_DICT, 'hydrogen')]
+        for mat in mat_list:
+          try:
+            mat[0] = mat[1][self.uzrh_temp_K]
+          except:
+            self.uzrh_temp_K = find_closest_value(uzrh_temp_K,list(mat[1].keys()))
+            mat[0] = mat[1][self.uzrh_temp_K]
+            print(f"\n   warning. {mat[2]} cross-section (xs) data at {uzrh_temp_K} does not exist")
+            print(f"   warning.   using closest available xs data at temperature: {self.uzrh_temp_K} K\n")
+
+        # find mt libraries
         try:
           self.h2o_mt_lib = H2O_TEMPS_K_DICT[self.h2o_temp_K]
         except:
           self.h2o_mt_lib = H2O_TEMPS_K_DICT[find_closest_value(h2o_temp_K,list(H2O_TEMPS_K_DICT.keys()))]
-          print(f"\n   warning. light water S(a,B) data at {h2o_temp_K} does not exist")
+          print(f"\n   warning. light water scattering (S(a,B)) data at {h2o_temp_K} does not exist")
           print(f"   warning.   using closest available S(a,B) data at temperature: {self.h2o_temp_K} K\n")
+
+        mt_list = [(self.zr_h_mt_lib, ZR_H_TEMPS_K_DICT, 'zr_h'),
+                   (self.h_zr_mt_lib, H_ZR_TEMPS_K_DICT, 'h_zr')]
+
+        for mt in mt_list:
+          try:
+            mt[0] = mt[1][self.uzrh_temp_K]
+          except:
+            self.uzrh_temp_K = find_closest_value(uzrh_temp_K,list(mat[1].keys()))
+            mt[0] = mt[1][self.uzrh_temp_K]
+            print(f"\n   warning. {mat[2]} scattering (S(a,B)) data at {uzrh_temp_K} does not exist")
+            print(f"   warning.   using closest available S(a,B) data at temperature: {self.uzrh_temp_K} K\n")
 
 
         # read fuel data
@@ -129,9 +162,8 @@ class MCNP_File:
                            'ct_mat': 102,
                            'ct_mat_density': f'-{self.h2o_density}',
                            'h2o_density':    f'-{self.h2o_density}', # - for mass density, + for atom density
+                           'h2o_mt_lib':     self.h2o_mt_lib
                            'h2o_temp_MeV':   round(self.h2o_temp_K * MEV_PER_KELVIN, 16),
-                           'h2o_mt_lib':     self.h2o_mt_lib,
-                           'uzrh_mt_lib':    self.uzrh_mt_lib,
                            'uzrh_temp_MeV':  round(uzrh_temp_K * MEV_PER_KELVIN, 16),
                            }
 
@@ -323,14 +355,14 @@ class MCNP_File:
         for i in range(0,len(mass_fracs_df)):
             fe_id = int(str(mass_fracs_df.loc[i,'fe_id'])[:4]) # truncates '10705' to '1070'
             fuel_mat_cards += f"c\n"
-            fuel_mat_cards += f"m{fe_id}    92235.80c {'{:.6e}'.format(mass_fracs_df.loc[i,'a_U235'])} $ {round(mass_fracs_df.loc[i,'g_U235'],6):.6f} g\n"
-            fuel_mat_cards += f"         92238.80c {'{:.6e}'.format(mass_fracs_df.loc[i,'a_U238'])} $ {round(mass_fracs_df.loc[i,'g_U238'],6):.6f} g\n"
-            fuel_mat_cards += f"         94239.80c {'{:.6e}'.format(mass_fracs_df.loc[i,'a_Pu239'])} $ {round(mass_fracs_df.loc[i,'g_Pu239'],6):.6f} g\n"
-            fuel_mat_cards += f"         40000.66c {'{:.6e}'.format(mass_fracs_df.loc[i,'a_Zr'])} $ {round(mass_fracs_df.loc[i,'g_Zr'],6):.6f} g\n"
-            fuel_mat_cards += f"          1001.80c {'{:.6e}'.format(mass_fracs_df.loc[i,'a_H'])} $ {round(mass_fracs_df.loc[i,'g_H'],6):.6f} g\n"
-            fuel_mat_cards += f"mt{fe_id} h/zr.10t zr/h.10t\n"
+            fuel_mat_cards += f"m{fe_id}    {self.u235_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_U235'])} $ {round(mass_fracs_df.loc[i,'g_U235'],6):.6f} g\n"
+            fuel_mat_cards += f"         {self.u238_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_U238'])} $ {round(mass_fracs_df.loc[i,'g_U238'],6):.6f} g\n"
+            fuel_mat_cards += f"         {self.pu239_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_Pu239'])} $ {round(mass_fracs_df.loc[i,'g_Pu239'],6):.6f} g\n"
+            fuel_mat_cards += f"         {self.zr_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_Zr'])} $ {round(mass_fracs_df.loc[i,'g_Zr'],6):.6f} g\n"
+            fuel_mat_cards += f"          {self.h_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_H'])} $ {round(mass_fracs_df.loc[i,'g_H'],6):.6f} g\n"
+            fuel_mat_cards += f"mt{fe_id} {self.h_zr_mt_lib} {self.zr_h_mt_lib}\n"
             fuel_mat_cards += f"c \n"
-            fuel_mat_cards += f"c "
+            fuel_mat_cards += f"c \n"
 
         self.fuel_mat_cards = fuel_mat_cards
 

@@ -5576,7 +5576,7 @@ c
 c
 m102   1001.80c 0.6667   8016.80c 0.3333 
 c
-mt102  lwtr.10t 
+mt102  {{ h2o_mt_lib }}
 c
 c --End Moderator Materials--
 c
