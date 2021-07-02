@@ -5,7 +5,7 @@ import argparse
 
 sys.path.insert(0, "./Python")
 from Parameters import *
-from MCNP_InputFile import *
+from MCNP_File import *
 # from Coef_Mod import *
 # from Coef_PNTC import *
 # from Coef_Void import *
