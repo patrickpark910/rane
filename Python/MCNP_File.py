@@ -67,11 +67,11 @@ class MCNP_File:
         self.h2o_mt_lib, self.zr_h_mt_lib, self.h_zr_mt_lib = None, None, None
 
         # find mat libraries
-        mat_list = [(self.u235_mat_lib, U235_TEMPS_K_DICT, 'U-235'), 
-                     (self.u238_mat_lib, U238_TEMPS_K_DICT, 'U-238'),
-                     (self.pu239_mat_lib, PU239_TEMPS_K_DICT, 'Pu-239'),
-                     (self.zr_mat_lib, ZR_TEMPS_K_DICT, 'zirconium'),
-                     (self.h_mat_lib, H_TEMPS_K_DICT, 'hydrogen')]
+        mat_list = [[self.u235_mat_lib, U235_TEMPS_K_DICT, 'U-235'], 
+                     [self.u238_mat_lib, U238_TEMPS_K_DICT, 'U-238'],
+                     [self.pu239_mat_lib, PU239_TEMPS_K_DICT, 'Pu-239'],
+                     [self.zr_mat_lib, ZR_TEMPS_K_DICT, 'zirconium'],
+                     [self.h_mat_lib, H_TEMPS_K_DICT, 'hydrogen']]
         for mat in mat_list:
           try:
             mat[0] = mat[1][self.uzrh_temp_K]
@@ -89,8 +89,8 @@ class MCNP_File:
           print(f"\n   warning. light water scattering (S(a,B)) data at {h2o_temp_K} does not exist")
           print(f"   warning.   using closest available S(a,B) data at temperature: {self.h2o_temp_K} K\n")
 
-        mt_list = [(self.zr_h_mt_lib, ZR_H_TEMPS_K_DICT, 'zr_h'),
-                   (self.h_zr_mt_lib, H_ZR_TEMPS_K_DICT, 'h_zr')]
+        mt_list = [[self.zr_h_mt_lib, ZR_H_TEMPS_K_DICT, 'zr_h'],
+                   [self.h_zr_mt_lib, H_ZR_TEMPS_K_DICT, 'h_zr']]
 
         for mt in mt_list:
           try:
