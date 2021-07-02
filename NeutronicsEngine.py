@@ -173,15 +173,16 @@ def ReedAutomatedNeutronicsEngine(argv):
             rcty_type = 'mod'
             for h2o_temp_C in H2O_MOD_TEMPS_C:
                 if check_mcnp:
-                    current_run = MCNP_InputFile(run_type,
-                                                 tasks,
-                                                 template_filepath=None,
-                                                 core_number=49,
-                                                 rod_heights=rod_heights_dict,
-                                                 fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
-                                                 h2o_temp_K=h2o_temp_C+273.15,
-                                                 rcty_type=rcty_type,
-                                                 )
+                    current_run = MCNP_File(run_type,
+                                            tasks,
+                                            print_input=True,
+                                            template_filepath=None,
+                                            core_number=49,
+                                            rod_heights=rod_heights_dict,
+                                            fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
+                                            h2o_temp_K=h2o_temp_C+273.15,
+                                            rcty_type=rcty_type,
+                                            )
                     current_run.run_mcnp() 
             # fuel temperature coefficient
             rcty_type = 'fuel'
@@ -255,13 +256,14 @@ def ReedAutomatedNeutronicsEngine(argv):
             if check_mcnp:
                 current_run = MCNP_InputFile(run_type,
                                              tasks,
+                                             print_input=True,
                                              template_filepath=None,
                                              core_number=49,
                                              rod_heights=rod_heights_dict,
                                              fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
                                              )
                 current_run.run_mcnp() 
-            output_file = Kinetics(run_type, rod_heights=rod_heights_dict)
+            output_file = Kinetics(current_run)
             output_file.find_kinetic_parameters()
 
         elif run_type == 'plot':

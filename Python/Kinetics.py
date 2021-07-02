@@ -17,13 +17,16 @@ import matplotlib.colors as colors
 import json
 
 
-from MCNP_OutputFile import *
+from MCNP_File import *
 from Utilities import *
 from Parameters import *
 from plotStyles import *
 
 
-class Kinetics(MCNP_OutputFile):
+class Kinetics(MCNP_File):
+
+    print(f'\n extracting data from: {self.output_filename}')
+    self.extract_keff()
 
     def find_kinetic_parameters(self):
 

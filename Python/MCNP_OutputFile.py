@@ -94,7 +94,7 @@ class MCNP_OutputFile:
                     self.extract_keff()
                 except: 
                     print(f"\n   warning. keff not found in {self.output_filepath}")
-                    print(f"\n   warning. skipping {self.output_filepath}\n")
+                    print(f"   warning.   skipping {self.output_filepath}\n")
         else:
             print(f'\n   fatal. cannot find {self.results_folder}\n')
             sys.exit(2)

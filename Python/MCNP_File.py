@@ -19,20 +19,20 @@ from datetime import datetime
 from Parameters import *
 from Utilities import *
 
-class MCNP_InputFile:
+class MCNP_File:
 
-    def __init__(self, 
-                       tasks,
+    def __init__(self, tasks,
                        run_type,
-                       template_filepath=None,
-                       core_number=49,
-                       delete_extensions=['.s'],
-                       rod_heights={'safe': 0, 'shim': 0, 'reg':0},
-                       sdm_config=None,
-                       fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
+                       print_input=False,      # default: only defines self variables and does not print input template
+                       template_filepath=None, # default: uses ./Source/reed.template
+                       core_number=49,         # default: reads fuel load positions from ./Source/Core/49.core 
                        MCNP_folder=None,
                        results_folder=None,
                        source_folder=f"./Source",
+                       delete_extensions=['.s'],  # default: '.s'
+                       fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
+                       rod_heights={'safe': 0, 'shim': 0, 'reg':0}, # used in: all run types
+                       sdm_config=None, # used in: sdm
                        ct_mat=102,      # used in: rcty
                        h2o_temp_K=294,  # used in: rcty
                        h2o_density=1.0, # used in: rcty
@@ -43,6 +43,7 @@ class MCNP_InputFile:
         Define core parameters
         """
         self.read_core_config()
+        self.print_input = print_input
         self.datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.template_filepath = template_filepath
         self.run_type = run_type
@@ -78,17 +79,31 @@ class MCNP_InputFile:
               print(f"\n   fatal. fuel file not found or recognized at {self.read_fuel_data()}\n")
               sys.exit()
 
-        """
-        Define necessary directories
-        """
-        if not template_filepath: self.template_filepath = f"./Source/reed.template"
-        else: self.template_filepath = template_filepath
+        # add tallies
+        # add tally string to end of input file (to allow substitution into tally definition)
+        if run_type in ['flux','ppf']:
+            with open(f'./src/tallies/{run_type}.tal', 'r') as tally_file:
+                tally_str = tally_file.read()        
+        else:
+            tally_str = ''
 
-        if not MCNP_folder: self.MCNP_folder = f'./MCNP/{run_type}'
-        else: self.MCNP_folder = MCNP_folder
+        """
+        Define and create necessary directories
+        """
+        if not template_filepath: 
+          self.template_filepath = f"./Source/reed.template"
+        else: 
+          self.template_filepath = template_filepath
 
-        if not results_folder: self.results_folder = f'./Results/{run_type}'
-        else: self.results_folder = results_folder          
+        if not MCNP_folder: 
+          self.MCNP_folder = f'./MCNP/{run_type}'
+        else: 
+          self.MCNP_folder = MCNP_folder
+
+        if not results_folder: 
+          self.results_folder = f'./Results/{run_type}'
+        else: 
+          self.results_folder = results_folder          
 
         self.temp_folder = f'./MCNP/temp/'
         self.user_temp_folder = f'./MCNP/temp/{self.username}'
@@ -112,11 +127,11 @@ class MCNP_InputFile:
                            'mode'  : ' n ',
                            'ct_mat': 102,
                            'ct_mat_density': f'-{self.h2o_density}',
-                           'h2o_density': f'-{self.h2o_density}', # - for mass density, + for atom density
-                           'h2o_temp_MeV': round(self.h2o_temp_K * MEV_PER_KELVIN, 16),
-                           'h2o_mt_lib': self.h2o_mt_lib,
-                           'uzrh_mt_lib': "c ",
-                           'uzrh_temp_MeV': round(uzrh_temp_K * MEV_PER_KELVIN, 16),
+                           'h2o_density':    f'-{self.h2o_density}', # - for mass density, + for atom density
+                           'h2o_temp_MeV':   round(self.h2o_temp_K * MEV_PER_KELVIN, 16),
+                           'h2o_mt_lib':     self.h2o_mt_lib,
+                           'uzrh_mt_lib':    self.uzrh_mt_lib,
+                           'uzrh_temp_MeV':  round(uzrh_temp_K * MEV_PER_KELVIN, 16),
                            }
 
         self.parameters['fuel_mats']    = self.fuel_mat_cards
@@ -133,7 +148,7 @@ class MCNP_InputFile:
                                            'sdm' :  105}[self.run_type] 
 
         """
-        Create input file using 'self.parameters'
+        Define input file names and paths
         """
         self.base_filename = f"{self.template_filepath.split('/')[-1].split('.')[0]}_core{self.core_number}_{run_type}"
         
@@ -156,24 +171,18 @@ class MCNP_InputFile:
         self.input_filepath = f"{self.user_temp_folder}/{self.input_filename}"
         self.output_filename = f"o_{self.input_filename.split('.')[0]}.o"
 
-        # create template input file
-        with open(self.template_filepath, 'r') as template_file:
-            template_str = template_file.read()
-        
-        """
-        Add tallies
-        """
-        # add tally string to end of input file (to allow substitution into tally definition)
-        if run_type in ['flux','ppf']:
-            with open(f'./src/tallies/{run_type}.tal', 'r') as tally_file:
-                tally_str = tally_file.read()        
-        else:
-            tally_str = ''
 
-        # print(self.parameters)
-        template = Template(template_str+tally_str)
-        template.stream(**self.parameters).dump(self.input_filepath) 
-        print(f" Input file created at {self.input_filepath}")
+        """
+        Create input file by populating template with self.parameters dictionary
+        """
+        if self.print_input:
+          with open(self.template_filepath, 'r') as template_file:
+              template_str = template_file.read()
+              template = Template(template_str+tally_str)
+              template.stream(**self.parameters).dump(self.input_filepath) 
+              self.print_input = False
+              print(f" Input file created at {self.input_filepath}")
+              
 
 
     def read_core_config(self):
@@ -323,6 +332,32 @@ class MCNP_InputFile:
             fuel_mat_cards += f"c "
 
         self.fuel_mat_cards = fuel_mat_cards
+
+    def extract_keff(self):
+        """
+        Parses output file for neutron multiplication factor, keff, and its uncertainty.
+        """
+        if os.path.exists(self.results_folder):
+          try:
+            get_keff = False
+            found_keff = False
+            with open(self.output_filepath) as f:
+                for line in f:
+                    if found_keff:
+                        return
+                    else:
+                        if line.startswith(" the estimated average keffs"):
+                            get_keff = True
+                        elif get_keff and line.startswith("       col/abs/trk len"):
+                            self.keff, self.keff_unc = float(line.split()[2]), float(line.split()[3])
+                            found_keff = True
+                            print(f' keff: {self.keff} +/- {self.keff_unc}')
+          except:
+            print(f"\n   warning. keff not found in {self.output_filepath}")
+            print(f"   warning.   skipping {self.output_filepath}\n")
+        else:
+          print(f'\n   fatal. cannot find {self.results_folder}\n')
+          sys.exit(2)
 
     
     def run_geometry_plotter(self, debug=False):
