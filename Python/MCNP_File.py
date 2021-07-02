@@ -42,7 +42,6 @@ class MCNP_File:
         """
         Define core parameters
         """
-        self.read_core_config()
         self.print_input = print_input
         self.datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.template_filepath = template_filepath
@@ -66,7 +65,9 @@ class MCNP_File:
           print(f"\n   warning. light water S(a,B) data at {h2o_temp_K} does not exist")
           print(f"   warning.   using closest available S(a,B) data at temperature: {self.h2o_temp_K} K\n")
 
+
         # read fuel data
+        self.read_core_config() # put after above parameters are defined
         try:
             self.read_fuel_data()
         except:
