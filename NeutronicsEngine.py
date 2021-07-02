@@ -262,7 +262,13 @@ def ReedAutomatedNeutronicsEngine(argv):
                                      fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",)
             if check_mcnp:
                 current_run.run_mcnp() 
-            output_file = Kinetics(current_run)
+            output_file = Kinetics(run_type,
+                                    tasks,
+                                     print_input=check_mcnp,
+                                     template_filepath=None,
+                                     core_number=49,
+                                     rod_heights=rod_heights_dict,
+                                     fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",)
             output_file.find_kinetic_parameters()
 
         elif run_type == 'plot':
