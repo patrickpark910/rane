@@ -254,7 +254,7 @@ def ReedAutomatedNeutronicsEngine(argv):
         elif run_type == 'kntc':
             rod_heights_dict = {'safe': 100, 'shim': 100, 'reg': 100}
             current_run = MCNP_File(run_type,
-                                     tasks,
+                                    tasks,
                                      print_input=check_mcnp,
                                      template_filepath=None,
                                      core_number=49,

@@ -21,8 +21,8 @@ from Utilities import *
 
 class MCNP_File:
 
-    def __init__(self, tasks,
-                       run_type,
+    def __init__(self, run_type,
+                       tasks,
                        print_input=False,      # default: only defines self variables and does not print input template
                        template_filepath=None, # default: uses ./Source/reed.template
                        core_number=49,         # default: reads fuel load positions from ./Source/Core/49.core 
