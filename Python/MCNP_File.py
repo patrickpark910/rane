@@ -104,7 +104,7 @@ class MCNP_File:
             print(f"\n   warning. {mat[2]} scattering (S(a,B)) data at {uzrh_temp_K} does not exist")
             print(f"   warning.   using closest available S(a,B) data at temperature: {self.uzrh_temp_K} K\n")
 
-        self.h2o_mt_lib, self.zr_h_mt_lib, self.h_zr_mt_lib = mt_list[0][0], mt_list[1][0], mt_list[2][0]
+        self.zr_h_mt_lib, self.h_zr_mt_lib = mt_list[0][0], mt_list[1][0]
 
 
         # read fuel data
