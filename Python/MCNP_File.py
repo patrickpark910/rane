@@ -211,6 +211,7 @@ class MCNP_File:
 
         self.input_filepath = f"{self.user_temp_folder}/{self.input_filename}"
         self.output_filename = f"o_{self.input_filename.split('.')[0]}.o"
+        self.output_filepath = f"{self.MCNP_folder}/outputs/{self.output_filename}"
 
 
         """
