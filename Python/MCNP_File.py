@@ -74,12 +74,15 @@ class MCNP_File:
                      [self.h_mat_lib, H_TEMPS_K_DICT, 'hydrogen']]
         for mat in mat_list:
           try:
-            mat[0] = mat[1][self.uzrh_temp_K]
+            globals()[mat[0]] = mat[1][self.uzrh_temp_K]
           except:
             self.uzrh_temp_K = find_closest_value(uzrh_temp_K,list(mat[1].keys()))
-            mat[0] = mat[1][self.uzrh_temp_K]
+            globals()[mat[0]] = mat[1][self.uzrh_temp_K]
             print(f"\n   warning. {mat[2]} cross-section (xs) data at {uzrh_temp_K} does not exist")
             print(f"   warning.   using closest available xs data at temperature: {self.uzrh_temp_K} K\n")
+
+        self.u235_mat_lib, self.u238_mat_lib, self.pu239_mat_lib = mat_list[0][0], mat_list[1][0], mat_list[2][0]
+        self.zr_mat_lib, self.h_mat_lib, = mat_list[3][0], mat_list[4][0]
 
         # find mt libraries
         try:
@@ -94,12 +97,14 @@ class MCNP_File:
 
         for mt in mt_list:
           try:
-            mt[0] = mt[1][self.uzrh_temp_K]
+            globals()[mt[0]] = mt[1][self.uzrh_temp_K]
           except:
             self.uzrh_temp_K = find_closest_value(uzrh_temp_K,list(mat[1].keys()))
-            mt[0] = mt[1][self.uzrh_temp_K]
+            globals()[mt[0]] = mt[1][self.uzrh_temp_K]
             print(f"\n   warning. {mat[2]} scattering (S(a,B)) data at {uzrh_temp_K} does not exist")
             print(f"   warning.   using closest available S(a,B) data at temperature: {self.uzrh_temp_K} K\n")
+
+        self.h2o_mt_lib, self.zr_h_mt_lib, self.h_zr_mt_lib = mt_list[0][0], mt_list[1][0], mt_list[2][0]
 
 
         # read fuel data
