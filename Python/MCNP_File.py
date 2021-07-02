@@ -63,6 +63,9 @@ class MCNP_File:
         """
         Find data libraries
         """
+        self.u235_mat_lib, self.u238_mat_lib, self.pu239_mat_lib, self.zr_mat_lib, self.h_mat_lib, = None, None, None, None, None
+        self.h2o_mt_lib, self.zr_h_mt_lib, self.h_zr_mt_lib = None, None, None
+
         # find mat libraries
         mat_list = [(self.u235_mat_lib, U235_TEMPS_K_DICT, 'U-235'), 
                      (self.u238_mat_lib, U238_TEMPS_K_DICT, 'U-238'),
