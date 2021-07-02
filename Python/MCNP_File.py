@@ -162,7 +162,7 @@ class MCNP_File:
                            'ct_mat': 102,
                            'ct_mat_density': f'-{self.h2o_density}',
                            'h2o_density':    f'-{self.h2o_density}', # - for mass density, + for atom density
-                           'h2o_mt_lib':     self.h2o_mt_lib
+                           'h2o_mt_lib':     self.h2o_mt_lib,
                            'h2o_temp_MeV':   round(self.h2o_temp_K * MEV_PER_KELVIN, 16),
                            'uzrh_temp_MeV':  round(uzrh_temp_K * MEV_PER_KELVIN, 16),
                            }
