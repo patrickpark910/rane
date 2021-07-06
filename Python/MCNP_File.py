@@ -63,48 +63,9 @@ class MCNP_File:
         """
         Find data libraries
         """
-        self.u235_mat_lib, self.u238_mat_lib, self.pu239_mat_lib, self.zr_mat_lib, self.h_mat_lib, = None, None, None, None, None
-        self.h2o_mt_lib, self.zr_h_mt_lib, self.h_zr_mt_lib = None, None, None
 
-        # find mat libraries
-        mat_list = [[self.u235_mat_lib, U235_TEMPS_K_DICT, 'U-235'], 
-                     [self.u238_mat_lib, U238_TEMPS_K_DICT, 'U-238'],
-                     [self.pu239_mat_lib, PU239_TEMPS_K_DICT, 'Pu-239'],
-                     [self.zr_mat_lib, ZR_TEMPS_K_DICT, 'zirconium'],
-                     [self.h_mat_lib, H_TEMPS_K_DICT, 'hydrogen']]
-        for mat in mat_list:
-          try:
-            globals()[mat[0]] = mat[1][self.uzrh_temp_K]
-          except:
-            self.uzrh_temp_K = find_closest_value(uzrh_temp_K,list(mat[1].keys()))
-            globals()[mat[0]] = mat[1][self.uzrh_temp_K]
-            print(f"\n   warning. {mat[2]} cross-section (xs) data at {uzrh_temp_K} does not exist")
-            print(f"   warning.   using closest available xs data at temperature: {self.uzrh_temp_K} K\n")
-
-        self.u235_mat_lib, self.u238_mat_lib, self.pu239_mat_lib = mat_list[0][0], mat_list[1][0], mat_list[2][0]
-        self.zr_mat_lib, self.h_mat_lib, = mat_list[3][0], mat_list[4][0]
-
-        # find mt libraries
-        try:
-          self.h2o_mt_lib = H2O_TEMPS_K_DICT[self.h2o_temp_K]
-        except:
-          self.h2o_mt_lib = H2O_TEMPS_K_DICT[find_closest_value(h2o_temp_K,list(H2O_TEMPS_K_DICT.keys()))]
-          print(f"\n   warning. light water scattering (S(a,B)) data at {h2o_temp_K} does not exist")
-          print(f"   warning.   using closest available S(a,B) data at temperature: {self.h2o_temp_K} K\n")
-
-        mt_list = [[self.zr_h_mt_lib, ZR_H_TEMPS_K_DICT, 'zr_h'],
-                   [self.h_zr_mt_lib, H_ZR_TEMPS_K_DICT, 'h_zr']]
-
-        for mt in mt_list:
-          try:
-            globals()[mt[0]] = mt[1][self.uzrh_temp_K]
-          except:
-            self.uzrh_temp_K = find_closest_value(uzrh_temp_K,list(mat[1].keys()))
-            globals()[mt[0]] = mt[1][self.uzrh_temp_K]
-            print(f"\n   warning. {mat[2]} scattering (S(a,B)) data at {uzrh_temp_K} does not exist")
-            print(f"   warning.   using closest available S(a,B) data at temperature: {self.uzrh_temp_K} K\n")
-
-        self.zr_h_mt_lib, self.h_zr_mt_lib = mt_list[0][0], mt_list[1][0]
+        self.find_mat_libs()
+        self.find_mt_libs()
 
 
         # read fuel data
@@ -171,8 +132,10 @@ class MCNP_File:
                            'ct_mat_density': f'-{self.h2o_density}',
                            'h2o_density':    f'-{self.h2o_density}', # - for mass density, + for atom density
                            'h2o_mt_lib':     self.h2o_mt_lib,
-                           'h2o_temp_MeV':   round(self.h2o_temp_K * MEV_PER_KELVIN, 16),
-                           'uzrh_temp_MeV':  round(uzrh_temp_K * MEV_PER_KELVIN, 16),
+                           'h2o_temp_MeV':   '{.6e}'.format(self.h2o_temp_K * MEV_PER_KELVIN),
+                           'uzrh_temp_MeV':  '{.6e}'.format(self.uzrh_temp_K * MEV_PER_KELVIN),
+                           'zr_mt_lib':      self.zr_mt_lib,
+                           'zr_temp_MeV':    '{.6e}'.format(self.uzrh_temp_K * MEV_PER_KELVIN),
                            }
 
         self.parameters['fuel_mats']    = self.fuel_mat_cards
@@ -186,6 +149,7 @@ class MCNP_File:
                                            'kntc':  205,
                                            'plot':  105,
                                            'rodcal':105, 
+                                           'rcty':  105,
                                            'sdm' :  105}[self.run_type] 
 
         """
@@ -261,6 +225,55 @@ class MCNP_File:
                     print(f"   warning. It is possible that the directories above the destination do not exist.")
                     print(f"   warning. Python cannot create multiple directory levels in one command.\n")
 
+
+    def find_mat_libs(self):
+        self.u235_mat_lib, self.u238_mat_lib, self.pu239_mat_lib, self.zr_mat_lib, self.h_mat_lib, = None, None, None, None, None
+        
+
+        # find mat libraries
+        mat_list = [[self.u235_mat_lib, U235_TEMPS_K_MAT_DICT, 'U-235'], 
+                     [self.u238_mat_lib, U238_TEMPS_K_MAT_DICT, 'U-238'],
+                     [self.pu239_mat_lib, PU239_TEMPS_K_MAT_DICT, 'Pu-239'],
+                     [self.zr_mat_lib, ZR_TEMPS_K_MAT_DICT, 'zirconium'],
+                     [self.h_mat_lib, H_TEMPS_K_MAT_DICT, 'hydrogen']]
+        for mat in mat_list:
+          try:
+            globals()[mat[0]] = mat[1][self.uzrh_temp_K]
+          except:
+            closest_temp_K = find_closest_value(uzrh_temp_K,list(mat[1].keys()))
+            globals()[mat[0]] = mat[1][closest_temp_K]
+            print(f"\n   warning. {mat[2]} cross-section (xs) data at {uzrh_temp_K} does not exist")
+            print(f"   warning.   using closest available xs data at temperature: {closest_temp_K} K\n")
+
+        self.u235_mat_lib, self.u238_mat_lib, self.pu239_mat_lib = mat_list[0][0], mat_list[1][0], mat_list[2][0]
+        self.zr_mat_lib, self.h_mat_lib, = mat_list[3][0], mat_list[4][0]
+
+    def find_mt_libs(self):
+        # find mt libraries
+        self.h2o_mt_lib, self.z_mt_lib, self.zr_h_mt_lib, self.h_zr_mt_lib = None, None, None, None
+
+        try:
+          self.h2o_mt_lib = H2O_TEMPS_K_DICT[self.h2o_temp_K]
+        except:
+          closest_temp_K = find_closest_value(h2o_temp_K,list(H2O_TEMPS_K_DICT.keys()))
+          self.h2o_mt_lib = H2O_TEMPS_K_DICT[closest_temp_K]
+          print(f"\n   warning. light water scattering (S(a,B)) data at {h2o_temp_K} does not exist")
+          print(f"   warning.   using closest available S(a,B) data at temperature: {closest_temp_K} K\n")
+
+        mt_list = [[self.zr_mt_lib, ZR_TEMPS_K_MT_DICT, 'zr']
+                   [self.zr_h_mt_lib, ZR_H_TEMPS_K_MT_DICT, 'zr_h'],
+                   [self.h_zr_mt_lib, H_ZR_TEMPS_K_MT_DICT, 'h_zr']]
+
+        for mt in mt_list:
+          try:
+            globals()[mt[0]] = mt[1][self.uzrh_temp_K]
+          except:
+            closest_temp_K = find_closest_value(uzrh_temp_K,list(mat[1].keys()))
+            globals()[mt[0]] = mt[1][closest_temp_K]
+            print(f"\n   warning. {mat[2]} scattering (S(a,B)) data at {uzrh_temp_K} does not exist")
+            print(f"   warning.   using closest available S(a,B) data at temperature: {closest_temp_K} K\n")
+
+        self.zr_h_mt_lib, self.h_zr_mt_lib = mt_list[0][0], mt_list[1][0]
 
 
     def move_mcnp_files(self):

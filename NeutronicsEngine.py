@@ -172,21 +172,30 @@ def ReedAutomatedNeutronicsEngine(argv):
             # moderator (h2o) temperature coefficient
             rcty_type = 'mod'
             for h2o_temp_C in H2O_MOD_TEMPS_C:
+                current_run = MCNP_File(run_type,
+                                        tasks,
+                                        print_input=True,
+                                        template_filepath=None,
+                                        core_number=49,
+                                        rod_heights=rod_heights_dict,
+                                        h2o_temp_K=h2o_temp_C+273.15,
+                                        rcty_type=rcty_type,
+                                        )
                 if check_mcnp:
-                    current_run = MCNP_File(run_type,
-                                            tasks,
-                                            print_input=True,
-                                            template_filepath=None,
-                                            core_number=49,
-                                            rod_heights=rod_heights_dict,
-                                            fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
-                                            h2o_temp_K=h2o_temp_C+273.15,
-                                            rcty_type=rcty_type,
-                                            )
                     current_run.run_mcnp() 
+                output_file = Reactivity(run_type,
+                                         tasks,
+                                         print_input=True,
+                                         template_filepath=None,
+                                         core_number=49,
+                                         rod_heights=rod_heights_dict,
+                                         h2o_temp_K=h2o_temp_C+273.15,
+                                         rcty_type=rcty_type,)
+                output_file.process_rcty_keff()
+
             # fuel temperature coefficient
             rcty_type = 'fuel'
-            for h2o_temp_K in list(H2O_TEMPS_K_DICT.values()):
+            for u235_temp_K in list(U235_TEMPS_K_MAT_DICT.keys()):
                 for fuel_temp_K in list():
                     if check_mcnp:
                         current_run = MCNP_InputFile(run_type,
@@ -194,9 +203,9 @@ def ReedAutomatedNeutronicsEngine(argv):
                                                      template_filepath=None,
                                                      core_number=49,
                                                      rod_heights=rod_heights_dict,
-                                                     fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
                                                      h2o_temp_K=h2o_temp_K,
                                                      rcty_type=rcty_type,
+                                                     uzrh_temp_K=u235_temp_K,
                                                      )
                         current_run.run_mcnp() 
             # void coefficient
@@ -208,7 +217,6 @@ def ReedAutomatedNeutronicsEngine(argv):
                                                  template_filepath=None,
                                                  core_number=49,
                                                  rod_heights=rod_heights_dict,
-                                                 fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
                                                  h2o_temp_K=h2o_temp_K,
                                                  h2o_density=h2o_density,
                                                  rcty_type=rcty_type,
@@ -221,7 +229,6 @@ def ReedAutomatedNeutronicsEngine(argv):
                                              template_filepath=None,
                                              core_number=49,
                                              rod_heights=rod_heights_dict,
-                                             fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
                                              h2o_temp_K=h2o_temp_K,
                                              h2o_density=h2o_density,
                                              rcty_type=rcty_type,
@@ -258,8 +265,7 @@ def ReedAutomatedNeutronicsEngine(argv):
                                      print_input=check_mcnp,
                                      template_filepath=None,
                                      core_number=49,
-                                     rod_heights=rod_heights_dict,
-                                     fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",)
+                                     rod_heights=rod_heights_dict,)
             if check_mcnp:
                 current_run.run_mcnp() 
             output_file = Kinetics(run_type,
@@ -267,8 +273,7 @@ def ReedAutomatedNeutronicsEngine(argv):
                                      print_input=check_mcnp,
                                      template_filepath=None,
                                      core_number=49,
-                                     rod_heights=rod_heights_dict,
-                                     fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",)
+                                     rod_heights=rod_heights_dict,)
             output_file.find_kinetic_parameters()
 
         elif run_type == 'plot':
@@ -280,7 +285,6 @@ def ReedAutomatedNeutronicsEngine(argv):
                                              template_filepath=None,
                                              core_number=49,
                                              rod_heights={'safe': 0, 'shim': 0, 'reg':0}, # defaults to all rods down
-                                             fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx"
                                              )
                 current_run.run_geometry_plotter()
             else:
@@ -303,7 +307,6 @@ def ReedAutomatedNeutronicsEngine(argv):
                                                      template_filepath=None,
                                                      core_number=49,
                                                      rod_heights=rod_heights_dict,
-                                                     fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
                                                      )
                         current_run.run_mcnp() 
                         if not current_run.mcnp_skipped: 
