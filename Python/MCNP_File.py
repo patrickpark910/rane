@@ -33,11 +33,11 @@ class MCNP_File:
                        fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
                        rod_heights={'safe': 0, 'shim': 0, 'reg':0}, # used in: all run types
                        sdm_config=None, # used in: sdm
+                       rcty_type=None,  # used in: rcty
                        ct_mat=102,      # used in: rcty
                        h2o_temp_K=294,  # used in: rcty
                        h2o_density=1.0, # used in: rcty
-                       uzrh_temp_K=294,  # used in: rcty
-                       rcty_type=None,  # used in: rcty
+                       uzrh_temp_K=294, # used in: rcty
                        ):     
 
         """

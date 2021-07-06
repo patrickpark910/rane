@@ -69,7 +69,7 @@ def ReedAutomatedNeutronicsEngine(argv):
     run_types = list(args_dict['r'].split(','))
     for run_type in run_types:
         if run_type.lower() in ['b','br','bank','banked','bankedrods']: 
-            run_types = ['banked' if x==run_type else x for x in run_types]
+            run_types = ['bank' if x==run_type else x for x in run_types]
         
         elif run_type.lower() in ['cm','mod','coef_mod']: 
             run_types = ['Coef_Mod' if x==run_type else x for x in run_types]
@@ -149,7 +149,7 @@ def ReedAutomatedNeutronicsEngine(argv):
     base_file_name = "ReedCore49.i" #find_base_file(rane_cwd)
     for run_type in run_types:
         print(f"\n Currently calculating: {RUN_DESCRIPTIONS_DICT[run_type]}.")
-        if run_type == 'banked':
+        if run_type == 'bank':
             # calibrate all rods as single bank
             for rod_height in ROD_CAL_HEIGHTS:
                 rod_heights_dict = {'safe': rod_height, 'shim': rod_height, 'reg': rod_height, 'bank': rod_height}
@@ -178,8 +178,8 @@ def ReedAutomatedNeutronicsEngine(argv):
                                         template_filepath=None,
                                         core_number=49,
                                         rod_heights=rod_heights_dict,
-                                        h2o_temp_K=h2o_temp_C+273.15,
                                         rcty_type=rcty_type,
+                                        h2o_temp_K=h2o_temp_C+273.15,
                                         )
                 if check_mcnp:
                     current_run.run_mcnp() 
@@ -189,8 +189,9 @@ def ReedAutomatedNeutronicsEngine(argv):
                                          template_filepath=None,
                                          core_number=49,
                                          rod_heights=rod_heights_dict,
+                                         rcty_type=rcty_type,
                                          h2o_temp_K=h2o_temp_C+273.15,
-                                         rcty_type=rcty_type,)
+                                         )
                 output_file.process_rcty_keff()
 
             # fuel temperature coefficient
@@ -203,11 +204,12 @@ def ReedAutomatedNeutronicsEngine(argv):
                                                      template_filepath=None,
                                                      core_number=49,
                                                      rod_heights=rod_heights_dict,
-                                                     h2o_temp_K=h2o_temp_K,
                                                      rcty_type=rcty_type,
+                                                     h2o_temp_K=h2o_temp_K,
                                                      uzrh_temp_K=u235_temp_K,
                                                      )
                         current_run.run_mcnp() 
+            """
             # void coefficient
             rcty_type = 'void'
             for h2o_density in H2O_VOID_DENSITIES:
@@ -217,11 +219,12 @@ def ReedAutomatedNeutronicsEngine(argv):
                                                  template_filepath=None,
                                                  core_number=49,
                                                  rod_heights=rod_heights_dict,
+                                                 rcty_type=rcty_type,
                                                  h2o_temp_K=h2o_temp_K,
                                                  h2o_density=h2o_density,
-                                                 rcty_type=rcty_type,
                                                  )
                     current_run.run_mcnp() 
+            
             rcty_type = 'void_ct'
             if check_mcnp:
                 current_run = MCNP_InputFile(run_type,
@@ -232,9 +235,10 @@ def ReedAutomatedNeutronicsEngine(argv):
                                              h2o_temp_K=h2o_temp_K,
                                              h2o_density=h2o_density,
                                              rcty_type=rcty_type,
-                                             ct_cell_mat=102,
+                                             ct_cell_mat=101,
                                              )
                 current_run.run_mcnp() 
+            """
 
         elif run_type == 'CriticalLoading':
             pass
