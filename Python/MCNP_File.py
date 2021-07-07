@@ -260,7 +260,7 @@ class MCNP_File:
           print(f"\n   warning. light water scattering (S(a,B)) data at {h2o_temp_K} does not exist")
           print(f"   warning.   using closest available S(a,B) data at temperature: {closest_temp_K} K\n")
 
-        mt_list = [[self.zr_mt_lib, ZR_TEMPS_K_MT_DICT, 'zr']
+        mt_list = [[self.zr_mt_lib, ZR_TEMPS_K_MT_DICT, 'zr'],
                    [self.zr_h_mt_lib, ZR_H_TEMPS_K_MT_DICT, 'zr_h'],
                    [self.h_zr_mt_lib, H_ZR_TEMPS_K_MT_DICT, 'h_zr']]
 
