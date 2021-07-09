@@ -10,7 +10,8 @@ RUN_DESCRIPTIONS_DICT  = {'banked': 'banked rods',
                           'kntc': 'kinetics parameters',
                           'plot': 'plot geometry and take images',
                           'PowerDistribution': 'power distribution (power peaking factors)',
-                          'rodcal': 'rod calibration'}
+                          'rodcal': 'rod calibration',
+                          'rcty': 'reactivity coefficients'}
 
 """ Constants """
 AMU_U235 = 235.0439299
@@ -90,24 +91,7 @@ H2O_MOD_TEMPS_C = [1, 10, 20, 25, 35, 45, 50, 55, 65, 75, 80, 85, 90, 95, 99]
 
 
 
-# From LA-UR-13-21822
-U235_TEMPS_K_MAT_DICT = {294: '92235.80c', 600: '92235.81c', 900: '92235.82c', 1200: '92235.83c',
-                  2500: '92235.84c', 0.1: '92235.85c', 250: '92235.86c', 77: '92235.67c', 3000: '92235.68c'}
-U238_TEMPS_K_MAT_DICT = {294: '92238.80c', 600: '92238.81c', 900: '92238.82c', 1200: '92238.83c',
-                  2500: '92238.84c', 0.1: '92238.85c', 250: '92238.86c', 77: '92238.67c', 3000: '92238.68c'}
-PU239_TEMPS_K_MAT_DICT = {294: '94239.80c', 600: '94239.81c', 900: '94239.82c', 1200: '94239.83c',
-                   2500: '94239.84c', 0.1: '94239.85c', 250: '94239.86c', 77: '94239.67c', 3000: '94239.68c'}
-ZR_TEMPS_K_MAT_DICT = {294: '40000.66c', 300: '40000.56c', 587: '40000.58c'}
-H_TEMPS_K_MAT_DICT = {294: '1001.80c', 600: '1001.81c', 900: '1001.82c', 1200: '1001.83c', 2500: '1001.84c',
-                0.1: '1001.85c', 250: '1001.86c'}
 
-                
-H_ZR_TEMPS_K_MT_DICT = {294: 'h/zr.20t', 400: 'h/zr.21t', 500: 'h/zr.22t', 600: 'h/zr.23t', 700: 'h/zr.24t',
-                 800: 'h/zr.25t', 1000: 'h/zr.26t', 1200: 'h/zr.27t'}
-ZR_H_TEMPS_K_MT_DICT = {294: 'zr/h.30t', 400: 'zr/h.31t', 500: 'zr/h.32t', 600: 'zr/h.33t', 700: 'zr/h.34t',
-                 800: 'zr/h.35t', 1000: 'zr/h.36t', 1200: 'zr/h.37t'}
-H2O_TEMPS_K_MT_DICT = {294: 'lwtr.20t', 350: 'lwtr.21t', 400: 'lwtr.22t', 450: 'lwtr.23t', 500: 'lwtr.24t',
-                   550: 'lwtr.25t', 600: 'lwtr.26t', 650: 'lwtr.27t', 800: 'lwtr.28t'}
 
 
 

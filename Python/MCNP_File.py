@@ -34,7 +34,7 @@ class MCNP_File:
                        rod_heights={'safe': 0, 'shim': 0, 'reg':0}, # used in: all run types
                        sdm_config=None, # used in: sdm
                        rcty_type=None,  # used in: rcty
-                       ct_mat=102,      # used in: rcty
+                       ct_mat=102,      # used in: rcty, 102 is mat code for light water in reed.template
                        h2o_temp_K=294,  # used in: rcty
                        h2o_density=1.0, # used in: rcty
                        uzrh_temp_K=294, # used in: rcty
@@ -54,10 +54,17 @@ class MCNP_File:
         self.username = getpass.getuser()
         self.fuel_filepath = fuel_filepath
         self.source_folder = source_folder
+        self.rcty_type = rcty_type
+
+        # light water moderator properties
         self.h2o_temp_K = h2o_temp_K
         self.h2o_density = float(h2o_density)
+        self.o_mat_lib = 
+
+        # fuel properties
         self.uzrh_temp_K = uzrh_temp_K
-        self.rcty_type = rcty_type
+        
+        # void properties
         self.ct_mat = ct_mat
 
         """
@@ -131,6 +138,8 @@ class MCNP_File:
                            'ct_mat': 102,
                            'ct_mat_density': f'-{self.h2o_density}',
                            'h2o_density':    f'-{self.h2o_density}', # - for mass density, + for atom density
+                           'h_mats':         self.h2o_mat_interpolated_str,
+                           'o_mat_lib':      self.o_mat_lib,
                            'h2o_mt_lib':     self.h2o_mt_lib,
                            'h2o_temp_MeV':   '{.6e}'.format(self.h2o_temp_K * MEV_PER_KELVIN),
                            'uzrh_temp_MeV':  '{.6e}'.format(self.uzrh_temp_K * MEV_PER_KELVIN),
@@ -227,37 +236,55 @@ class MCNP_File:
 
 
     def find_mat_libs(self):
-        self.u235_mat_lib, self.u238_mat_lib, self.pu239_mat_lib, self.zr_mat_lib, self.h_mat_lib, = None, None, None, None, None
+        # self.u235_mat_lib, self.u238_mat_lib, self.pu239_mat_lib = None, None, None
+        # self.zr_mat_lib, self.h_mat_lib, self.o_mat_lib = None, None, None
         
 
-        # find mat libraries
+        """
+        find mat libraries for fuel isotopes 
+        """
         mat_list = [[self.u235_mat_lib, U235_TEMPS_K_MAT_DICT, 'U-235'], 
                      [self.u238_mat_lib, U238_TEMPS_K_MAT_DICT, 'U-238'],
                      [self.pu239_mat_lib, PU239_TEMPS_K_MAT_DICT, 'Pu-239'],
                      [self.zr_mat_lib, ZR_TEMPS_K_MAT_DICT, 'zirconium'],
-                     [self.h_mat_lib, H_TEMPS_K_MAT_DICT, 'hydrogen']]
+                     [self.h_mat_lib, H_TEMPS_K_MAT_DICT, 'hydrogen'], # used in fuel mats, NOT when interpolating h mats
+                     [self.o_mat_lib, O_TEMPS_K_MAT_DICT, 'oxygen'],]  # used in light water mat, EVEN WHEN interpolating h mats
         for mat in mat_list:
           try:
             globals()[mat[0]] = mat[1][self.uzrh_temp_K]
           except:
-            closest_temp_K = find_closest_value(uzrh_temp_K,list(mat[1].keys()))
+            closest_temp_K = find_closest_value(self.uzrh_temp_K,list(mat[1].keys()))
             globals()[mat[0]] = mat[1][closest_temp_K]
-            print(f"\n   warning. {mat[2]} cross-section (xs) data at {uzrh_temp_K} does not exist")
+            print(f"\n   warning. {mat[2]} cross-section (xs) data at {self.uzrh_temp_K} does not exist")
             print(f"   warning.   using closest available xs data at temperature: {closest_temp_K} K\n")
 
-        self.u235_mat_lib, self.u238_mat_lib, self.pu239_mat_lib = mat_list[0][0], mat_list[1][0], mat_list[2][0]
-        self.zr_mat_lib, self.h_mat_lib, = mat_list[3][0], mat_list[4][0]
+        # self.u235_mat_lib, self.u238_mat_lib, self.pu239_mat_lib = mat_list[0][0], mat_list[1][0], mat_list[2][0]
+        # self.zr_mat_lib, self.h_mat_lib = mat_list[3][0], mat_list[4][0]
+
+        """
+        find mat libraries for light water isotopes
+        """
+        self.h2o_mat_interpolated_str = h2o_interpolate_mat(self.h2o_temp_K) # Utilities.py
+        try:
+            self.o_mat_lib = O_TEMPS_K_MAT_DICT[self.h2o_temp_K]
+        except:
+            closest_temp_K = find_closest_value(self.h2o_temp_K,list(O_TEMPS_K_MAT_DICT.keys()))
+            self.o_mat_lib = O_TEMPS_K_MAT_DICT[closest_temp_K]
+            print(f"\n   warning. oxygen cross-section (xs) data at {self.h2o_temp_K} K does not exist")
+            print(f"   warning.   using closest available xs data at temperature: {closest_temp_K} K\n")
+
+
 
     def find_mt_libs(self):
         # find mt libraries
         self.h2o_mt_lib, self.z_mt_lib, self.zr_h_mt_lib, self.h_zr_mt_lib = None, None, None, None
 
         try:
-          self.h2o_mt_lib = H2O_TEMPS_K_DICT[self.h2o_temp_K]
+          self.h2o_mt_lib = H2O_TEMPS_K_MT_DICT[self.h2o_temp_K]
         except:
-          closest_temp_K = find_closest_value(h2o_temp_K,list(H2O_TEMPS_K_DICT.keys()))
-          self.h2o_mt_lib = H2O_TEMPS_K_DICT[closest_temp_K]
-          print(f"\n   warning. light water scattering (S(a,B)) data at {h2o_temp_K} does not exist")
+          closest_temp_K = find_closest_value(self.h2o_temp_K,list(H2O_TEMPS_K_MT_DICT.keys()))
+          self.h2o_mt_lib = H2O_TEMPS_K_MT_DICT[closest_temp_K]
+          print(f"\n   warning. light water scattering (S(a,B)) data at {self.h2o_temp_K} K does not exist")
           print(f"   warning.   using closest available S(a,B) data at temperature: {closest_temp_K} K\n")
 
         mt_list = [[self.zr_mt_lib, ZR_TEMPS_K_MT_DICT, 'zr'],
