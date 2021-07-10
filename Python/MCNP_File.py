@@ -56,21 +56,19 @@ class MCNP_File:
         self.source_folder = source_folder
         self.rcty_type = rcty_type
 
-        # light water moderator properties
+        # light water moderator properties - all mat and mt libs defined in functions below
         self.h2o_temp_K = h2o_temp_K
         self.h2o_density = float(h2o_density)
-        self.o_mat_lib = 
 
         # fuel properties
         self.uzrh_temp_K = uzrh_temp_K
         
         # void properties
-        self.ct_mat = ct_mat
+        self.ct_mat = ct_mat # default fill with 102 - light water
 
         """
         Find data libraries
         """
-
         self.find_mat_libs()
         self.find_mt_libs()
 
