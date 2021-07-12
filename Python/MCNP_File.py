@@ -35,9 +35,9 @@ class MCNP_File:
                        sdm_config=None,    # used in: sdm
                        rcty_type=None,     # used in: rcty
                        ct_mat=102,         # used in: rcty, 102 is mat code for light water in reed.template
-                       h2o_temp_K=293.6,   # used in: rcty, 293.6 K = 20 C = room temp = default temp in mcnp
+                       h2o_temp_K=294,     # used in: rcty, 294 K = 20 C = room temp = default temp in mcnp
                        h2o_density=None,   # used in: rcty, set None to calculate h2o_density from h2o_temp_K
-                       uzrh_temp_K=293.6,  # used in: rcty
+                       uzrh_temp_K=294,    # used in: rcty
                        ):     
 
         """

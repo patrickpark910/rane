@@ -50,17 +50,17 @@ class Reactivity(MCNP_File):
         self.h2o_temp_C = float('{:.2f}'.format(self.h2o_temp_K - 273.15))
         if self.rcty_type == 'fuel':
             self.index_header, self.index_data = 'temp (C)', UZRH_FUEL_TEMPS_C
-            self.row_x_value = self.h2o_temp_C
-            self.rcty_base_value = 20
+            self.row_val = self.h2o_temp_C
+            self.row_base_val = 20 # 20 C is default fuel temp in mcnp
         elif self.rcty_type == 'mod':
             self.index_header, self.index_data = 'temp (C)', H2O_MOD_TEMPS_C
-            self.keff_row, self.keff_col = self.h2o_temp_C, 'keff'
-            self.row_x_value = self.h2o_temp_C
-            self.rcty_base_value = 20
+            self.keff_row, self.keff_col = self.h2o_temp_C
+            self.row_val = self.h2o_temp_C
+            self.row_base_val = 20 # 20 C is default h2o temp
         elif self.rcty_type == 'void':
             self.index_header, self.index_data = 'density (g/cc)', H2O_VOID_DENSITIES 
-            self.keff_row, self.keff_col = self.h2o_density, 'keff'
-            self.rcty_base_value = 1.0
+            self.row_val = self.h2o_temp_C
+            self.row_base_val = 1.0 # 1.0 g/cc is default density
 
         """
         Setup or read keff dataframe
@@ -85,8 +85,8 @@ class Reactivity(MCNP_File):
         """
         Populate the dataframe with keff and unc values
         """
-        df_keff.loc[self.row_x_value, "keff"] = self.keff
-        df_keff.loc[self.row_x_value, "keff unc"] = self.keff_unc
+        df_keff.loc[self.row_val, "keff"] = self.keff
+        df_keff.loc[self.row_val, "keff unc"] = self.keff_unc
         df_keff.to_csv(self.keff_filepath, encoding='utf8')
 
 
@@ -128,9 +128,9 @@ class Reactivity(MCNP_File):
         '''
         for x_value in self.index_data:
             k1 = df_keff.loc[x_value, 'keff']
-            k2 = df_keff.loc[self.rcty_base_value, 'keff']
+            k2 = df_keff.loc[self.row_base_val, 'keff']
             dk1 = df_keff.loc[x_value, 'keff unc']
-            dk2 = df_keff.loc[self.rcty_base_value, 'keff unc']
+            dk2 = df_keff.loc[self.row_base_val, 'keff unc']
             k2_minus_k1 = k2 - k1
             k2_times_k1 = k2 * k1
             d_k2_minus_k1 = np.sqrt(dk2 ** 2 + dk1 ** 2)
