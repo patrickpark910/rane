@@ -86,7 +86,7 @@ FE_ID = {'B1': '7202', 'B2': '9678', 'B3': '9679', 'B4': '7946', 'B5': '7945', '
 RODS = ["safe", "shim", "reg"]  # must be in lower case
 MOTOR_SPEEDS_DICT = {"safe": 19, "shim": 11, "reg": 24}  # inches/min
 
-H2O_VOID_DENSITIES = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+H2O_VOID_DENSITIES = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0] # only allowed up to tenths (0.1) digit - else, change input naming scheme
 H2O_MOD_TEMPS_C = [1, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 99] # MUST HAVE differences of >=1 or else input file naming will fail
 
 

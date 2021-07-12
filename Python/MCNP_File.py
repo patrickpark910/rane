@@ -177,13 +177,13 @@ class MCNP_File:
                                   f"_r{str(self.parameters['reg_height']).zfill(3)}.i"
         elif run_type in ['rcty']:
             if rcty_type == 'mod':
-                var = self.h2o_temp_K
+                var = str(round(self.h2o_temp_K-273.15)).zfill(2) + "C" # ex: 01C, 10C, 20C, etc.
             elif rcty_type == 'fuel':
-                var = self.uzrh_temp_K
+                var = str(round(self.uzrh_temp_K-273.15)).zfill(2) + "C" # ex: 01C, 10C, 20C, etc.
             elif rcty_type == 'void':
-                var = self.h2o_density
+                var = str(round(self.h2o_density*10)).zfill(2) + "gcc"
             self.input_filename = f"{self.base_filename}"\
-                        f"_{str(self.rcty_type)}{str(round(var-273.15)).zfill(2)}C"\
+                        f"_{str(self.rcty_type)}{var}"\
                         f"_a{str(self.parameters['safe_height']).zfill(3)}"\
                         f"_h{str(self.parameters['shim_height']).zfill(3)}"\
                         f"_r{str(self.parameters['reg_height']).zfill(3)}.i"
