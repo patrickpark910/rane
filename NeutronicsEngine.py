@@ -175,6 +175,7 @@ def ReedAutomatedNeutronicsEngine(argv):
 
         elif run_type == 'rcty':
             rod_heights_dict = {'safe': 100, 'shim': 100, 'reg': 100}
+            """
             # moderator (h2o) temperature coefficient
             rcty_type = 'mod'
             for h2o_temp_C in H2O_MOD_TEMPS_C:
@@ -187,6 +188,27 @@ def ReedAutomatedNeutronicsEngine(argv):
                                         rod_heights=rod_heights_dict,
                                         rcty_type=rcty_type,
                                         h2o_temp_K=h2o_temp_K,
+                                        )
+                if check_mcnp:
+                    current_run.run_mcnp() 
+                    current_run.move_mcnp_files() # keep as separate step from run_mcnp()
+                current_run.process_rcty_keff()
+                current_run.process_rcty_rho()
+            current_run.process_rcty_coef()
+            """
+
+            # void coefficient
+            rcty_type = 'void'
+            for h2o_density in H2O_VOID_DENSITIES:
+                h2o_density = float('{:.2f}'.format(float(h2o_density)))
+                current_run = Reactivity(run_type,
+                                        tasks,
+                                        print_input=True,
+                                        template_filepath=None,
+                                        core_number=49,
+                                        rod_heights=rod_heights_dict,
+                                        rcty_type=rcty_type,
+                                        h2o_density=h2o_density,
                                         )
                 if check_mcnp:
                     current_run.run_mcnp() 
@@ -212,20 +234,7 @@ def ReedAutomatedNeutronicsEngine(argv):
                                                      )
                         current_run.run_mcnp() 
             
-            # void coefficient
-            rcty_type = 'void'
-            for h2o_density in H2O_VOID_DENSITIES:
-                if check_mcnp:
-                    current_run = MCNP_InputFile(run_type,
-                                                 tasks,
-                                                 template_filepath=None,
-                                                 core_number=49,
-                                                 rod_heights=rod_heights_dict,
-                                                 rcty_type=rcty_type,
-                                                 h2o_temp_K=h2o_temp_K,
-                                                 h2o_density=h2o_density,
-                                                 )
-                    current_run.run_mcnp() 
+
             
             rcty_type = 'void_ct'
             if check_mcnp:

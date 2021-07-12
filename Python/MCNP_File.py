@@ -60,7 +60,7 @@ class MCNP_File:
         self.h2o_temp_K = h2o_temp_K
         self.h2o_density = h2o_density
         if not h2o_density:
-          self.h2o_density = find_h2o_temp_K_density(h2o_temp_K)
+          self.h2o_density = find_h2o_temp_K_density(h2o_temp_K) # if h2o_density == None, calculate density from temp 
 
         # fuel properties
         self.uzrh_temp_K = uzrh_temp_K
