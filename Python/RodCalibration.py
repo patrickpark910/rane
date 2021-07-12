@@ -19,13 +19,13 @@ from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 import json
 
 
-from MCNP_OutputFile import *
+from MCNP_File import *
 from Utilities import *
 from Parameters import *
 from plotStyles import *
 
 
-class RodCalibration(MCNP_OutputFile):
+class RodCalibration(MCNP_File):
 
     def process_rod_worth(self):
 

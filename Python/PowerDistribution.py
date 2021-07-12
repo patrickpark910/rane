@@ -5,8 +5,7 @@ import multiprocessing
 
 sys.path.insert(0, "./Python/")
 from Parameters import *
-from MCNP_InputFunctions import *
-from MCNP_OutputFunctions import *
+from MCNP_File import *
 from FigureGraphics import *
 
 def PowerDistribution(filepath, base_file_path=None):

@@ -10,6 +10,7 @@ from MCNP_File import *
 # from Coef_PNTC import *
 # from Coef_Void import *
 from Kinetics import *
+from ReactivityCoefficients import *
 # from FuelMaterials import *
 from RodCalibration import *
 
@@ -149,6 +150,9 @@ def ReedAutomatedNeutronicsEngine(argv):
     base_file_name = "ReedCore49.i" #find_base_file(rane_cwd)
     for run_type in run_types:
         print(f"\n Currently calculating: {RUN_DESCRIPTIONS_DICT[run_type]}.")
+
+
+
         if run_type == 'bank':
             # calibrate all rods as single bank
             for rod_height in ROD_CAL_HEIGHTS:
@@ -168,32 +172,30 @@ def ReedAutomatedNeutronicsEngine(argv):
             output_file.process_rod_params()
             output_file.plot_rod_worth()
 
+
         elif run_type == 'rcty':
+            rod_heights_dict = {'safe': 100, 'shim': 100, 'reg': 100}
             # moderator (h2o) temperature coefficient
             rcty_type = 'mod'
             for h2o_temp_C in H2O_MOD_TEMPS_C:
-                current_run = MCNP_File(run_type,
+                h2o_temp_K = float('{:.2f}'.format(float(h2o_temp_C)+273.15))
+                current_run = Reactivity(run_type,
                                         tasks,
                                         print_input=True,
                                         template_filepath=None,
                                         core_number=49,
                                         rod_heights=rod_heights_dict,
                                         rcty_type=rcty_type,
-                                        h2o_temp_K=h2o_temp_C+273.15,
+                                        h2o_temp_K=h2o_temp_K,
                                         )
                 if check_mcnp:
                     current_run.run_mcnp() 
-                output_file = Reactivity(run_type,
-                                         tasks,
-                                         print_input=True,
-                                         template_filepath=None,
-                                         core_number=49,
-                                         rod_heights=rod_heights_dict,
-                                         rcty_type=rcty_type,
-                                         h2o_temp_K=h2o_temp_C+273.15,
-                                         )
-                output_file.process_rcty_keff()
+                    current_run.move_mcnp_files() # keep as separate step from run_mcnp()
+                current_run.process_rcty_keff()
+                current_run.process_rcty_rho()
+            current_run.process_rcty_coef()
 
+            """
             # fuel temperature coefficient
             rcty_type = 'fuel'
             for u235_temp_K in list(U235_TEMPS_K_MAT_DICT.keys()):
@@ -209,7 +211,7 @@ def ReedAutomatedNeutronicsEngine(argv):
                                                      uzrh_temp_K=u235_temp_K,
                                                      )
                         current_run.run_mcnp() 
-            """
+            
             # void coefficient
             rcty_type = 'void'
             for h2o_density in H2O_VOID_DENSITIES:

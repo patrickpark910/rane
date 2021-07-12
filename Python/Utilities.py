@@ -17,14 +17,16 @@ H_TEMPS_K_MAT_DICT = {293.6: '1001.80c', 600: '1001.81c', 900: '1001.82c', 1200:
 O_TEMPS_K_MAT_DICT = {293.6: '8016.80c', 600: '8016.81c', 900: '8016.82c', 1200: '8016.83c', 2500: '8016.84c',
                 0.1: '8016.85c', 250: '8016.86c'}
 
-H_ZR_TEMPS_K_MT_DICT = {294: 'h/zr.20t', 400: 'h/zr.21t', 500: 'h/zr.22t', 600: 'h/zr.23t', 700: 'h/zr.24t',
-                 800: 'h/zr.25t', 1000: 'h/zr.26t', 1200: 'h/zr.27t'}
-ZR_H_TEMPS_K_MT_DICT = {294: 'zr/h.30t', 400: 'zr/h.31t', 500: 'zr/h.32t', 600: 'zr/h.33t', 700: 'zr/h.34t',
-                 800: 'zr/h.35t', 1000: 'zr/h.36t', 1200: 'zr/h.37t'}
+H_ZR_TEMPS_K_MT_DICT = {294: 'h-zr.20t', 400: 'h-zr.21t', 500: 'h-zr.22t', 600: 'h-zr.23t', 700: 'h-zr.24t',
+                 800: 'h-zr.25t', 1000: 'h-zr.26t', 1200: 'h-zr.27t'}
+ZR_H_TEMPS_K_MT_DICT = {294: 'zr-h.30t', 400: 'zr-h.31t', 500: 'zr-h.32t', 600: 'zr-h.33t', 700: 'zr-h.34t',
+                 800: 'zr-h.35t', 1000: 'zr-h.36t', 1200: 'zr-h.37t'}
 H2O_TEMPS_K_MT_DICT = {294: 'lwtr.20t', 350: 'lwtr.21t', 400: 'lwtr.22t', 450: 'lwtr.23t', 500: 'lwtr.24t',
                    550: 'lwtr.25t', 600: 'lwtr.26t', 650: 'lwtr.27t', 800: 'lwtr.28t'}
 
-def h2o_interpolate_mat(h2o_temp_C):
+
+
+def h2o_temp_K_interpolate_mat(h2o_temp_K):
     """
     This function interpolates cross-sections
 
@@ -38,7 +40,7 @@ def h2o_interpolate_mat(h2o_temp_C):
     https://mcnp.lanl.gov/pdf_files/la-ur-08-5891.pdf
     pg 73
     """
-    K = float('{:.2f}'.format(float(h2o_temp_C) + 273.15)) 
+    K = float('{:.2f}'.format(h2o_temp_K)) 
     # round to 2 decimal places to avoid floating point errors
     # rounding to < 2 digits causes errors, since there is a dictionary for K = 0.1
 
@@ -75,9 +77,9 @@ def find_closest_value(K, lst):
 
 def get_tasks():
     cores = multiprocessing.cpu_count()
-    tasks = input(f"How many CPU cores should be used? Free: {cores}. Use: ")
+    tasks = input(f" How many CPU cores should be used? Free: {cores}. Use: ")
     if not tasks:
-        print(f'The number of tasks is set to the available number of cores: {cores}.')
+        print(f' The number of tasks is set to the available number of cores: {cores}.')
         tasks = cores
     else:
         try:
@@ -85,7 +87,7 @@ def get_tasks():
             if tasks < 1 or tasks > multiprocessing.cpu_count():
                 raise
         except:
-            print(f'Number of tasks is inappropriate. Using maximum number of CPU cores: {cores}')
+            print(f' Number of tasks is inappropriate. Using maximum number of CPU cores: {cores}')
             tasks = cores
     return tasks  # Integer between 1 and total number of cores available.
 
@@ -105,4 +107,29 @@ def get_mass_fracs(row):
     g_Zr = a_Zr * AMU_ZR / AVO
     g_H = a_H * AMU_H / AVO
     return fe_id, g_U235, g_U238, g_Pu239, g_Zr, g_H, a_U235, a_U238, a_Pu239, a_Zr, a_H
+
+
+def find_h2o_temp_K_density(K):
+    try:
+        C = float('{:.2f}'.format(float(K)-273.15))
+        density = float('{:.6f}'.format((
+            999.83952
+            +16.945176*C
+            -7.9870401e-3*C**2
+            -46.170461e-6*C**3
+            +105.56302e-9*C**4
+            -280.54253e-12*C**5)/(1+16.897850e-3*C)/1000))
+        print(f"\n   comment. at {C} C, h2o density was calculated to be {density} g/cc \n")
+        # Equation for water density given temperature in C, works for 0 to 150 C at 1 atm
+        # https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4909168/
+
+        if C < 0 or C > 150: 
+            print(f"\n   warning. h2o has calculated density {density} g/cc at given temp {C} C, ")
+            print(f"   warning. but that is outside the range 0 - 150 C safely predicted by the formula \n")
+        return density
+
+    except:
+        print(f"\n   fatal. finding h2o density for temperature {K} K failed")
+        print(f"   fatal. ensure you are inputing a numeric-only str, float, or int into the function\n")
+
 

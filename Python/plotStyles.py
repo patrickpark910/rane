@@ -11,10 +11,13 @@ SMALL_SIZE = 10
 MEDIUM_SIZE = 16
 LARGE_SIZE = 22
 HUGE_SIZE = 28
-ROD_WORTH_COLORS = {'safe': 'tab:red', 'shim':'tab:green', 'reg':'tab:blue', 'bank':'tab:purple'}
-ROD_LINE_STYLES =  {'safe': '-', 'shim':'--', 'reg':':', 'bank':'-'}
+LINE_COLORS = {'safe':'tab:red', 'shim':'tab:green', 'reg':'tab:blue', 'bank':'tab:purple', 
+                'fuel':'tab:red', 'void':'tab:green', 'mod': 'tab:blue'}
+LINE_STYLES =  {'safe': '-', 'shim':'--', 'reg':':', 'bank':'-',
+                'fuel':'-', 'void':'-', 'mod':'-'}
 # linestyle = ['-': solid, '--': dashed, '-.' dashdot, ':': dot]
-ROD_MARKER_STYLES = {'safe': 'o', 'shim':'^', 'reg':'s', 'bank':'o'}
+MARKER_STYLES = {'safe': 'o', 'shim':'^', 'reg':'s', 'bank':'o',
+                     'fuel':'o', 'void':'o', 'mod':'o'}
 plt.rc('font', size=MEDIUM_SIZE)          # controls default text sizes
 plt.rc('axes', titlesize=LARGE_SIZE)     # fontsize of the axes title
 plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels

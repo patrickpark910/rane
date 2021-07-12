@@ -5,6 +5,7 @@
 *.ps
 *.tiff
 *.pyc
+*.DS_Store
 **/*.o
 **/*.msht
 **/*.r

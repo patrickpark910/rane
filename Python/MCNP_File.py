@@ -23,7 +23,7 @@ class MCNP_File:
 
     def __init__(self, run_type,
                        tasks,
-                       print_input=False,      # default: only defines self variables and does not print input template
+                       print_input=True,       # default: only defines self variables and does not print input template
                        template_filepath=None, # default: uses ./Source/reed.template
                        core_number=49,         # default: reads fuel load positions from ./Source/Core/49.core 
                        MCNP_folder=None,
@@ -32,12 +32,12 @@ class MCNP_File:
                        delete_extensions=['.s'],  # default: '.s'
                        fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
                        rod_heights={'safe': 0, 'shim': 0, 'reg':0}, # used in: all run types
-                       sdm_config=None, # used in: sdm
-                       rcty_type=None,  # used in: rcty
-                       ct_mat=102,      # used in: rcty, 102 is mat code for light water in reed.template
-                       h2o_temp_K=294,  # used in: rcty
-                       h2o_density=1.0, # used in: rcty
-                       uzrh_temp_K=294, # used in: rcty
+                       sdm_config=None,  # used in: sdm
+                       rcty_type=None,   # used in: rcty
+                       ct_mat=102,       # used in: rcty, 102 is mat code for light water in reed.template
+                       h2o_temp_K=294,   # used in: rcty, 294 K = 20 C = room temp = default temp in mcnp
+                       h2o_density=None, # used in: rcty, set None to calculate h2o_density from h2o_temp_K
+                       uzrh_temp_K=294,  # used in: rcty
                        ):     
 
         """
@@ -58,13 +58,19 @@ class MCNP_File:
 
         # light water moderator properties - all mat and mt libs defined in functions below
         self.h2o_temp_K = h2o_temp_K
-        self.h2o_density = float(h2o_density)
+        self.h2o_density = h2o_density
+        if not h2o_density:
+          self.h2o_density = find_h2o_temp_K_density(h2o_temp_K)
 
         # fuel properties
         self.uzrh_temp_K = uzrh_temp_K
         
         # void properties
         self.ct_mat = ct_mat # default fill with 102 - light water
+        self.ct_temp_K = 294 # default room temp bc ct will either be water or air
+        
+        if str(self.ct_mat) == '102':
+            self.ct_temp_K = self.h2o_temp_K
 
         """
         Find data libraries
@@ -113,8 +119,8 @@ class MCNP_File:
         else: 
           self.results_folder = results_folder          
 
-        self.temp_folder = f'./MCNP/temp/'
-        self.user_temp_folder = f'./MCNP/temp/{self.username}'
+        self.temp_folder = f'{self.MCNP_folder}/temp'
+        self.user_temp_folder = f'{self.temp_folder}/{self.username}'
         self.inputs_folder = f"{self.MCNP_folder}/inputs"
         self.outputs_folder = f"{self.MCNP_folder}/outputs"
 
@@ -133,16 +139,16 @@ class MCNP_File:
                            'reg_height' : self.rod_heights_dict['reg'],  # 0-100, exact coords calculated in template
                            'tally' : 'c ',
                            'mode'  : ' n ',
-                           'ct_mat': 102,
-                           'ct_mat_density': f'-{self.h2o_density}',
+                           'ct_mat': self.ct_mat,
+                           'ct_mat_density': f'-{self.h2o_density}', # to fix
                            'h2o_density':    f'-{self.h2o_density}', # - for mass density, + for atom density
                            'h_mats':         self.h2o_mat_interpolated_str,
                            'o_mat_lib':      self.o_mat_lib,
-                           'h2o_mt_lib':     self.h2o_mt_lib,
-                           'h2o_temp_MeV':   '{.6e}'.format(self.h2o_temp_K * MEV_PER_KELVIN),
-                           'uzrh_temp_MeV':  '{.6e}'.format(self.uzrh_temp_K * MEV_PER_KELVIN),
-                           'zr_mt_lib':      self.zr_mt_lib,
-                           'zr_temp_MeV':    '{.6e}'.format(self.uzrh_temp_K * MEV_PER_KELVIN),
+                           'h2o_mt_lib':     "", # self.h2o_mt_lib,
+                           'h2o_temp_MeV':   '{:.6e}'.format(self.h2o_temp_K * MEV_PER_KELVIN),
+                           'uzrh_temp_MeV':  '{:.6e}'.format(self.uzrh_temp_K * MEV_PER_KELVIN),
+                           'zr_temp_MeV':    '{:.6e}'.format(self.uzrh_temp_K * MEV_PER_KELVIN),
+                           'ct_temp_MeV':    '{:.6e}'.format(self.ct_temp_K * MEV_PER_KELVIN),
                            }
 
         self.parameters['fuel_mats']    = self.fuel_mat_cards
@@ -170,8 +176,12 @@ class MCNP_File:
                                   f"_h{str(self.parameters['shim_height']).zfill(3)}"\
                                   f"_r{str(self.parameters['reg_height']).zfill(3)}.i"
         elif run_type in ['rcty']:
+            if rcty_type == 'mod':
+                var = self.h2o_temp_K
+            elif rcty_type == 'fuel':
+                var = self.uzrh_temp_K
             self.input_filename = f"{self.base_filename}"\
-                        f"_{str(self.rcty_type)}"\
+                        f"_{str(self.rcty_type)}{str(round(var-273.15)).zfill(2)}C"\
                         f"_a{str(self.parameters['safe_height']).zfill(3)}"\
                         f"_h{str(self.parameters['shim_height']).zfill(3)}"\
                         f"_r{str(self.parameters['reg_height']).zfill(3)}.i"
@@ -195,6 +205,8 @@ class MCNP_File:
               template.stream(**self.parameters).dump(self.input_filepath) 
               self.print_input = False
               print(f" Input file created at {self.input_filepath}")
+
+
               
 
 
@@ -218,7 +230,7 @@ class MCNP_File:
         if not paths_to_create:
             paths_to_create = [self.MCNP_folder, self.inputs_folder, self.outputs_folder, 
                                self.temp_folder, self.user_temp_folder,
-                               self.results_folder]
+                               self.results_folder] # order matters here
 
         if os.path.exists(self.user_temp_folder):
             shutil.rmtree(self.user_temp_folder)
@@ -234,69 +246,67 @@ class MCNP_File:
 
 
     def find_mat_libs(self):
-        # self.u235_mat_lib, self.u238_mat_lib, self.pu239_mat_lib = None, None, None
-        # self.zr_mat_lib, self.h_mat_lib, self.o_mat_lib = None, None, None
-        
 
         """
         find mat libraries for fuel isotopes 
         """
-        mat_list = [[self.u235_mat_lib, U235_TEMPS_K_MAT_DICT, 'U-235'], 
-                     [self.u238_mat_lib, U238_TEMPS_K_MAT_DICT, 'U-238'],
-                     [self.pu239_mat_lib, PU239_TEMPS_K_MAT_DICT, 'Pu-239'],
-                     [self.zr_mat_lib, ZR_TEMPS_K_MAT_DICT, 'zirconium'],
-                     [self.h_mat_lib, H_TEMPS_K_MAT_DICT, 'hydrogen'], # used in fuel mats, NOT when interpolating h mats
-                     [self.o_mat_lib, O_TEMPS_K_MAT_DICT, 'oxygen'],]  # used in light water mat, EVEN WHEN interpolating h mats
-        for mat in mat_list:
+        mat_list = [[None, U235_TEMPS_K_MAT_DICT, 'U-235'], 
+                     [None, U238_TEMPS_K_MAT_DICT, 'U-238'],
+                     [None, PU239_TEMPS_K_MAT_DICT, 'Pu-239'],
+                     [None, ZR_TEMPS_K_MAT_DICT, 'zirconium'],
+                     [None, H_TEMPS_K_MAT_DICT, 'hydrogen'], # used in fuel mats, NOT when interpolating h mats
+                     [None, O_TEMPS_K_MAT_DICT, 'oxygen'],]  # used in light water mat, EVEN WHEN interpolating h mats
+        
+        for i in range(0,len(mat_list)):
           try:
-            globals()[mat[0]] = mat[1][self.uzrh_temp_K]
+            mat_list[i][0] = mat_list[i][1][self.uzrh_temp_K]
           except:
-            closest_temp_K = find_closest_value(self.uzrh_temp_K,list(mat[1].keys()))
-            globals()[mat[0]] = mat[1][closest_temp_K]
-            print(f"\n   warning. {mat[2]} cross-section (xs) data at {self.uzrh_temp_K} does not exist")
-            print(f"   warning.   using closest available xs data at temperature: {closest_temp_K} K\n")
+            closest_temp_K = find_closest_value(self.uzrh_temp_K,list(mat_list[i][1].keys()))
+            mat_list[i][0] = mat_list[i][1][closest_temp_K]
+            print(f"\n   comment. {mat_list[i][2]} cross-section (xs) data at {self.uzrh_temp_K} does not exist")
+            print(f"   comment.   using closest available xs data at temperature: {closest_temp_K} K\n")
 
-        # self.u235_mat_lib, self.u238_mat_lib, self.pu239_mat_lib = mat_list[0][0], mat_list[1][0], mat_list[2][0]
-        # self.zr_mat_lib, self.h_mat_lib = mat_list[3][0], mat_list[4][0]
+        self.u235_mat_lib, self.u238_mat_lib, self.pu239_mat_lib = mat_list[0][0], mat_list[1][0], mat_list[2][0]
+        self.zr_mat_lib, self.h_mat_lib = mat_list[3][0], mat_list[4][0]
+        self.o_mat_lib = mat_list[5][0]
 
         """
         find mat libraries for light water isotopes
         """
-        self.h2o_mat_interpolated_str = h2o_interpolate_mat(self.h2o_temp_K) # Utilities.py
+        self.h2o_mat_interpolated_str = h2o_temp_K_interpolate_mat(self.h2o_temp_K) # Utilities.py
         try:
             self.o_mat_lib = O_TEMPS_K_MAT_DICT[self.h2o_temp_K]
         except:
             closest_temp_K = find_closest_value(self.h2o_temp_K,list(O_TEMPS_K_MAT_DICT.keys()))
             self.o_mat_lib = O_TEMPS_K_MAT_DICT[closest_temp_K]
-            print(f"\n   warning. oxygen cross-section (xs) data at {self.h2o_temp_K} K does not exist")
-            print(f"   warning.   using closest available xs data at temperature: {closest_temp_K} K\n")
+            print(f"\n   comment. oxygen cross-section (xs) data at {self.h2o_temp_K} K does not exist")
+            print(f"   comment.   using closest available xs data at temperature: {closest_temp_K} K\n")
 
 
 
     def find_mt_libs(self):
         # find mt libraries
-        self.h2o_mt_lib, self.z_mt_lib, self.zr_h_mt_lib, self.h_zr_mt_lib = None, None, None, None
+        # zr mt lib not available
 
         try:
           self.h2o_mt_lib = H2O_TEMPS_K_MT_DICT[self.h2o_temp_K]
         except:
           closest_temp_K = find_closest_value(self.h2o_temp_K,list(H2O_TEMPS_K_MT_DICT.keys()))
           self.h2o_mt_lib = H2O_TEMPS_K_MT_DICT[closest_temp_K]
-          print(f"\n   warning. light water scattering (S(a,B)) data at {self.h2o_temp_K} K does not exist")
-          print(f"   warning.   using closest available S(a,B) data at temperature: {closest_temp_K} K\n")
+          print(f"\n   comment. light water scattering (S(a,B)) data at {self.h2o_temp_K} K does not exist")
+          print(f"   comment.   using closest available S(a,B) data at temperature: {closest_temp_K} K\n")
 
-        mt_list = [[self.zr_mt_lib, ZR_TEMPS_K_MT_DICT, 'zr'],
-                   [self.zr_h_mt_lib, ZR_H_TEMPS_K_MT_DICT, 'zr_h'],
-                   [self.h_zr_mt_lib, H_ZR_TEMPS_K_MT_DICT, 'h_zr']]
+        mt_list = [[None, ZR_H_TEMPS_K_MT_DICT, 'zr_h'],
+                   [None, H_ZR_TEMPS_K_MT_DICT, 'h_zr']]
 
-        for mt in mt_list:
+        for i in range(0,len(mt_list)):
           try:
-            globals()[mt[0]] = mt[1][self.uzrh_temp_K]
+            mt_list[i][0] = mt_list[i][1][self.uzrh_temp_K]
           except:
-            closest_temp_K = find_closest_value(uzrh_temp_K,list(mat[1].keys()))
-            globals()[mt[0]] = mt[1][closest_temp_K]
-            print(f"\n   warning. {mat[2]} scattering (S(a,B)) data at {uzrh_temp_K} does not exist")
-            print(f"   warning.   using closest available S(a,B) data at temperature: {closest_temp_K} K\n")
+            closest_temp_K = find_closest_value(uzrh_temp_K,list(mt_list[i][1].keys()))
+            mt_list[i][0] = mt_list[i][1][closest_temp_K]
+            print(f"\n   comment. {mt_list[i][2]} scattering (S(a,B)) data at {uzrh_temp_K} does not exist")
+            print(f"   comment.   using closest available S(a,B) data at temperature: {closest_temp_K} K\n")
 
         self.zr_h_mt_lib, self.h_zr_mt_lib = mt_list[0][0], mt_list[1][0]
 
@@ -311,24 +321,25 @@ class MCNP_File:
         output_file = f"{self.output_filename.split('.')[0]}" # general output filename without extension
         dst = self.outputs_folder
 
-        if self.run_type in ['banked', 'rodcal']:
-            output_types_to_move = ['.o','.r','.s']
+        if self.run_type in ['banked', 'rodcal', 'rcty']:
+            output_types_to_move = ['.o'] # ,'.r','.s']
         elif self.run_type == 'plot':
             output_types_to_move = ['.ps']
         else:
             output_types_to_move = ['.o','.r','.s','.msht']
 
-        for extension in output_types_to_move:
-            try:
-                filename = output_file+extension
-                shutil.move(os.path.join(src, filename), os.path.join(dst, filename))
-                print(f'\n   comment. Moved {filename}')
-                print(f'   comment.   from {src} ')
-                print(f'   comment.   to   {dst}\n')
-            except:
-                print(f'   warning. Error moving {filename}')
-                print(f'   warning.   from {src} ')
-                print(f'   warning.   to   {dst}')
+        if not self.mcnp_skipped:
+            for extension in output_types_to_move:
+                try:
+                    filename = output_file+extension
+                    shutil.move(os.path.join(src, filename), os.path.join(dst, filename))
+                    print(f'\n   comment. moved {filename}')
+                    print(f'   comment.   from {src} ')
+                    print(f'   comment.   to   {dst}\n')
+                except:
+                    print(f'   warning. error moving {filename}')
+                    print(f'   warning.   from {src} ')
+                    print(f'   warning.   to   {dst}')
 
 
 
@@ -339,10 +350,10 @@ class MCNP_File:
             folder = self.user_temp_folder
 
         if not extensions_to_delete:
-            if self.run_type in ['banked', 'kntc', 'rodcal']:
-                extensions_to_delete = ['.r','.s']
             if self.run_type in ['plot']:
                 extensions_to_delete = ['.c','.o','.s']
+            else:
+                extensions_to_delete = ['.r','.s']
 
         for ext in extensions_to_delete:
             for file in glob.glob(f'{folder}/*{ext}'): 
@@ -357,16 +368,13 @@ class MCNP_File:
         """
         Runs MCNP
         """
-        self.mcnp_skipped = False
         if self.output_filename not in os.listdir(self.outputs_folder):
             os.system(f"""mcnp6 i="{self.input_filepath}" n="{self.user_temp_folder}/{self.output_filename.split('.')[0]}." tasks {self.tasks}""")
+            self.mcnp_skipped = False
         else:
-            print(f'   comment. skipping this mcnp run since results for {self.input_filename} already exist.')
+            print(f'\n   comment. skipping this mcnp run since results for {self.input_filename} already exist.\n')
             self.mcnp_skipped = True
 
-        if not self.mcnp_skipped:
-            self.delete_mcnp_files()
-            self.move_mcnp_files()
 
     def read_fuel_data(self):
         fuel_wb_name = self.fuel_filepath
@@ -401,15 +409,15 @@ class MCNP_File:
 
         for i in range(0,len(mass_fracs_df)):
             fe_id = int(str(mass_fracs_df.loc[i,'fe_id'])[:4]) # truncates '10705' to '1070'
-            fuel_mat_cards += f"c\n"
-            fuel_mat_cards += f"m{fe_id}    {self.u235_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_U235'])} $ {round(mass_fracs_df.loc[i,'g_U235'],6):.6f} g\n"
-            fuel_mat_cards += f"         {self.u238_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_U238'])} $ {round(mass_fracs_df.loc[i,'g_U238'],6):.6f} g\n"
-            fuel_mat_cards += f"         {self.pu239_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_Pu239'])} $ {round(mass_fracs_df.loc[i,'g_Pu239'],6):.6f} g\n"
-            fuel_mat_cards += f"         {self.zr_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_Zr'])} $ {round(mass_fracs_df.loc[i,'g_Zr'],6):.6f} g\n"
-            fuel_mat_cards += f"          {self.h_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_H'])} $ {round(mass_fracs_df.loc[i,'g_H'],6):.6f} g\n"
-            fuel_mat_cards += f"mt{fe_id} {self.h_zr_mt_lib} {self.zr_h_mt_lib}\n"
-            fuel_mat_cards += f"c \n"
-            fuel_mat_cards += f"c \n"
+            fuel_mat_cards += f"\nc"
+            fuel_mat_cards += f"\nm{fe_id}    {self.u235_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_U235'])} $ u-235 {round(mass_fracs_df.loc[i,'g_U235'],6):.6f} g"
+            fuel_mat_cards += f"\n         {self.u238_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_U238'])} $ u-238 {round(mass_fracs_df.loc[i,'g_U238'],6):.6f} g"
+            fuel_mat_cards += f"\n         {self.pu239_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_Pu239'])} $ pu-239 {round(mass_fracs_df.loc[i,'g_Pu239'],6):.6f} g"
+            fuel_mat_cards += f"\n         {self.zr_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_Zr'])} $ zr {round(mass_fracs_df.loc[i,'g_Zr'],6):.6f} g"
+            fuel_mat_cards += f"\n          {self.h_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_H'])} $ h {round(mass_fracs_df.loc[i,'g_H'],6):.6f} g"
+            fuel_mat_cards += f"\nmt{fe_id} {self.h_zr_mt_lib} {self.zr_h_mt_lib}"
+            fuel_mat_cards += f"\nc "
+            fuel_mat_cards += f"\nc "
 
         self.fuel_mat_cards = fuel_mat_cards
 
