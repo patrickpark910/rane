@@ -305,9 +305,9 @@ class MCNP_File:
           try:
             mt_list[i][0] = mt_list[i][1][self.uzrh_temp_K]
           except:
-            closest_temp_K = find_closest_value(uzrh_temp_K,list(mt_list[i][1].keys()))
+            closest_temp_K = find_closest_value(self.uzrh_temp_K,list(mt_list[i][1].keys()))
             mt_list[i][0] = mt_list[i][1][closest_temp_K]
-            print(f"\n   comment. {mt_list[i][2]} scattering (S(a,B)) data at {uzrh_temp_K} does not exist")
+            print(f"\n   comment. {mt_list[i][2]} scattering (S(a,B)) data at {self.uzrh_temp_K} does not exist")
             print(f"   comment.   using closest available S(a,B) data at temperature: {closest_temp_K} K\n")
 
         self.zr_h_mt_lib, self.h_zr_mt_lib = mt_list[0][0], mt_list[1][0]
