@@ -15,8 +15,7 @@ from mpl_toolkits.mplot3d.axes3d import Axes3D, get_test_data
 from matplotlib import cm as cmx  
 from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 import matplotlib.colors as colors
-import json
-
+from scipy.interpolate import UnivariateSpline
 
 from MCNP_File import *
 from Utilities import *
@@ -47,19 +46,19 @@ class Reactivity(MCNP_File):
         """
         Define the index column and data to be used in dataframe
         """
-        self.h2o_temp_C = float('{:.2f}'.format(self.h2o_temp_K - 273.15))
+        self.h2o_temp_C  = float('{:.2f}'.format(self.h2o_temp_K - 273.15))
+        self.uzrh_temp_C = float('{:.2f}'.format(self.uzrh_temp_K - 273.15))
         if self.rcty_type == 'fuel':
             self.index_header, self.index_data = 'temp (C)', UZRH_FUEL_TEMPS_C
-            self.row_val = self.h2o_temp_C
+            self.row_val = self.uzrh_temp_C
             self.row_base_val = 20 # 20 C is default fuel temp in mcnp
         elif self.rcty_type == 'mod':
             self.index_header, self.index_data = 'temp (C)', H2O_MOD_TEMPS_C
-            self.keff_row, self.keff_col = self.h2o_temp_C
             self.row_val = self.h2o_temp_C
             self.row_base_val = 20 # 20 C is default h2o temp
         elif self.rcty_type == 'void':
             self.index_header, self.index_data = 'density (g/cc)', H2O_VOID_DENSITIES 
-            self.row_val = self.h2o_temp_C
+            self.row_val = self.h2o_density
             self.row_base_val = 1.0 # 1.0 g/cc is default density
 
         """
@@ -135,7 +134,7 @@ class Reactivity(MCNP_File):
             k2_times_k1 = k2 * k1
             d_k2_minus_k1 = np.sqrt(dk2 ** 2 + dk1 ** 2)
             d_k2_times_k1 = k2 * k1 * np.sqrt((dk2 / k2) ** 2 + (dk1 / k1) ** 2)
-            rho = -(k2 - k1) / (k2 * k1) * 100
+            rho = (k1 - k2) / (k2 * k1) * 100
             dollars = 0.01 * rho / BETA_EFF
 
             df_rho.loc[x_value, 'rho'] = rho
@@ -158,6 +157,10 @@ class Reactivity(MCNP_File):
         df_keff = pd.read_csv(self.keff_filepath)
         df_rho  = pd.read_csv(self.rho_filepath)
 
+        df_keff['keff unc'] = 3 * df_keff['keff unc'] # get 3-sigma errors bc 1-sigma (default) is too small
+        df_rho['rho unc'] = 3 * df_rho['rho unc'] # get 3-sigma errors bc 1-sigma (default) is too small
+
+
         df_keff.set_index(self.index_header, inplace=True)
         df_rho.set_index(self.index_header, inplace=True)
     
@@ -165,9 +168,23 @@ class Reactivity(MCNP_File):
         heights = list(df_keff.index.values)
 
         if self.rcty_type == 'mod':
-            self.rcty_label = 'moderator'
+            self.rcty_label   = 'moderator' # line label
+            self.x_axis_label = 'Temperature (°C), all rods out, 3σ errors' # x axis label
+            self.y_axis_label = 'Moderator temp. coef.' # y axis label of 3rd plot (axs[2])
+            self.y_axis_label_unit = '°C' # unit to use on y axis label of 2nd & 3rd plots (axs[1], axs[2])
+        elif self.rcty_type == 'fuel':
+            self.rcty_label   = 'fuel' 
+            self.x_axis_label = 'Temperature (°C), all rods out, 3σ errors'
+            self.y_axis_label = 'Fuel temp. coef.'
+            self.y_axis_label_unit = '°C'
+        elif self.rcty_type == 'void':
+            self.rcty_label   = 'void' 
+            self.x_axis_label = 'Water density (g/cc), all rods out, 3σ errors'
+            self.y_axis_label = 'Void coefficient'
+            self.y_axis_label_unit = 'g/cc'
         else:
-            self.rcty_label = self.rcty_type
+            print("\n   fatal. reactivity coefficent plot labels not defined")
+            sys.exit()
 
 
         for rho_or_dollars in ['rho', 'dollars']:
@@ -177,12 +194,16 @@ class Reactivity(MCNP_File):
             # linestyle = ['-': solid, '--': dashed, '-.' dashdot, ':': dot]
 
             for i in [0,1,2]:
-                axs[i].set_xlim([0,100])
-                axs[i].xaxis.set_major_locator(MultipleLocator(10))
+                if self.rcty_type in ['void']:
+                    axs[i].set_xlim([0,1.1])
+                    axs[i].xaxis.set_major_locator(MultipleLocator(0.1))
+                else:
+                    axs[i].set_xlim([0,100])
+                    axs[i].xaxis.set_major_locator(MultipleLocator(10))
                 axs[i].autoscale(axis='y')
                 axs[i].grid(b=True, which='major', color='#999999', linestyle='-', linewidth='1')
             
-            axs[0].set_ylabel(r'Effective multiplication factor ($k_{eff}$)')
+            axs[0].set_ylabel(r'Eff. multiplication factor ($k_{eff}$)')
             axs[0].tick_params(axis='both', which='major')
 
             axs[1].set_ylabel('Reactivity (%Δρ)')
@@ -191,11 +212,11 @@ class Reactivity(MCNP_File):
                 axs[1].set_ylabel('Reactivity (Δ$)')
                 axs[1].yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
             
-            axs[2].set_xlabel('Temperature (°C)')
-            axs[2].set_ylabel('Differential worth (%Δρ/°C)')
+            axs[2].set_xlabel(self.x_axis_label)
+            axs[2].set_ylabel(f'{self.y_axis_label} (%Δρ/{self.y_axis_label_unit})')
             axs[2].tick_params(axis='both', which='major')
             if rho_or_dollars == 'dollars':
-                axs[2].set_ylabel(f'{self.rcty_label.capitalize()} temp. coef. (Δ$/°C)')
+                axs[2].set_ylabel(f'{self.y_axis_label} (Δ$/{self.y_axis_label_unit})')
                 axs[2].yaxis.set_major_formatter(FormatStrFormatter('%.4f'))
 
 
@@ -208,19 +229,35 @@ class Reactivity(MCNP_File):
             y_unc = df_keff[f"keff unc"].tolist()
             
             ax.errorbar(heights, y, yerr=y_unc,
-                        marker=MARKER_STYLES[self.rcty_type], ls="none",
-                        color=LINE_COLORS[self.rcty_type], elinewidth=2, capsize=3, capthick=2)
+                        marker=MARKER_STYLES[self.rcty_type], markersize=MARKER_SIZE,
+                        color=LINE_COLORS[self.rcty_type],
+                        ls="none", elinewidth=2, capsize=3, capthick=2)
+                        
+            if self.rcty_type in ['void']:
+                eq_fit = find_poly_reg(heights,y,2)['polynomial'] # Utilities.py
+                r2 = find_poly_reg(heights,y,2)['r-squared'] # Utilities.py
+                eq_fit_str = 'y= -{:.3f}$x^2$ +{:.3f}$x$ +{:.3f}'.format(np.abs(eq_fit[0]), eq_fit[1], eq_fit[2])
+            else:
+                eq_fit = find_poly_reg(heights,y,1)['polynomial'] # Utilities.py
+                r2 = find_poly_reg(heights,y,1)['r-squared'] # Utilities.py
+                eq_fit_str = 'y= {:.2e}$x$ +{:.2e}'.format(np.abs(eq_fit[0]), eq_fit[1])
+
+            sd = np.average(np.abs(np.polyval(eq_fit, heights) - y))
+            r2_str = '{:.2f}'.format(r2)
+            sd_str = '{:.2e}'.format(sd)
+
+            y_fit  = np.polyval(eq_fit,heights)
+            # spl = UnivariateSpline(heights, y) # use scipy spline to auto-fit smooth curve instead of guess-checking polyfit order
             
-            eq_fit = np.polyfit(heights,y,1) # coefs of integral worth curve equation
-            x_fit  = np.linspace(heights[0],heights[-1],heights[-1]-heights[0]+1)
-            y_fit  = np.polyval(eq_fit,x_fit)
-            
-            ax.plot(x_fit, y_fit, label=f'{self.rcty_label.capitalize()}',
+            # plot fit curve - replace 'y_fit' with 'spl(heights)' to plot smooth curve that connects-the-dots
+            ax.plot(heights, y_fit, 
+                    label=r'{}, {}, $R^2$={}, $\Sigma$={}'.format(
+                        self.rcty_label.capitalize(), eq_fit_str, r2_str, sd_str),
                     color=LINE_COLORS[self.rcty_type], linestyle=LINE_STYLES[self.rcty_type], linewidth=LINEWIDTH)
-            ax.legend(ncol=3, loc='lower center')
+            ax.legend(ncol=3, loc='lower right')
 
             """
-            Integral worth plot
+            reactivity plot
             """
             ax = axs[1]            
 
@@ -230,36 +267,67 @@ class Reactivity(MCNP_File):
                 y     = df_rho[f"dollars"].tolist()
                 y_unc = df_rho[f"dollars unc"].tolist()
 
-            eq_fit = np.polyfit(heights,y,1) # coefs of integral worth curve equation
-            y_fit  = np.polyval(eq_fit,x_fit)
-            
             # Data points with error bars
-            heights
             ax.errorbar(heights, y, yerr=y_unc,
-                        marker=MARKER_STYLES[self.rcty_type],ls="none",
-                        color=LINE_COLORS[self.rcty_type], elinewidth=2, capsize=3, capthick=2)
+                        marker=MARKER_STYLES[self.rcty_type], markersize=MARKER_SIZE,
+                        color=LINE_COLORS[self.rcty_type],
+                        ls="none", elinewidth=2, capsize=3, capthick=2)
+
+            # fit data to polynomial
+            if self.rcty_type in ['void']:
+                eq_fit = find_poly_reg(heights,y,2)['polynomial'] # Utilities.py
+                r2 = find_poly_reg(heights,y,2)['r-squared'] # Utilities.py
+                eq_fit_str = 'y= -{:.1f}$x^2$ +{:.1f}$x$ {:.1f}'.format(np.abs(eq_fit[0]), eq_fit[1], eq_fit[2])
+            else:
+                eq_fit = find_poly_reg(heights,y,1)['polynomial'] # Utilities.py
+                r2 = find_poly_reg(heights,y,1)['r-squared'] # Utilities.py
+                eq_fit_str = 'y= {:.2e}$x$ {:.2e}'.format(np.abs(eq_fit[0]), eq_fit[1])
+
+            sd = np.average(np.abs(np.polyval(eq_fit, heights) - y))
+            r2_str = '{:.2f}'.format(r2)
+            sd_str = '{:.2e}'.format(sd)
+
+            y_fit  = np.polyval(eq_fit,heights)
+            # spl = UnivariateSpline(heights, y) # use scipy spline to auto-fit smooth curve instead of guess-checking polyfit order
             
-            # The standard least squaures fit curve
-            ax.plot(x_fit, y_fit, label=f'{self.rcty_label.capitalize()}',
+            # plot fit curve - replace 'y_fit' with 'spl(heights)' to plot smooth curve that connects-the-dots
+            ax.plot(heights, y_fit, 
+                    label=r'{}, {}, $R^2$={}, $\Sigma$={}'.format(
+                        self.rcty_label.capitalize(), eq_fit_str, r2_str, sd_str),
                     color=LINE_COLORS[self.rcty_type], linestyle=LINE_STYLES[self.rcty_type], linewidth=LINEWIDTH)
-            ax.legend(ncol=3, loc='lower center')
+            ax.legend(ncol=3, loc='lower right')
 
             """
-            Differential worth plot
+            reactivity coefficient plot
             """
             ax = axs[2]
-            eq_fit = np.polyder(eq_fit) # coefs of differential worth curve equation
-            y_fit = np.polyval(eq_fit,x_fit)
+            if self.rcty_type in ['void']:
+                eq_fit = -1*np.polyder(eq_fit) # coefs of differential worth curve equation
+            else:
+                eq_fit = np.polyder(eq_fit) # coefs of differential worth curve equation
+
+            #eq_void = find_poly_reg(x, y_void, 1)['polynomial']
+            #r2_void = find_poly_reg(x, y_void, 1)['r-squared']
+            #sd_void = np.average(np.abs(np.polyval(np.polyfit(x, y_void, 1), x) - y_void))
+            y_fit = np.polyval(eq_fit,heights)
             
             # The differentiated curve.
             # The errorbar method allows you to add errors to the differential plot too.
-            ax.errorbar(x_fit, y_fit,
-                        label=f'{self.rcty_label.capitalize()}',
+            ax.errorbar(heights, y_fit, label="meep",
+                        #label=r'{} y={:.2f}$x${:.2f},  $\bar x$={:.3f}'.format(
+                        #self.rcty_label.capitalize(), np.abs(eq_fit[0]), 
+                        #eq_fit[1], np.mean(y_fit)),
                         color=LINE_COLORS[self.rcty_type], linestyle=LINE_STYLES[self.rcty_type], 
                         linewidth=LINEWIDTH,capsize=3,capthick=2)
-            ax.legend(ncol=3, loc='lower center')
+            ax.legend(ncol=3, loc='lower right')
 
-            plt.savefig(self.results_folder+f'/{self.base_filename}_{self.rcty_type}_results_{rho_or_dollars}.png', bbox_inches = 'tight', pad_inches = 0.1, dpi=320)
+            try:
+                figure_filepath = self.results_folder+f'/{self.base_filename}_{self.rcty_type}_results_{rho_or_dollars}.png'
+                plt.savefig(figure_filepath, bbox_inches = 'tight', pad_inches = 0.1, dpi=320)
+            except:
+                print(f'\n   fatal. could not save plot to {figure_filepath}')
+                print(f'   fatal. you probably have the file open, or that directory does not exist \n')
+                sys.exit()
 
 
 

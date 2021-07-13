@@ -175,7 +175,7 @@ def ReedAutomatedNeutronicsEngine(argv):
 
         elif run_type == 'rcty':
             rod_heights_dict = {'safe': 100, 'shim': 100, 'reg': 100}
-            """
+            #"""
             # moderator (h2o) temperature coefficient
             rcty_type = 'mod'
             for h2o_temp_C in H2O_MOD_TEMPS_C:
@@ -193,9 +193,9 @@ def ReedAutomatedNeutronicsEngine(argv):
                     current_run.run_mcnp() 
                     current_run.move_mcnp_files() # keep as separate step from run_mcnp()
                 current_run.process_rcty_keff()
-                current_run.process_rcty_rho()
+            current_run.process_rcty_rho() # keep outside 'for' loop-- needs all keffs before calculating rho
             current_run.process_rcty_coef()
-            """
+            #"""
 
             # void coefficient
             rcty_type = 'void'
@@ -214,7 +214,7 @@ def ReedAutomatedNeutronicsEngine(argv):
                     current_run.run_mcnp() 
                     current_run.move_mcnp_files() # keep as separate step from run_mcnp()
                 current_run.process_rcty_keff()
-                current_run.process_rcty_rho()
+            current_run.process_rcty_rho() # keep outside 'for' loop-- needs all keffs before calculating rho
             current_run.process_rcty_coef()
 
             """
