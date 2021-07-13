@@ -149,7 +149,7 @@ def ReedAutomatedNeutronicsEngine(argv):
     rane_cwd = os.getcwd()
     base_file_name = "ReedCore49.i" #find_base_file(rane_cwd)
     for run_type in run_types:
-        print(f"\n Currently calculating: {RUN_DESCRIPTIONS_DICT[run_type]}.")
+        print(f"\n Currently calculating: {RUN_DESCRIPTIONS_DICT[run_type]}")
 
 
 
@@ -175,7 +175,7 @@ def ReedAutomatedNeutronicsEngine(argv):
 
         elif run_type == 'rcty':
             rod_heights_dict = {'safe': 100, 'shim': 100, 'reg': 100}
-            #"""
+            """
             # moderator (h2o) temperature coefficient
             rcty_type = 'mod'
             for h2o_temp_C in H2O_MOD_TEMPS_C:
@@ -195,7 +195,7 @@ def ReedAutomatedNeutronicsEngine(argv):
                 current_run.process_rcty_keff()
             current_run.process_rcty_rho() # keep outside 'for' loop-- needs all keffs before calculating rho
             current_run.process_rcty_coef()
-            #"""
+            
 
             # void coefficient
             rcty_type = 'void'
@@ -218,24 +218,26 @@ def ReedAutomatedNeutronicsEngine(argv):
             current_run.process_rcty_coef()
 
             """
+            #"""
             # fuel temperature coefficient
+            print("cat")
             rcty_type = 'fuel'
             for u235_temp_K in list(U235_TEMPS_K_MAT_DICT.keys()):
-                for fuel_temp_K in list():
-                    if check_mcnp:
-                        current_run = MCNP_InputFile(run_type,
-                                                     tasks,
-                                                     template_filepath=None,
-                                                     core_number=49,
-                                                     rod_heights=rod_heights_dict,
-                                                     rcty_type=rcty_type,
-                                                     h2o_temp_K=h2o_temp_K,
-                                                     uzrh_temp_K=u235_temp_K,
-                                                     )
-                        current_run.run_mcnp() 
+                if check_mcnp:
+                    current_run = MCNP_File(run_type,
+                                                 tasks,
+                                                 template_filepath=None,
+                                                 core_number=49,
+                                                 rod_heights=rod_heights_dict,
+                                                 rcty_type=rcty_type,
+                                                 h2o_temp_K=h2o_temp_K,
+                                                 uzrh_temp_K=u235_temp_K,
+                                                 )
+                    print('dog')
+                    current_run.run_mcnp() 
             
 
-            
+            """
             rcty_type = 'void_ct'
             if check_mcnp:
                 current_run = MCNP_InputFile(run_type,
@@ -249,7 +251,7 @@ def ReedAutomatedNeutronicsEngine(argv):
                                              ct_cell_mat=101,
                                              )
                 current_run.run_mcnp() 
-            """
+            #"""
 
         elif run_type == 'CriticalLoading':
             pass
