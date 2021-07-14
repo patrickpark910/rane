@@ -223,7 +223,7 @@ def ReedAutomatedNeutronicsEngine(argv):
             rcty_type = 'fuel'
             for u235_temp_K in list(U235_TEMPS_K_MAT_DICT.keys()):
                 if check_mcnp:
-                    current_run = MCNP_File(run_type,
+                    current_run = Reactivity(run_type,
                                                  tasks,
                                                  template_filepath=None,
                                                  core_number=49,
