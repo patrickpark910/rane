@@ -170,18 +170,18 @@ class MCNP_File:
         """
         self.base_filename = f"{self.template_filepath.split('/')[-1].split('.')[0]}_core{self.core_number}_{run_type}"
         
-        if run_type in ['banked', 'kntc','rodcal']:
+        if self.run_type in ['banked', 'kntc','rodcal']:
             self.input_filename = f"{self.base_filename}"\
                                   f"_a{str(self.parameters['safe_height']).zfill(3)}"\
                                   f"_h{str(self.parameters['shim_height']).zfill(3)}"\
                                   f"_r{str(self.parameters['reg_height']).zfill(3)}.i"
-        elif run_type in ['rcty']:
+        elif self.run_type in ['rcty']:
             if rcty_type == 'mod':
                 var = str(round(self.h2o_temp_K-273.15)).zfill(2) + "C" # ex: 01C, 10C, 20C, etc.
-            elif rcty_type == 'fuel':
-                var = str(round(self.uzrh_temp_K-273.15)).zfill(2) + "C" # ex: 01C, 10C, 20C, etc.
-            elif rcty_type == 'void':
-                var = str(round(self.h2o_density*10)).zfill(2) + "gcc"
+            elif self.rcty_type == 'fuel':
+                var = str(round(self.uzrh_temp_K-273.15)).zfill(4) + "K" # ex: 0001K, 0100K, 2720K, etc.
+            elif self.rcty_type == 'void':
+                var = str(round(self.h2o_density*10)).zfill(2) + "gcc" # ex: 01gcc, 10gcc, 99gcc, etc.
             self.input_filename = f"{self.base_filename}"\
                         f"_{str(self.rcty_type)}{var}"\
                         f"_a{str(self.parameters['safe_height']).zfill(3)}"\
