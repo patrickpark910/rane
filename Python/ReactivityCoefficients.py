@@ -174,7 +174,7 @@ class Reactivity(MCNP_File):
             self.y_axis_label_unit = '°C' # unit to use on y axis label of 2nd & 3rd plots (axs[1], axs[2])
         elif self.rcty_type == 'fuel':
             self.rcty_label   = 'fuel' 
-            self.x_axis_label = 'Temperature (°C), all rods out, 3σ errors'
+            self.x_axis_label = 'Temperature (K), all rods out, 3σ errors'
             self.y_axis_label = 'Fuel temp. coef.'
             self.y_axis_label_unit = '°C'
         elif self.rcty_type == 'void':
@@ -197,9 +197,12 @@ class Reactivity(MCNP_File):
                 if self.rcty_type in ['void']:
                     axs[i].set_xlim([0,1.1])
                     axs[i].xaxis.set_major_locator(MultipleLocator(0.1))
-                else:
+                elif self.rcty_type in ['mod']:
                     axs[i].set_xlim([0,100])
                     axs[i].xaxis.set_major_locator(MultipleLocator(10))
+                elif self.rcty_type in ['mod']:
+                    axs[i].set_xlim([0,2600])
+                    axs[i].xaxis.set_major_locator(MultipleLocator(200))
                 axs[i].autoscale(axis='y')
                 axs[i].grid(b=True, which='major', color='#999999', linestyle='-', linewidth='1')
             
