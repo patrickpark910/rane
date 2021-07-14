@@ -220,7 +220,6 @@ def ReedAutomatedNeutronicsEngine(argv):
             """
             #"""
             # fuel temperature coefficient
-            print("cat")
             rcty_type = 'fuel'
             for u235_temp_K in list(U235_TEMPS_K_MAT_DICT.keys()):
                 if check_mcnp:
@@ -233,6 +232,8 @@ def ReedAutomatedNeutronicsEngine(argv):
                                                  uzrh_temp_K=u235_temp_K,
                                                  )
                     current_run.run_mcnp() 
+                    current_run.move_mcnp_files() # keep as separate step from run_mcnp()
+
             
 
             """
