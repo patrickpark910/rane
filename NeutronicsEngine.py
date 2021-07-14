@@ -233,6 +233,7 @@ def ReedAutomatedNeutronicsEngine(argv):
                                                  )
                     current_run.run_mcnp() 
                     current_run.move_mcnp_files() # keep as separate step from run_mcnp()
+                current_run.process_rcty_keff()
             current_run.process_rcty_rho() # keep outside 'for' loop-- needs all keffs before calculating rho
             current_run.process_rcty_coef()
             
