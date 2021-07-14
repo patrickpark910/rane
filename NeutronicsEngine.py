@@ -230,10 +230,8 @@ def ReedAutomatedNeutronicsEngine(argv):
                                                  core_number=49,
                                                  rod_heights=rod_heights_dict,
                                                  rcty_type=rcty_type,
-                                                 h2o_temp_K=h2o_temp_K,
                                                  uzrh_temp_K=u235_temp_K,
                                                  )
-                    print('dog')
                     current_run.run_mcnp() 
             
 
