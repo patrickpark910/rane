@@ -101,6 +101,9 @@ def ReedAutomatedNeutronicsEngine(argv):
 
         elif run_type.lower() in ['rcty', 'rctvty', 'reactivity', 'ReactivityCoefficients']:
             run_types = ['rcty' if x==run_type else x for x in run_types]
+
+        elif run_type.lower() in ['sdm', 'ShutdownMargin']:
+            run_types = ['sdm' if x==run_type else x for x in run_types]
         
         else: 
             print(f"\n  warning. run type '{run_type}' not recognized")
