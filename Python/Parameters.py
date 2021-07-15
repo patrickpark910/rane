@@ -91,8 +91,8 @@ H2O_MOD_TEMPS_C = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75,
 UZRH_FUEL_TEMPS_K = [77, 250, 294, 600, 900, 1200]
 
 SDM_CONFIGS_DICT = {'allrodsin':{"safe": 0, "shim": 0, "reg": 0},
-                    'safestuck':{"safe": 100, "shim": 0, "reg": 0}
-                    'shimstuck':{"safe": 0, "shim": 100, "reg": 0} # NO SPACES IN KEYS, ex: 'allrodsin', 
+                    'safestuck':{"safe": 100, "shim": 0, "reg": 0},
+                    'shimstuck':{"safe": 0, "shim": 100, "reg": 0}, # NO SPACES IN KEYS, ex: 'allrodsin', 
                     'regstuck':{"safe": 0, "shim": 0, "reg": 100}} # else, input file naming will fail
 
 
