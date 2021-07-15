@@ -221,7 +221,7 @@ def ReedAutomatedNeutronicsEngine(argv):
             """
             # fuel temperature coefficient
             rcty_type = 'fuel'
-            for u235_temp_K in list(U235_TEMPS_K_MAT_DICT.keys()):
+            for u235_temp_K in UZRH_FUEL_TEMPS_K:
                 if check_mcnp:
                     current_run = Reactivity(run_type,
                                                  tasks,
@@ -237,7 +237,7 @@ def ReedAutomatedNeutronicsEngine(argv):
             current_run.process_rcty_rho() # keep outside 'for' loop-- needs all keffs before calculating rho
             current_run.process_rcty_coef()
             
-
+            """
             rcty_type = 'void_ct'
             if check_mcnp:
                 current_run = MCNP_InputFile(run_type,
@@ -249,9 +249,10 @@ def ReedAutomatedNeutronicsEngine(argv):
                                              h2o_density=h2o_density,
                                              rcty_type=rcty_type,
                                              ct_cell_mat=101,
+                                             ct_mat_density=0.001225 # g/cc
                                              )
                 current_run.run_mcnp() 
-            """
+            
 
         elif run_type == 'CriticalLoading':
             pass
@@ -335,6 +336,21 @@ def ReedAutomatedNeutronicsEngine(argv):
                     output_file.process_rod_worth()
             output_file.process_rod_params()
             output_file.plot_rod_worth()
+
+        elif run_type == 'sdm':
+            # calculate shutdown margins with various stuck rods
+            for sdm_config_id in list(SDM_CONFIGS_DICT.keys()):
+                rod_heights_dict = SDM_CONFIGS_DICT[sdm_config_id]
+                if check_mcnp:
+                    current_run = ExcessReactivity(run_type,
+                                                   tasks,
+                                                   rod_heights=rod_heights_dict,
+                                                   rod_config_id=sdm_config_id,
+                                                   )
+                    current_run.run_mcnp()
+                    if not current_run.mcnp_skipped: 
+                        current_run.move_mcnp_files()
+
 
 
 

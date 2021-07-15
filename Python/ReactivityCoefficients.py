@@ -49,7 +49,7 @@ class Reactivity(MCNP_File):
         self.h2o_temp_C  = float('{:.2f}'.format(self.h2o_temp_K - 273.15))
         self.uzrh_temp_C = float('{:.2f}'.format(self.uzrh_temp_K - 273.15))
         if self.rcty_type == 'fuel':
-            self.index_header, self.index_data = 'temp (K)', list(U235_TEMPS_K_MAT_DICT.keys())
+            self.index_header, self.index_data = 'temp (K)', UZRH_FUEL_TEMPS_K
             self.row_val = self.uzrh_temp_K
             self.row_base_val = 294 # 294 K = 20 C is default fuel temp in mcnp
         elif self.rcty_type == 'mod':

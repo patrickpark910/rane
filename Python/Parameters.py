@@ -88,7 +88,12 @@ MOTOR_SPEEDS_DICT = {"safe": 19, "shim": 11, "reg": 24}  # inches/min
 
 H2O_VOID_DENSITIES = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0] # only allowed up to tenths (0.1) digit - else, change input naming scheme
 H2O_MOD_TEMPS_C = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 99] # MUST HAVE differences of >=1 or else input file naming will fail
+UZRH_FUEL_TEMPS_K = [77, 250, 294, 600, 900, 1200]
 
+SDM_CONFIGS_DICT = {'allrodsin':{"safe": 0, "shim": 0, "reg": 0},
+                    'safestuck':{"safe": 100, "shim": 0, "reg": 0}
+                    'shimstuck':{"safe": 0, "shim": 100, "reg": 0} # NO SPACES IN KEYS, ex: 'allrodsin', 
+                    'regstuck':{"safe": 0, "shim": 0, "reg": 100}} # else, input file naming will fail
 
 
 
