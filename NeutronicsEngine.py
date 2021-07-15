@@ -175,7 +175,7 @@ def ReedAutomatedNeutronicsEngine(argv):
 
         elif run_type == 'rcty':
             rod_heights_dict = {'safe': 100, 'shim': 100, 'reg': 100}
-            """
+            # """
             # moderator (h2o) temperature coefficient
             rcty_type = 'mod'
             for h2o_temp_C in H2O_MOD_TEMPS_C:
@@ -217,8 +217,8 @@ def ReedAutomatedNeutronicsEngine(argv):
             current_run.process_rcty_rho() # keep outside 'for' loop-- needs all keffs before calculating rho
             current_run.process_rcty_coef()
 
+            # """
             """
-            #"""
             # fuel temperature coefficient
             rcty_type = 'fuel'
             for u235_temp_K in list(U235_TEMPS_K_MAT_DICT.keys()):
@@ -238,7 +238,6 @@ def ReedAutomatedNeutronicsEngine(argv):
             current_run.process_rcty_coef()
             
 
-            """
             rcty_type = 'void_ct'
             if check_mcnp:
                 current_run = MCNP_InputFile(run_type,
@@ -252,7 +251,7 @@ def ReedAutomatedNeutronicsEngine(argv):
                                              ct_cell_mat=101,
                                              )
                 current_run.run_mcnp() 
-            #"""
+            """
 
         elif run_type == 'CriticalLoading':
             pass
