@@ -103,8 +103,11 @@ def ReedAutomatedNeutronicsEngine(argv):
             run_types = ['rcty' if x==run_type else x for x in run_types]
         
         else: 
-            print(f"\n  Warning. Run type '{run_type}' not recognized.")
+            print(f"\n  warning. run type '{run_type}' not recognized")
             run_types = [x for x in run_types if x != run_type]
+            if len(run_types) <= 0:
+                print(f"\n   fatal. no recognized run types \n")
+                sys.exit()
     
     print("\n RANE will calculate the following:")
     for run_type in run_types:

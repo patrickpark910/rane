@@ -11,7 +11,8 @@ RUN_DESCRIPTIONS_DICT  = {'banked': 'banked rods',
                           'plot': 'plot geometry and take images',
                           'PowerDistribution': 'power distribution (power peaking factors)',
                           'rodcal': 'rod calibration',
-                          'rcty': 'reactivity coefficients'}
+                          'rcty': 'reactivity coefficients',
+                          'sdm': 'shutdown margin'}
 
 """ Constants """
 AMU_U235 = 235.0439299
