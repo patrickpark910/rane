@@ -24,4 +24,4 @@ from plotStyles import *
 
 
 class ExcessReactivity(MCNP_File):
-    
+    pass
