@@ -86,6 +86,10 @@ class Reactivity(MCNP_File):
         """
         df_keff.loc[self.row_val, "keff"] = self.keff
         df_keff.loc[self.row_val, "keff unc"] = self.keff_unc
+
+        # put df in increasing order based on the index column, USE inplace=False
+        df_keff = df_keff.sort_values(by=self.index_header, ascending=True,inplace=False) 
+        
         df_keff.to_csv(self.keff_filepath, encoding='utf8')
 
 
@@ -200,7 +204,7 @@ class Reactivity(MCNP_File):
                 elif self.rcty_type in ['mod']:
                     axs[i].set_xlim([0,100])
                     axs[i].xaxis.set_major_locator(MultipleLocator(10))
-                elif self.rcty_type in ['mod']:
+                elif self.rcty_type in ['fuel']:
                     axs[i].set_xlim([0,2600])
                     axs[i].xaxis.set_major_locator(MultipleLocator(200))
                 axs[i].autoscale(axis='y')
