@@ -32,13 +32,14 @@ class MCNP_File:
                        delete_extensions=['.s'],  # default: '.s'
                        fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
                        rod_heights={'safe': 0, 'shim': 0, 'reg':0}, # used in: all run types
-                       rod_config_id=None,        # used in: sdm, cxs
+                       rod_config_id=None,     # used in: sdm
                        rcty_type=None,         # used in: rcty
                        ct_mat=102,             # used in: rcty, 102 is mat code for light water in reed.template
                        ct_mat_density=None,    #  
                        h2o_temp_K=294,         # used in: rcty, 294 K = 20 C = room temp = default temp in mcnp
                        h2o_density=None,       # used in: rcty, set None to calculate h2o_density from h2o_temp_K
                        uzrh_temp_K=294,        # used in: rcty
+                       add_samarium=True,
                        ):     
 
         """
@@ -68,15 +69,14 @@ class MCNP_File:
 
         # fuel properties
         self.uzrh_temp_K = uzrh_temp_K
+        self.add_samarium = add_samarium
         
         # void properties
         self.ct_mat = ct_mat # default fill with 102 - light water
         self.ct_mat_density = ct_mat_density #
         self.ct_temp_K = 294 # default room temp bc ct will either be water or air
-        
         if str(self.ct_mat) == '102':
             self.ct_temp_K = self.h2o_temp_K
-
         if not ct_mat_density:
             self.ct_mat_density = self.h2o_density # if ct_mat_density is not specified, use self.water density, which will be adjusted for temp
 
@@ -158,34 +158,24 @@ class MCNP_File:
                            'uzrh_temp_MeV':  '{:.6e}'.format(self.uzrh_temp_K * MEV_PER_KELVIN),
                            'zr_temp_MeV':    '{:.6e}'.format(self.uzrh_temp_K * MEV_PER_KELVIN),
                            'ct_temp_MeV':    '{:.6e}'.format(self.ct_temp_K * MEV_PER_KELVIN),
+                           'fuel_mats'  :  self.fuel_mat_cards,
+                           'n_per_cycle':  20000,
+                           'kcode_cycles': 105,
                            }
-
-        self.parameters['fuel_mats']    = self.fuel_mat_cards
-        self.parameters['n_per_cycle']  = {'banked':20000, 
-                                           'kntc':  20000,
-                                           'plot':  20000,
-                                           'rodcal':20000, 
-                                           'rcty':  20000,
-                                           'sdm' :  20000}[self.run_type] 
-        self.parameters['kcode_cycles'] = {'banked':105, 
-                                           'kntc':  205,
-                                           'plot':  105,
-                                           'rodcal':105, 
-                                           'rcty':  105,
-                                           'sdm' :  105}[self.run_type] 
 
         """
         Define input file names and paths
         """
-        self.base_filename = f"{self.template_filepath.split('/')[-1].split('.')[0]}_core{self.core_number}_{run_type}"
+        self.base_filename = f"{self.template_filepath.split('/')[-1].split('.')[0]}_core{self.core_number}"
         
         if self.run_type in ['banked', 'kntc','rodcal']:
-            self.input_filename = f"{self.base_filename}"\
+            self.input_filename = f"{self.base_filename}_{self.run_type}"\
                                   f"_a{str(self.parameters['safe_height']).zfill(3)}"\
                                   f"_h{str(self.parameters['shim_height']).zfill(3)}"\
                                   f"_r{str(self.parameters['reg_height']).zfill(3)}.i"
         elif self.run_type in ['sdm', 'cxs']:
-            self.input_filename = f"{self.base_filename}_{self.rod_config_id}"\
+            self.input_filename = f"{self.base_filename}_{self.run_type}"\
+                                  f"_{self.rod_config_id}"\
                                   f"_a{str(self.parameters['safe_height']).zfill(3)}"\
                                   f"_h{str(self.parameters['shim_height']).zfill(3)}"\
                                   f"_r{str(self.parameters['reg_height']).zfill(3)}.i"
@@ -196,15 +186,15 @@ class MCNP_File:
                 var = str(round(self.uzrh_temp_K-273.15)).zfill(4) + "K" # ex: 0001K, 0100K, 2720K, etc.
             elif self.rcty_type == 'void':
                 var = str(round(self.h2o_density*10)).zfill(2) + "gcc" # ex: 01gcc, 10gcc, 99gcc, etc.
-            self.input_filename = f"{self.base_filename}"\
+            self.input_filename = f"{self.base_filename}_{self.run_type}"\
                         f"_{str(self.rcty_type)}{var}"\
                         f"_a{str(self.parameters['safe_height']).zfill(3)}"\
                         f"_h{str(self.parameters['shim_height']).zfill(3)}"\
                         f"_r{str(self.parameters['reg_height']).zfill(3)}.i"
-        elif run_type == 'invMexp':
+        elif run_type == 'crit':
             pass
         else:
-            self.input_filename = f"{self.base_filename}.i"
+            self.input_filename = f"{self.base_filename}_{self.run_type}.i"
 
         self.input_filepath = f"{self.user_temp_folder}/{self.input_filename}"
         self.output_filename = f"o_{self.input_filename.split('.')[0]}.o"
@@ -267,11 +257,12 @@ class MCNP_File:
         find mat libraries for fuel isotopes 
         """
         mat_list = [[None, U235_TEMPS_K_MAT_DICT, 'U-235'], 
-                     [None, U238_TEMPS_K_MAT_DICT, 'U-238'],
-                     [None, PU239_TEMPS_K_MAT_DICT, 'Pu-239'],
-                     [None, ZR_TEMPS_K_MAT_DICT, 'zirconium'],
-                     [None, H_TEMPS_K_MAT_DICT, 'hydrogen'], # used in fuel mats, NOT when interpolating h mats
-                     [None, O_TEMPS_K_MAT_DICT, 'oxygen'],]  # used in light water mat, EVEN WHEN interpolating h mats
+                    [None, U238_TEMPS_K_MAT_DICT, 'U-238'],
+                    [None, PU239_TEMPS_K_MAT_DICT, 'Pu-239'],
+                    [None, SM149_TEMPS_K_MAT_DICT, 'Sm-149'],
+                    [None, ZR_TEMPS_K_MAT_DICT, 'zirconium'],
+                    [None, H_TEMPS_K_MAT_DICT, 'hydrogen'], # used in fuel mats, NOT when interpolating h mats
+                    [None, O_TEMPS_K_MAT_DICT, 'oxygen'],]  # used in light water mat, EVEN WHEN interpolating h mats
         
         for i in range(0,len(mat_list)):
           try:
@@ -282,9 +273,10 @@ class MCNP_File:
             print(f"\n   comment. {mat_list[i][2]} cross-section (xs) data at {self.uzrh_temp_K} does not exist")
             print(f"   comment.   using closest available xs data at temperature: {closest_temp_K} K\n")
 
-        self.u235_mat_lib, self.u238_mat_lib, self.pu239_mat_lib = mat_list[0][0], mat_list[1][0], mat_list[2][0]
-        self.zr_mat_lib, self.h_mat_lib = mat_list[3][0], mat_list[4][0]
-        self.o_mat_lib = mat_list[5][0]
+        self.u235_mat_lib, self.u238_mat_lib, = mat_list[0][0], mat_list[1][0], 
+        self.pu239_mat_lib, self.sm149_mat_lib = mat_list[2][0], mat_list[3][0]
+        self.zr_mat_lib, self.h_mat_lib = mat_list[4][0], mat_list[5][0]
+        self.o_mat_lib = mat_list[6][0] # KEEP
 
         """
         find mat libraries for light water isotopes
@@ -327,22 +319,21 @@ class MCNP_File:
         self.zr_h_mt_lib, self.h_zr_mt_lib = mt_list[0][0], mt_list[1][0]
 
 
-    def move_mcnp_files(self):
+    def move_mcnp_files(self, output_types_to_move=['.o','.r','.s','.msht']):
+        """ Moves files to appropriate folder.
         """
-        Moves files to appropriate folder.
-        """
+        # move input
         src, dst = self.user_temp_folder, self.inputs_folder
         shutil.move(self.input_filepath, os.path.join(dst, self.input_filename))
 
+        # move outputs
         output_file = f"{self.output_filename.split('.')[0]}" # general output filename without extension
         dst = self.outputs_folder
 
-        if self.run_type in ['banked', 'rodcal', 'rcty']:
-            output_types_to_move = ['.o'] # ,'.r','.s']
+        if self.run_type in ['banked', 'rodcal', 'rcty','sdm']:
+            output_types_to_move = ['.o']
         elif self.run_type == 'plot':
             output_types_to_move = ['.ps']
-        else:
-            output_types_to_move = ['.o','.r','.s','.msht']
 
         if not self.mcnp_skipped:
             for extension in output_types_to_move:
@@ -415,25 +406,39 @@ class MCNP_File:
         With result_type = None, the list is one entry in the new mass_fracs_df.
         With result_type = 'expand', each element of the list is separated into different columns
         """
-        mass_fracs_df = burnup_df.apply(get_mass_fracs, axis=1, result_type='expand')
+        mass_fracs_df = burnup_df.apply(get_mass_fracs, axis=1, result_type='expand') # Utilities.py
 
         # Rename columns to their respective variable names
-        mass_fracs_df.columns = ['fe_id', 'g_U235', 'g_U238', 'g_Pu239', 'g_Zr', 'g_H',
-                                 'a_U235', 'a_U238', 'a_Pu239', 'a_Zr', 'a_H']
+        mass_fracs_df.columns = ['fe_id', 'g_U235', 'g_U238', 'g_Pu239', 'g_Sm149', 'g_Zr', 'g_H',
+                                 'a_U235', 'a_U238', 'a_Pu239', 'a_Sm149', 'a_Zr', 'a_H'] # keep order as get_mass_fracs() output in Utilities.py
 
         fuel_mat_cards = f"c materials auto-generated from '{fuel_wb_name}'"
 
-        for i in range(0,len(mass_fracs_df)):
-            fe_id = int(str(mass_fracs_df.loc[i,'fe_id'])[:4]) # truncates '10705' to '1070'
-            fuel_mat_cards += f"\nc"
-            fuel_mat_cards += f"\nm{fe_id}    {self.u235_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_U235'])} $ u-235 {round(mass_fracs_df.loc[i,'g_U235'],6):.6f} g"
-            fuel_mat_cards += f"\n         {self.u238_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_U238'])} $ u-238 {round(mass_fracs_df.loc[i,'g_U238'],6):.6f} g"
-            fuel_mat_cards += f"\n         {self.pu239_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_Pu239'])} $ pu-239 {round(mass_fracs_df.loc[i,'g_Pu239'],6):.6f} g"
-            fuel_mat_cards += f"\n         {self.zr_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_Zr'])} $ zr {round(mass_fracs_df.loc[i,'g_Zr'],6):.6f} g"
-            fuel_mat_cards += f"\n          {self.h_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_H'])} $ h {round(mass_fracs_df.loc[i,'g_H'],6):.6f} g"
-            fuel_mat_cards += f"\nmt{fe_id} {self.h_zr_mt_lib} {self.zr_h_mt_lib}"
-            fuel_mat_cards += f"\nc "
-            fuel_mat_cards += f"\nc "
+        if self.add_samarium:
+            for i in range(0,len(mass_fracs_df)):
+                fe_id = int(str(mass_fracs_df.loc[i,'fe_id'])[:4]) # truncates '10705' to '1070'
+                fuel_mat_cards += f"\nc" \
+                f"\nm{fe_id}    {self.u235_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_U235'])} $ u-235 {round(mass_fracs_df.loc[i,'g_U235'],6):.6f} g" \
+                f"\n         {self.u238_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_U238'])} $ u-238 {round(mass_fracs_df.loc[i,'g_U238'],6):.6f} g" \
+                f"\n         {self.pu239_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_Pu239'])} $ pu-239 {round(mass_fracs_df.loc[i,'g_Pu239'],6):.6f} g" \
+                f"\n         {self.sm149_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_Sm149'])} $ sm-149 {round(mass_fracs_df.loc[i,'g_Sm149'],6):.6f} g" \
+                f"\n         {self.zr_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_Zr'])} $ zr {round(mass_fracs_df.loc[i,'g_Zr'],6):.6f} g" \
+                f"\n          {self.h_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_H'])} $ h {round(mass_fracs_df.loc[i,'g_H'],6):.6f} g" \
+                f"\nmt{fe_id} {self.h_zr_mt_lib} {self.zr_h_mt_lib}" \
+                f"\nc " \
+                f"\nc "
+        else:
+            for i in range(0,len(mass_fracs_df)):
+                fe_id = int(str(mass_fracs_df.loc[i,'fe_id'])[:4]) # truncates '10705' to '1070'
+                fuel_mat_cards += f"\nc" \
+                f"\nm{fe_id}    {self.u235_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_U235'])} $ u-235 {round(mass_fracs_df.loc[i,'g_U235'],6):.6f} g" \
+                f"\n         {self.u238_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_U238'])} $ u-238 {round(mass_fracs_df.loc[i,'g_U238'],6):.6f} g" \
+                f"\n         {self.pu239_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_Pu239'])} $ pu-239 {round(mass_fracs_df.loc[i,'g_Pu239'],6):.6f} g" \
+                f"\n         {self.zr_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_Zr'])} $ zr {round(mass_fracs_df.loc[i,'g_Zr'],6):.6f} g" \
+                f"\n          {self.h_mat_lib} {'{:.6e}'.format(mass_fracs_df.loc[i,'a_H'])} $ h {round(mass_fracs_df.loc[i,'g_H'],6):.6f} g" \
+                f"\nmt{fe_id} {self.h_zr_mt_lib} {self.zr_h_mt_lib}" \
+                f"\nc " \
+                f"\nc "
 
         self.fuel_mat_cards = fuel_mat_cards
 

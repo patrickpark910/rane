@@ -3,7 +3,7 @@ import sys
 import shutil
 import argparse
 
-sys.path.insert(0, "./Python")
+sys.path.insert(0, "./Source/Python")
 from Parameters import *
 from MCNP_File import *
 # from Coef_Mod import *
@@ -13,7 +13,7 @@ from Kinetics import *
 from ReactivityCoefficients import *
 # from FuelMaterials import *
 from RodCalibration import *
-from CXSandSDM import *
+from ShutdownMargin import *
 from plotStyles import *
 
 """
@@ -260,7 +260,7 @@ def ReedAutomatedNeutronicsEngine(argv):
                 current_run.run_mcnp() 
             
 
-        elif run_type == 'CriticalLoading':
+        elif run_type == 'crit':
             pass
             fuel_to_remove = [] 
             while len(fuel_to_remove)==0:
@@ -278,9 +278,6 @@ def ReedAutomatedNeutronicsEngine(argv):
                         print(f"\n  Warning. There is no fuel element in core position {c}.")
 
             CriticalLoading(rane_cwd, base_file_path=base_file_name, check_mcnp=check_mcnp, tasks=tasks, fuel_to_remove=fuel_to_remove)
-
-        elif run_type == 'FuelMaterials':
-            pass
 
         elif run_type == 'kntc':
             rod_heights_dict = {'safe': 100, 'shim': 100, 'reg': 100}
@@ -325,37 +322,37 @@ def ReedAutomatedNeutronicsEngine(argv):
                 for rod_height in ROD_CAL_HEIGHTS:
                     rod_heights_dict = {'safe': ROD_CAL_BANK_HEIGHT, 'shim': ROD_CAL_BANK_HEIGHT, 'reg': ROD_CAL_BANK_HEIGHT}
                     rod_heights_dict[rod] = rod_height
-                    if check_mcnp:
-                        current_run = MCNP_InputFile(run_type,
-                                                     tasks,
-                                                     template_filepath=None,
-                                                     core_number=49,
-                                                     rod_heights=rod_heights_dict,
-                                                     )
-                        current_run.run_mcnp() 
-                        if not current_run.mcnp_skipped: 
-                            current_run.move_mcnp_files()
-                    output_file = RodCalibration(run_type, 
+                    
+                    current_run = RodCalibration(run_type,
+                                                 tasks,
+                                                 template_filepath=None,
+                                                 core_number=49,
                                                  rod_heights=rod_heights_dict,
-                                                 rod_being_calibrated=rod
+                                                 rod_config_id=rod,
                                                  )
-                    output_file.process_rod_worth()
-            output_file.process_rod_params()
-            output_file.plot_rod_worth()
+                    if check_mcnp:
+                        current_run.run_mcnp() 
+                        current_run.move_mcnp_files()
+                    current_run.extract_keff()
+                    current_run.process_rod_worth()
+            current_run.process_rod_params()
+            current_run.plot_rod_worth()
 
         elif run_type == 'sdm':
             # calculate shutdown margins with various stuck rods
             for sdm_config_id in list(SDM_CONFIGS_DICT.keys()):
-                rod_heights_dict = SDM_CONFIGS_DICT[sdm_config_id]
+                rod_heights_dict = SDM_CONFIGS_DICT[sdm_config_id]                
+                current_run = ShutdownMargin(run_type,
+                                         tasks,
+                                         rod_heights=rod_heights_dict,
+                                         rod_config_id=sdm_config_id,
+                                         )
                 if check_mcnp:
-                    current_run = ExcessReactivity(run_type,
-                                                   tasks,
-                                                   rod_heights=rod_heights_dict,
-                                                   rod_config_id=sdm_config_id,
-                                                   )
                     current_run.run_mcnp()
-                    if not current_run.mcnp_skipped: 
-                        current_run.move_mcnp_files()
+                    current_run.move_mcnp_files()
+                current_run.extract_keff()
+                current_run.process_sdm()
+
 
 
 

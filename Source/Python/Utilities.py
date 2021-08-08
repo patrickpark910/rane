@@ -2,6 +2,37 @@ from Parameters import *
 import numpy as np
 import multiprocessing
 
+RANE_INTRO = "\n\n      _/_/_/         _/_/_/       _/      _/     _/_/_/_/_/\n    _/     _/     _/      _/     _/_/    _/     _/\n   _/_/_/_/      _/_/_/_/_/     _/  _/  _/     _/_/_/_/_/\n  _/   _/       _/      _/     _/    _/_/     _/\n _/     _/     _/      _/     _/      _/     _/_/_/_/_/\n\n"
+RANE_INSTRUCTIONS_SHORT = "Usage: NeutronicsEngine.py -r <run_type> -t <tasks> -m <run mcnp>"
+RANE_INSTRUCTIONS_LONG = "Instructions for Reed Automated Neutronics Engine"
+RUN_DESCRIPTIONS_DICT  = {'banked': 'banked rods', 
+                          'Coef_Mod': 'moderator temperature coefficient',
+                          'Coef_PNTC': 'fuel temperature coefficient (pntc)',
+                          'Coef_Void': 'void coefficient',
+                          'CriticalLoading': 'critical loading experiment',
+                          'FuelMaterials': 'fuel material cards',
+                          'kntc': 'kinetics parameters',
+                          'plot': 'plot geometry and take images',
+                          'PowerDistribution': 'power distribution (power peaking factors)',
+                          'rodcal': 'rod calibration',
+                          'rcty': 'reactivity coefficients',
+                          'sdm': 'shutdown margin'}
+
+""" Constants """
+AMU_SM149 = 148.917192
+AMU_U235 = 235.043930
+AMU_U238 = 238.050788
+AMU_PU239 = 239.052163
+AMU_ZR = 91.224
+AMU_H = 1.00794
+AVO = 6.022e23 # avogadro's number
+RATIO_HZR = 1.575 # TS allows 1.55 to 1.60. This is an ATOM ratio
+BETA_EFF = 0.0075
+CM_PER_INCH = 2.54
+CM_PER_PERCENT_HEIGHT = 0.38
+MEV_PER_KELVIN = 8.617328149741e-11
+REACT_ADD_RATE_LIMIT_DOLLARS = 0.16
+
 # From LA-UR-13-21822
 U235_TEMPS_K_MAT_DICT = {294: '92235.80c', 600: '92235.81c', 900: '92235.82c', 1200: '92235.83c',
                   0.1: '92235.85c', 250: '92235.86c', 77: '92235.67c'} #, 2500: '92235.84c', 3000: '92235.68c'}
@@ -9,6 +40,8 @@ U238_TEMPS_K_MAT_DICT = {294: '92238.80c', 600: '92238.81c', 900: '92238.82c', 1
                   2500: '92238.84c', 0.1: '92238.85c', 250: '92238.86c', 77: '92238.67c', 3000: '92238.68c'}
 PU239_TEMPS_K_MAT_DICT = {294: '94239.80c', 600: '94239.81c', 900: '94239.82c', 1200: '94239.83c',
                    2500: '94239.84c', 0.1: '94239.85c', 250: '94239.86c', 77: '94239.67c', 3000: '94239.68c'}
+SM149_TEMPS_K_MAT_DICT = {294: '62149.80c', 600: '62149.81c', 900: '62149.82c', 1200: '62149.83c',
+                   2500: '62149.84c', 0.1: '62149.85c', 250: '62149.86c',}
 ZR_TEMPS_K_MAT_DICT = {294: '40000.66c', 300: '40000.56c', 587: '40000.58c'}
 
 H_TEMPS_K_MAT_DICT = {294: '1001.80c', 600: '1001.81c', 900: '1001.82c', 1200: '1001.83c', 2500: '1001.84c',
@@ -50,7 +83,7 @@ def h2o_temp_K_interpolate_mat(h2o_temp_K):
       # print(T, K)
       if T == K:
         h2o_mat_lib_1, h2o_at_frac_1 = H_TEMPS_K_MAT_DICT[T], 2
-        h2o_mats_interpolated = f"{h2o_mat_lib_1}  {'{:.12f}'.format(h2o_at_frac_1)}"
+        h2o_mats_interpolated = f"{h2o_mat_lib_1}  {'{:.6f}'.format(h2o_at_frac_1)}"
         return h2o_mats_interpolated
 
       elif T < K:
@@ -65,7 +98,7 @@ def h2o_temp_K_interpolate_mat(h2o_temp_K):
 
     h2o_at_frac_2 = 2 * ((np.sqrt(K) - np.sqrt(T_1))/(np.sqrt(T_2) - np.sqrt(T_1)))
     h2o_at_frac_1 = 2 - h2o_at_frac_2
-    h2o_mats_interpolated = f"{h2o_mat_lib_1} {'{:.12f}'.format(h2o_at_frac_1)}    {h2o_mat_lib_2} {'{:.12f}'.format(h2o_at_frac_2)}"
+    h2o_mats_interpolated = f"{h2o_mat_lib_1} {'{:.6f}'.format(h2o_at_frac_1)}    {h2o_mat_lib_2} {'{:.6f}'.format(h2o_at_frac_2)}"
 
     return h2o_mats_interpolated
 
@@ -92,21 +125,37 @@ def get_tasks():
     return tasks  # Integer between 1 and total number of cores available.
 
 def get_mass_fracs(row):
+    """ get_mass_fracs
+    g = grams, a = number of atoms
+    """
+
+    # read from spreadsheet row
     fe_id = row['I']
     g_Pu239 = row['V']
     g_U = row['W']
     g_U235 = row['X']
+
+    # plutonium
+    a_Pu239 = g_Pu239 / AMU_PU239 * AVO
+
+    # uranium
     g_U238 = g_U - g_U235 # We assume all the U is either U-235 or U-238.
     g_U_total = g_Pu239 + g_U235 + g_U238 # should be <= 8.5% of total weight (mass) of FE
-    g_ZrH_total = g_U_total/ 8.5 * 91.5 # Assume rest of FE mass of ZrH
-    a_Pu239 = g_Pu239 / AMU_PU239 * AVO
     a_U235 = g_U235 / AMU_U235 * AVO
-    a_U238 = g_U238 / AMU_U238 * AVO
+    a_U238 = g_U238 / AMU_U238 * AVO   
+
+    # samarium
+    a_Sm149 = a_U235 / 6880 # from Eq. 3 in U.S. Patent 2843539 
+    g_Sm149 = a_Sm149 / AVO * AMU_SM149
+
+    # zirconium hydride
+    g_ZrH_total = g_U_total/ 8.5 * (100-8.5) # assume rest of FE mass is ZrH, do not factor in Sm-149 bc not present in fresh fuel construction
     a_Zr = g_ZrH_total/(AMU_ZR/AVO + RATIO_HZR*AMU_H/AVO)
     a_H = RATIO_HZR * a_Zr
     g_Zr = a_Zr * AMU_ZR / AVO
     g_H = a_H * AMU_H / AVO
-    return fe_id, g_U235, g_U238, g_Pu239, g_Zr, g_H, a_U235, a_U238, a_Pu239, a_Zr, a_H
+
+    return fe_id, g_U235, g_U238, g_Pu239, g_Sm149, g_Zr, g_H, a_U235, a_U238, a_Pu239, a_Sm149, a_Zr, a_H
 
 
 def find_h2o_temp_K_density(K):

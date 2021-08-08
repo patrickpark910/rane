@@ -54,8 +54,8 @@ class RodCalibration(MCNP_File):
             df_keff = pd.DataFrame(ROD_CAL_HEIGHTS, columns=["height (%)"])
             df_keff.set_index('height (%)', inplace=True)
              
-        df_keff.loc[self.rod_heights_dict[self.rod_being_calibrated], self.rod_being_calibrated] = self.keff
-        df_keff.loc[self.rod_heights_dict[self.rod_being_calibrated], self.rod_being_calibrated+" unc"] = self.keff_unc
+        df_keff.loc[self.rod_heights_dict[self.rod_config_id], self.rod_config_id] = self.keff
+        df_keff.loc[self.rod_heights_dict[self.rod_config_id], self.rod_config_id+" unc"] = self.keff_unc
         df_keff.to_csv(self.keff_filepath, encoding='utf8')
        
 

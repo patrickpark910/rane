@@ -1,32 +1,4 @@
-RANE_INTRO = "\n\n      _/_/_/         _/_/_/       _/      _/     _/_/_/_/_/\n    _/     _/     _/      _/     _/_/    _/     _/\n   _/_/_/_/      _/_/_/_/_/     _/  _/  _/     _/_/_/_/_/\n  _/   _/       _/      _/     _/    _/_/     _/\n _/     _/     _/      _/     _/      _/     _/_/_/_/_/\n\n"
-RANE_INSTRUCTIONS_SHORT = "Usage: NeutronicsEngine.py -r <run_type> -t <tasks> -m <run mcnp>"
-RANE_INSTRUCTIONS_LONG = "Instructions for Reed Automated Neutronics Engine"
-RUN_DESCRIPTIONS_DICT  = {'banked': 'banked rods', 
-                          'Coef_Mod': 'moderator temperature coefficient',
-                          'Coef_PNTC': 'fuel temperature coefficient (pntc)',
-                          'Coef_Void': 'void coefficient',
-                          'CriticalLoading': 'critical loading experiment',
-                          'FuelMaterials': 'fuel material cards',
-                          'kntc': 'kinetics parameters',
-                          'plot': 'plot geometry and take images',
-                          'PowerDistribution': 'power distribution (power peaking factors)',
-                          'rodcal': 'rod calibration',
-                          'rcty': 'reactivity coefficients',
-                          'sdm': 'shutdown margin'}
 
-""" Constants """
-AMU_U235 = 235.0439299
-AMU_U238 = 238.05078826
-AMU_PU239 = 239.0521634
-AMU_ZR = 91.224
-AMU_H = 1.00794
-AVO = 6.022e23
-RATIO_HZR = 1.575 # TS allows 1.55 to 1.60. This is an ATOM ratio
-BETA_EFF = 0.0075
-CM_PER_INCH = 2.54
-CM_PER_PERCENT_HEIGHT = 0.38
-MEV_PER_KELVIN = 8.617328149741e-11
-REACT_ADD_RATE_LIMIT_DOLLARS = 0.16
 
 """ SETUP """
 PYTHON_FOLDER_NAME = "Python"
@@ -91,10 +63,15 @@ H2O_VOID_DENSITIES = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0] # only a
 H2O_MOD_TEMPS_C = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 99] # MUST HAVE differences of >=1 or else input file naming will fail
 UZRH_FUEL_TEMPS_K = [77, 250, 294, 600, 900, 1200]
 
+"""
+- if you add/change config key (ex:'allrodsin') then also change in ShutdownMargin.py 
+- NO SPACES IN KEYS, ex: 'allrodsin', else, input file naming will fail
+"""
 SDM_CONFIGS_DICT = {'allrodsin':{"safe": 0, "shim": 0, "reg": 0},
-                    'safestuck':{"safe": 100, "shim": 0, "reg": 0},
-                    'shimstuck':{"safe": 0, "shim": 100, "reg": 0}, # NO SPACES IN KEYS, ex: 'allrodsin', 
-                    'regstuck':{"safe": 0, "shim": 0, "reg": 100}} # else, input file naming will fail
+                    'safeout':{"safe": 100, "shim": 0, "reg": 0},
+                    'shimout':{"safe": 0, "shim": 100, "reg": 0}, 
+                    'regout':{"safe": 0, "shim": 0, "reg": 100},
+                    'allrodsout':{"safe": 100, "shim": 100, "reg": 100}} 
 
 
 
