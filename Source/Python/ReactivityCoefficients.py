@@ -33,10 +33,10 @@ class Reactivity(MCNP_File):
         """
         Output results filepaths
         """
-        self.keff_filename = f'{self.base_filename}_{self.rcty_type}_keff.csv'
+        self.keff_filename = f'{self.base_filename}_{self.run_type}_keff.csv'
         self.keff_filepath = f"{self.results_folder}/{self.keff_filename}"
 
-        self.params_filename = f'{self.base_filename}_{self.rcty_type}_params.csv'
+        self.params_filename = f'{self.base_filename}_{self.run_type}_params.csv'
         self.params_filepath = f"{self.results_folder}/{self.params_filename}"
 
         print(f'\n processing: {self.output_filename}')
@@ -48,15 +48,15 @@ class Reactivity(MCNP_File):
         """
         self.h2o_temp_C  = float('{:.2f}'.format(self.h2o_temp_K - 273.15))
         self.uzrh_temp_C = float('{:.2f}'.format(self.uzrh_temp_K - 273.15))
-        if self.rcty_type == 'fuel':
+        if self.run_type == 'rcty_fuel':
             self.index_header, self.index_data = 'temp (K)', UZRH_FUEL_TEMPS_K
             self.row_val = self.uzrh_temp_K
             self.row_base_val = 294 # 294 K = 20 C is default fuel temp in mcnp
-        elif self.rcty_type == 'mod':
+        elif self.run_type == 'rcty_modr':
             self.index_header, self.index_data = 'temp (C)', H2O_MOD_TEMPS_C
             self.row_val = self.h2o_temp_C
             self.row_base_val = 20 # 20 C is default h2o temp
-        elif self.rcty_type == 'void':
+        elif self.run_type == 'rcty_void':
             self.index_header, self.index_data = 'density (g/cc)', H2O_VOID_DENSITIES 
             self.row_val = self.h2o_density
             self.row_base_val = 1.0 # 1.0 g/cc is default density
@@ -95,7 +95,7 @@ class Reactivity(MCNP_File):
 
     def process_rcty_rho(self):
 
-        self.rho_filename = f'{self.base_filename}_{self.rcty_type}_rho.csv'
+        self.rho_filename = f'{self.base_filename}_{self.run_type}_rho.csv'
         self.rho_filepath = f"{self.results_folder}/{self.rho_filename}"
 
         df_keff = pd.read_csv(self.keff_filepath, index_col=0)
@@ -171,18 +171,18 @@ class Reactivity(MCNP_File):
         rods = [c for c in df_rho.columns.values.tolist() if "unc" not in c]
         heights = list(df_keff.index.values)
 
-        if self.rcty_type == 'mod':
+        if self.run_type == 'rcty_modr':
             self.rcty_label   = 'moderator' # line label
             self.x_axis_label = 'Temperature (°C), all rods out, 3σ errors' # x axis label
             self.y_axis_label = 'Moderator temp. coef.' # y axis label of 3rd plot (axs[2])
             self.y_axis_label_unit = '°C' # unit to use on y axis label of 2nd & 3rd plots (axs[1], axs[2])
-        elif self.rcty_type == 'fuel':
-            self.rcty_label   = 'fuel' 
+        elif self.run_type == 'rcty_fuel':
+            self.rcty_label   = 'rcty_fuel' 
             self.x_axis_label = 'Temperature (K), all rods out, 3σ errors'
             self.y_axis_label = 'Fuel temp. coef.'
             self.y_axis_label_unit = '°C'
-        elif self.rcty_type == 'void':
-            self.rcty_label   = 'void' 
+        elif self.run_type == 'rcty_void':
+            self.rcty_label   = 'rcty_void' 
             self.x_axis_label = 'Water density (g/cc), all rods out, 3σ errors'
             self.y_axis_label = 'Void coefficient'
             self.y_axis_label_unit = 'g/cc'
@@ -198,13 +198,13 @@ class Reactivity(MCNP_File):
             # linestyle = ['-': solid, '--': dashed, '-.' dashdot, ':': dot]
 
             for i in [0,1,2]:
-                if self.rcty_type in ['void']:
+                if self.run_type in ['rcty_void']:
                     axs[i].set_xlim([0,1.1])
                     axs[i].xaxis.set_major_locator(MultipleLocator(0.1))
-                elif self.rcty_type in ['mod']:
+                elif self.run_type in ['rcty_modr']:
                     axs[i].set_xlim([0,100])
                     axs[i].xaxis.set_major_locator(MultipleLocator(10))
-                elif self.rcty_type in ['fuel']:
+                elif self.run_type in ['rcty_fuel']:
                     axs[i].set_xlim([0,2600])
                     axs[i].xaxis.set_major_locator(MultipleLocator(200))
                 axs[i].autoscale(axis='y')
@@ -236,11 +236,11 @@ class Reactivity(MCNP_File):
             y_unc = df_keff[f"keff unc"].tolist()
             
             ax.errorbar(heights, y, yerr=y_unc,
-                        marker=MARKER_STYLES[self.rcty_type], markersize=MARKER_SIZE,
-                        color=LINE_COLORS[self.rcty_type],
+                        marker=MARKER_STYLES[self.run_type], markersize=MARKER_SIZE,
+                        color=LINE_COLORS[self.run_type],
                         ls="none", elinewidth=2, capsize=3, capthick=2)
                         
-            if self.rcty_type in ['void']:
+            if self.run_type in ['rcty_void']:
                 eq_fit = find_poly_reg(heights,y,2)['polynomial'] # Utilities.py
                 r2 = find_poly_reg(heights,y,2)['r-squared'] # Utilities.py
                 eq_fit_str = 'y= -{:.3f}$x^2$ +{:.3f}$x$ +{:.3f}'.format(np.abs(eq_fit[0]), eq_fit[1], eq_fit[2])
@@ -260,7 +260,7 @@ class Reactivity(MCNP_File):
             ax.plot(heights, y_fit, 
                     label=r'{}, {}, $R^2$={}, $\Sigma$={}'.format(
                         self.rcty_label.capitalize(), eq_fit_str, r2_str, sd_str),
-                    color=LINE_COLORS[self.rcty_type], linestyle=LINE_STYLES[self.rcty_type], linewidth=LINEWIDTH)
+                    color=LINE_COLORS[self.run_type], linestyle=LINE_STYLES[self.run_type], linewidth=LINEWIDTH)
             ax.legend(ncol=3, loc='lower right')
 
             """
@@ -276,12 +276,12 @@ class Reactivity(MCNP_File):
 
             # Data points with error bars
             ax.errorbar(heights, y, yerr=y_unc,
-                        marker=MARKER_STYLES[self.rcty_type], markersize=MARKER_SIZE,
-                        color=LINE_COLORS[self.rcty_type],
+                        marker=MARKER_STYLES[self.run_type], markersize=MARKER_SIZE,
+                        color=LINE_COLORS[self.run_type],
                         ls="none", elinewidth=2, capsize=3, capthick=2)
 
             # fit data to polynomial
-            if self.rcty_type in ['void']:
+            if self.run_type in ['rcty_void']:
                 eq_fit = find_poly_reg(heights,y,2)['polynomial'] # Utilities.py
                 r2 = find_poly_reg(heights,y,2)['r-squared'] # Utilities.py
                 eq_fit_str = 'y= -{:.1f}$x^2$ +{:.1f}$x$ {:.1f}'.format(np.abs(eq_fit[0]), eq_fit[1], eq_fit[2])
@@ -301,14 +301,14 @@ class Reactivity(MCNP_File):
             ax.plot(heights, y_fit, 
                     label=r'{}, {}, $R^2$={}, $\Sigma$={}'.format(
                         self.rcty_label.capitalize(), eq_fit_str, r2_str, sd_str),
-                    color=LINE_COLORS[self.rcty_type], linestyle=LINE_STYLES[self.rcty_type], linewidth=LINEWIDTH)
+                    color=LINE_COLORS[self.run_type], linestyle=LINE_STYLES[self.run_type], linewidth=LINEWIDTH)
             ax.legend(ncol=3, loc='lower right')
 
             """
             reactivity coefficient plot
             """
             ax = axs[2]
-            if self.rcty_type in ['void']:
+            if self.run_type in ['rcty_void']:
                 eq_fit = -1*np.polyder(eq_fit) # coefs of differential worth curve equation
             else:
                 eq_fit = np.polyder(eq_fit) # coefs of differential worth curve equation
@@ -324,12 +324,12 @@ class Reactivity(MCNP_File):
                         #label=r'{} y={:.2f}$x${:.2f},  $\bar x$={:.3f}'.format(
                         #self.rcty_label.capitalize(), np.abs(eq_fit[0]), 
                         #eq_fit[1], np.mean(y_fit)),
-                        color=LINE_COLORS[self.rcty_type], linestyle=LINE_STYLES[self.rcty_type], 
+                        color=LINE_COLORS[self.run_type], linestyle=LINE_STYLES[self.run_type], 
                         linewidth=LINEWIDTH,capsize=3,capthick=2)
             ax.legend(ncol=3, loc='lower right')
 
             try:
-                figure_filepath = self.results_folder+f'/{self.base_filename}_{self.rcty_type}_results_{rho_or_dollars}.png'
+                figure_filepath = self.results_folder+f'/{self.base_filename}_{self.run_type}_results_{rho_or_dollars}.png'
                 plt.savefig(figure_filepath, bbox_inches = 'tight', pad_inches = 0.1, dpi=320)
             except:
                 print(f'\n   fatal. could not save plot to {figure_filepath}')

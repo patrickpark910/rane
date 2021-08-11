@@ -35,14 +35,20 @@ class RodCalibration(MCNP_File):
         self.rho_filename = f'{self.base_filename}_{self.run_type}_rho.csv'
         self.rho_filepath = f"{self.results_folder}/{self.rho_filename}"
 
-        self.params_filename = f'{self.base_filename}_{self.run_type}_params.csv'
-        self.params_filepath = f"{self.results_folder}/{self.params_filename}"
+        if self.run_type in ['bank']:
+            # self.index_header = header of index column, self.index_data = your domain
+            self.index_header, self.index_data = 'height (%)', BANK_HEIGHTS
+        elif self.run_type in ['rodcal']:
+            self.index_header, self.index_data = 'height (%)', ROD_CAL_HEIGHTS
 
         print(f'\n processing: {self.output_filename}')
+        
+        self.extract_keff()
+
         if self.keff_filename in os.listdir(self.results_folder):
             try:
                 df_keff = pd.read_csv(self.keff_filepath, encoding='utf8')
-                df_keff.set_index('height (%)', inplace=True)
+                df_keff.set_index(self.index_header, inplace=True)
             except:
                 print(f"\n   fatal. Cannot read {self.keff_filename}")
                 print(f"   fatal.   Ensure that:")
@@ -51,12 +57,23 @@ class RodCalibration(MCNP_File):
                 sys.exit(2)
         else:
             print(f'\n   comment. creating new results file {self.keff_filepath}')
-            df_keff = pd.DataFrame(ROD_CAL_HEIGHTS, columns=["height (%)"])
-            df_keff.set_index('height (%)', inplace=True)
+            df_keff = pd.DataFrame(self.index_data, columns=[self.index_header])
+            df_keff.set_index(self.index_header, inplace=True)
              
         df_keff.loc[self.rod_heights_dict[self.rod_config_id], self.rod_config_id] = self.keff
         df_keff.loc[self.rod_heights_dict[self.rod_config_id], self.rod_config_id+" unc"] = self.keff_unc
+        
+        # to put df in increasing order based on the index column, USE inplace=False
+        df_keff = df_keff.sort_values(by=self.index_header, ascending=True,inplace=False) 
         df_keff.to_csv(self.keff_filepath, encoding='utf8')
+
+        ''' Drop rows if index is not in self.index_data
+        - Necessary if 'fuel_temperatures_C' or 'h2o_tempeartures_C' or 'h2o_void_percents' is redefined in a new run,
+        as this code overwrites existing keff csv instead of creating new file, so old list values will otherwise stay on the df
+        '''
+        for idx in list(df_keff.index.values):
+            if idx not in self.index_data:
+                df_keff = df_keff.drop([idx])
        
 
         df_rho = df_keff.copy()
@@ -89,18 +106,16 @@ class RodCalibration(MCNP_File):
         df_rho.to_csv(self.rho_filepath, encoding='utf8')
 
     def process_rod_params(self):
-        rho_csv_name = self.rho_filepath
-        params_csv_name = self.params_filepath
 
-        df_rho = pd.read_csv(rho_csv_name,index_col=0)
+        self.params_filename = f'{self.base_filename}_{self.run_type}_params.csv'
+        self.params_filepath = f"{self.results_folder}/{self.params_filename}"
+
+        df_keff = pd.read_csv(self.keff_filepath,index_col=0)
+        df_rho = pd.read_csv(self.rho_filepath,index_col=0)
         rods = [c for c in df_rho.columns.values.tolist() if "unc" not in c]
         heights = df_rho.index.values.tolist()
-        
-        beta_eff = 0.0075
-        react_add_rate_limit = 0.16
-        motor_speed =  ROD_MOTOR_SPEEDS_INCH_PER_MIN # inches/min
-        
-        parameters = ["worth ($)","max worth added per % height ($/%)", "max worth added per height ($/in)", "reactivity addition rate ($/sec)","max motor speed (in/min)"]
+                
+        parameters = ["worth ($)","max worth added per % height ($/%)", "max worth added per height ($/in)"]
         
         # Setup a dataframe to collect rho values
         df_params = pd.DataFrame(columns=parameters) # use lower cases to match 'rods' def above
@@ -108,32 +123,60 @@ class RodCalibration(MCNP_File):
         df_params.set_index("rod",inplace=True)
        
         for rod in rods: # We want to sort our curves by rods
+            
             rho = df_rho[f"{rod}"].tolist()
-            # worth ($) = rho / beta_eff, rho values are in % rho per NIST standard
-            worth = 0.01*float(max(rho)) / float(beta_eff) 
-            df_params.loc[rod,parameters[0]] = worth
+            # worth ($) = rho / BETA_EFF, rho values are in % rho per NIST standard
+            worth = 0.01*float(max(rho)) / float(BETA_EFF) 
+            df_params.loc[rod,"worth ($)"] = worth
             
             int_eq = np.polyfit(heights,rho,3) # coefs of integral worth curve equation
             dif_eq = -1*np.polyder(int_eq)
-            max_worth_rate_percent = 0.01*max(np.polyval(dif_eq,heights)) / float(beta_eff) 
-            df_params.loc[rod,parameters[1]] = max_worth_rate_percent
+            max_worth_rate_percent = 0.01*max(np.polyval(dif_eq,heights)) / float(BETA_EFF) 
+            df_params.loc[rod,"max worth added per % height ($/%)"] = max_worth_rate_percent
             
             max_worth_rate_inch = float(max_worth_rate_percent) / float(CM_PER_PERCENT_HEIGHT) * 2.54
-            df_params.loc[rod,parameters[2]] = max_worth_rate_inch
+            df_params.loc[rod,"max worth added per height ($/in)"] = max_worth_rate_inch
             
-            # Normal rod motion speed is about: 
-            # 19 inches (48.3 cm) per minute for the Safe rod,
-            # 11 inches (27.9 cm) per minute for the Shim rod, 
-            # 24 inches (61.0 cm) per minute for the Reg rod.
-            
-            react_add_rate = motor_speed[rod]*max_worth_rate_inch/60
-            df_params.loc[rod,parameters[3]] = react_add_rate
-            
-            max_motor_speed = 1/max_worth_rate_inch*react_add_rate_limit*60
-            df_params.loc[rod,parameters[4]] = max_motor_speed
+            if self.run_type in ['bank']:
+                keff = df_keff[f"{rod}"].tolist() 
+                keff_unc = df_keff[f"{rod} unc"].tolist() 
+                keff_eq = np.polyfit(heights,keff,3)
+                unc = max(keff_unc)
+                target_keff = 1.0 # + 3 * unc
+                p = np.poly1d(keff_eq)
+                x = (p - target_keff).roots # type(x) = 'numpy.ndarray'
+                ecp = [h for h in x.tolist() if 0<=h<=100]
+                if len(ecp) > 1:
+                    print("\n   fatal. (RodCalibration.py) More than one estimated critical position (ecp) found, check cubic fit to banked keff eq.")
+                    print(f"   fatal. ECPs found: {ecp}")
+                    sys.exit()
+                else:   
+                    ecp = ecp[0]
+                    cxs_ecp = 0.01 * np.polyval(int_eq, ecp) / float(BETA_EFF)
+                    cxs_5W = 0.01 * np.polyval(int_eq, FIVE_W_BANK_HEIGHT) / float(BETA_EFF)
+                    print(f"\n bank estimated critical position: {ecp}")
+                    print(f"\n ecp target keff: {target_keff}")
+                    print(f"\n ecp excess reactivity ($): {cxs_ecp}")
+                    print(f"\n user input 5 W bank height: {FIVE_W_BANK_HEIGHT}")
+                    print(f"\n 5 W excess reactivity ($): {cxs_5W}")
+                    df_params.loc[rod,"estimated critical position (ecp)"] = ecp
+                    df_params.loc[rod,"ecp target keff"] = target_keff
+                    df_params.loc[rod,"ecp cxs"] =  cxs_ecp
+                    df_params.loc[rod,"input 5W bank height"] = FIVE_W_BANK_HEIGHT # Parameters.py
+                    df_params.loc[rod,"5W cxs"] = cxs_5W
+
+            elif self.run_type in ['rodcal']:
+                # Normal rod motion speed is about: 
+                # 19 inches (48.3 cm) per minute for the Safe rod,
+                # 11 inches (27.9 cm) per minute for the Shim rod, 
+                # 24 inches (61.0 cm) per minute for the Reg rod.
+                react_add_rate = ROD_MOTOR_SPEEDS_INCH_PER_MIN[rod]*max_worth_rate_inch/60
+                df_params.loc[rod,"reactivity addition rate ($/sec)"] = react_add_rate
+                max_ROD_MOTOR_SPEEDS_INCH_PER_MIN = 1/max_worth_rate_inch*REACT_ADD_RATE_LIMIT_DOLLARS*60
+                df_params.loc[rod,"max motor speed (in/min)"] = max_ROD_MOTOR_SPEEDS_INCH_PER_MIN
 
         print(f"\n Various rod parameters:\n {df_params}")
-        df_params.to_csv(params_csv_name)
+        df_params.to_csv(self.params_filepath)
 
 
     def plot_rod_worth(self):
@@ -159,17 +202,19 @@ class RodCalibration(MCNP_File):
                 axs[i].autoscale(axis='y')
                 axs[i].grid(b=True, which='major', color='#999999', linestyle='-', linewidth='1')
             
-            axs[0].set_ylabel(r'Effective multiplication factor ($k_{eff}$)')
+            axs[0].set_xlabel(r'Height withdrawn [%] ($3\sigma$ errors)')
+            axs[0].set_ylabel(r'Effective multiplication factor [$k_{eff}$]')
             axs[0].tick_params(axis='both', which='major')
 
-            axs[1].set_ylabel('Integral worth (%Δρ)')
+            axs[1].set_xlabel(r'Height withdrawn [%] ($3\sigma$ errors)')
+            axs[1].set_ylabel('Integral worth [%Δρ]')
             axs[1].tick_params(axis='both', which='major')
             if rho_or_dollars == 'dollars':
-                axs[1].set_ylabel('Integral worth ($)')
+                axs[1].set_ylabel('Integral worth [$]')
                 axs[1].yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
             
-            axs[2].set_xlabel('Height withdrawn (%)')
-            axs[2].set_ylabel('Differential worth (%Δρ/%)')
+            axs[2].set_xlabel(r'Height withdrawn [%] ($3\sigma$ errors)')
+            axs[2].set_ylabel('Differential worth [%Δρ/%]')
             axs[2].tick_params(axis='both', which='major')
             if rho_or_dollars == 'dollars':
                 axs[2].set_ylabel('Differential worth ($/%)')
@@ -186,15 +231,15 @@ class RodCalibration(MCNP_File):
                 y_unc = df_keff[f"{rod} unc"].tolist()
                 
                 ax.errorbar(heights, y, yerr=y_unc,
-                            marker=ROD_MARKER_STYLES[rod], ls="none",
-                            color=ROD_WORTH_COLORS[rod], elinewidth=2, capsize=3, capthick=2)
+                            marker=MARKER_STYLES[rod], ls="none",
+                            color=LINE_COLORS[rod], elinewidth=2, capsize=3, capthick=2)
                 
                 eq_fit = np.polyfit(heights,y,3) # coefs of integral worth curve equation
                 x_fit  = np.linspace(heights[0],heights[-1],heights[-1]-heights[0]+1)
                 y_fit  = np.polyval(eq_fit,x_fit)
                 
                 ax.plot(x_fit, y_fit, label=f'{rod.capitalize()}',
-                        color=ROD_WORTH_COLORS[rod], linestyle=ROD_LINE_STYLES[rod], linewidth=LINEWIDTH)
+                        color=LINE_COLORS[rod], linestyle=LINE_STYLES[rod], linewidth=LINEWIDTH)
                 ax.legend(ncol=3, loc='lower right')
 
                 """
@@ -214,12 +259,12 @@ class RodCalibration(MCNP_File):
                 # Data points with error bars
                 heights
                 ax.errorbar(heights, y, yerr=y_unc,
-                            marker=ROD_MARKER_STYLES[rod],ls="none",
-                            color=ROD_WORTH_COLORS[rod], elinewidth=2, capsize=3, capthick=2)
+                            marker=MARKER_STYLES[rod],ls="none",
+                            color=LINE_COLORS[rod], elinewidth=2, capsize=3, capthick=2)
                 
                 # The standard least squaures fit curve
                 ax.plot(x_fit, y_fit, label=f'{rod.capitalize()}',
-                        color=ROD_WORTH_COLORS[rod], linestyle=ROD_LINE_STYLES[rod], linewidth=LINEWIDTH)
+                        color=LINE_COLORS[rod], linestyle=LINE_STYLES[rod], linewidth=LINEWIDTH)
                 ax.legend(ncol=3, loc='upper right')
 
                 """
@@ -233,9 +278,12 @@ class RodCalibration(MCNP_File):
                 # The errorbar method allows you to add errors to the differential plot too.
                 ax.errorbar(x_fit, y_fit,
                             label=f'{rod.capitalize()}',
-                            color=ROD_WORTH_COLORS[rod], linestyle=ROD_LINE_STYLES[rod], 
+                            color=LINE_COLORS[rod], linestyle=LINE_STYLES[rod], 
                             linewidth=LINEWIDTH,capsize=3,capthick=2)
                 ax.legend(ncol=3, loc='lower center')
 
-            plt.savefig(self.results_folder+f'/{self.base_filename}_results_{rho_or_dollars}.png', bbox_inches = 'tight', pad_inches = 0.1, dpi=320)
+            try:
+                plt.savefig(self.results_folder+f'/{self.base_filename}_results_{rho_or_dollars}.png', bbox_inches = 'tight', pad_inches = 0.1, dpi=320)
+            except:
+                print("\n   fatal. (RodCalibration.py) Cannot save figure, check if you have the file open.")
         

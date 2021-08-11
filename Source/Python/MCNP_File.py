@@ -31,12 +31,11 @@ class MCNP_File:
                        source_folder=f"./Source",
                        delete_extensions=['.s'],  # default: '.s'
                        fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
-                       rod_heights={'safe': 0, 'shim': 0, 'reg':0}, # used in: all run types
+                       rod_heights={'safe': None, 'shim': None, 'reg':None}, # used in: all run types
                        rod_config_id=None,     # used in: sdm
-                       rcty_type=None,         # used in: rcty
                        ct_mat=102,             # used in: rcty, 102 is mat code for light water in reed.template
                        ct_mat_density=None,    #  
-                       h2o_temp_K=294,         # used in: rcty, 294 K = 20 C = room temp = default temp in mcnp
+                       h2o_temp_K=293.15,      # used in: rcty, 293.15 K = 20 C = room temp = default temp in mcnp
                        h2o_density=None,       # used in: rcty, set None to calculate h2o_density from h2o_temp_K
                        uzrh_temp_K=294,        # used in: rcty
                        add_samarium=True,
@@ -55,11 +54,24 @@ class MCNP_File:
         self.username = getpass.getuser()
         self.fuel_filepath = fuel_filepath
         self.source_folder = source_folder
-        self.rcty_type = rcty_type
 
         # rod heights
-        self.rod_heights_dict = rod_heights
         self.rod_config_id = rod_config_id
+        self.rod_heights_dict = rod_heights
+        for rod in ['safe','shim','reg']:
+            if rod not in self.rod_heights_dict.keys():
+                try:
+                    self.rod_heights_dict[rod] = self.rod_heights_dict['bank']
+
+                except:
+                    print("\n   fatal. (MCNP_File.py) failed to set rod heights")
+                    print("   fatal.   check input rod heights in NeutronicsEngine.py, or make sure bank height is defined")
+                    print("   fatal.   current self.rod_heights_dict = " + str(self.rod_heights_dict))
+                    print("   fatal.   if a rod height is not defined, it is programmed to be set to bank height")
+                    print("   fatal.   ex. (input in NeutronicsEngine.py) 'shim':100,'bank':50 --> (MCNP_File.py) 'safe':50,'shim':100,'reg':50,'bank':50") 
+                    print("   fatal.   this makes it clear to RANE if some rods move together in a bank")
+                    sys.exit()
+        print(f"\n   comment. rod heights set to {self.rod_heights_dict}")
 
         # light water moderator properties - all mat and mt libs defined in functions below
         self.h2o_temp_K = h2o_temp_K
@@ -94,18 +106,18 @@ class MCNP_File:
             self.read_fuel_data()
         except:
             print(f"\n   warning. fuel file not found or recognized at {self.read_fuel_data()}")
-            print(f"   warning.   trying ./Source/Fuel/Core Burnup History 20201117.xlsx\n")
+            print(f"   warning.   trying ./Source/Fuel/Core Burnup History 20201117.xlsx")
             self.fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx"
             try:
               self.read_fuel_data()
             except:
-              print(f"\n   fatal. fuel file not found or recognized at {self.read_fuel_data()}\n")
+              print(f"\n   fatal. fuel file not found or recognized at {self.read_fuel_data()}")
               sys.exit()
 
         # add tallies
         # add tally string to end of input file (to allow substitution into tally definition)
-        if run_type in ['flux','ppf']:
-            with open(f'./src/tallies/{run_type}.tal', 'r') as tally_file:
+        if run_type in ['flux','powr']:
+            with open(f'{self.source_folder}/tallies/{self.run_type}.tal', 'r') as tally_file:
                 tally_str = tally_file.read()        
         else:
             tally_str = ''
@@ -159,42 +171,44 @@ class MCNP_File:
                            'zr_temp_MeV':    '{:.6e}'.format(self.uzrh_temp_K * MEV_PER_KELVIN),
                            'ct_temp_MeV':    '{:.6e}'.format(self.ct_temp_K * MEV_PER_KELVIN),
                            'fuel_mats'  :  self.fuel_mat_cards,
-                           'n_per_cycle':  20000,
-                           'kcode_cycles': 105,
+                           'n_per_cycle':    40000,
+                           'discard_cycles': 15,
+                           'kcode_cycles':   115,
                            }
 
         """
         Define input file names and paths
         """
-        self.base_filename = f"{self.template_filepath.split('/')[-1].split('.')[0]}_core{self.core_number}"
-        
-        if self.run_type in ['banked', 'kntc','rodcal']:
-            self.input_filename = f"{self.base_filename}_{self.run_type}"\
-                                  f"_a{str(self.parameters['safe_height']).zfill(3)}"\
-                                  f"_h{str(self.parameters['shim_height']).zfill(3)}"\
-                                  f"_r{str(self.parameters['reg_height']).zfill(3)}.i"
-        elif self.run_type in ['sdm', 'cxs']:
+        if not self.add_samarium:
+            self.base_filename = f"{self.template_filepath.split('/')[-1].split('.')[0]}_core{self.core_number}_nosm149"
+        else:
+            self.base_filename = f"{self.template_filepath.split('/')[-1].split('.')[0]}_core{self.core_number}"
+
+        if self.run_type in ['sdm', 'cxs']:
             self.input_filename = f"{self.base_filename}_{self.run_type}"\
                                   f"_{self.rod_config_id}"\
                                   f"_a{str(self.parameters['safe_height']).zfill(3)}"\
                                   f"_h{str(self.parameters['shim_height']).zfill(3)}"\
                                   f"_r{str(self.parameters['reg_height']).zfill(3)}.i"
-        elif self.run_type in ['rcty']:
-            if rcty_type == 'mod':
+        elif self.run_type.startswith('rcty'):
+            if 'modr' in self.run_type:
                 var = str(round(self.h2o_temp_K-273.15)).zfill(2) + "C" # ex: 01C, 10C, 20C, etc.
-            elif self.rcty_type == 'fuel':
-                var = str(round(self.uzrh_temp_K-273.15)).zfill(4) + "K" # ex: 0001K, 0100K, 2720K, etc.
-            elif self.rcty_type == 'void':
+            elif 'fuel' in self.run_type:
+                var = str(round(self.uzrh_temp_K)).zfill(4) + "K" # ex: 0001K, 0100K, 2720K, etc.
+            elif 'void' in self.run_type:
                 var = str(round(self.h2o_density*10)).zfill(2) + "gcc" # ex: 01gcc, 10gcc, 99gcc, etc.
             self.input_filename = f"{self.base_filename}_{self.run_type}"\
-                        f"_{str(self.rcty_type)}{var}"\
+                        f"_{var}"\
                         f"_a{str(self.parameters['safe_height']).zfill(3)}"\
                         f"_h{str(self.parameters['shim_height']).zfill(3)}"\
                         f"_r{str(self.parameters['reg_height']).zfill(3)}.i"
         elif run_type == 'crit':
             pass
         else:
-            self.input_filename = f"{self.base_filename}_{self.run_type}.i"
+            self.input_filename = f"{self.base_filename}_{self.run_type}"\
+                                  f"_a{str(self.parameters['safe_height']).zfill(3)}"\
+                                  f"_h{str(self.parameters['shim_height']).zfill(3)}"\
+                                  f"_r{str(self.parameters['reg_height']).zfill(3)}.i"
 
         self.input_filepath = f"{self.user_temp_folder}/{self.input_filename}"
         self.output_filename = f"o_{self.input_filename.split('.')[0]}.o"
@@ -207,10 +221,10 @@ class MCNP_File:
         if self.print_input:
           with open(self.template_filepath, 'r') as template_file:
               template_str = template_file.read()
-              template = Template(template_str+tally_str)
+              template = Template(template_str+'\n'+tally_str)
               template.stream(**self.parameters).dump(self.input_filepath) 
               self.print_input = False
-              print(f" Input file created at {self.input_filepath}")
+              print(f"\n input file created at: {self.input_filepath}")
 
 
               
@@ -248,7 +262,7 @@ class MCNP_File:
                 except:
                     print(f"\n   warning. cannot make {path}")
                     print(f"   warning. It is possible that the directories above the destination do not exist.")
-                    print(f"   warning. Python cannot create multiple directory levels in one command.\n")
+                    print(f"   warning. Python cannot create multiple directory levels in one command.")
 
 
     def find_mat_libs(self):
@@ -271,7 +285,7 @@ class MCNP_File:
             closest_temp_K = find_closest_value(self.uzrh_temp_K,list(mat_list[i][1].keys()))
             mat_list[i][0] = mat_list[i][1][closest_temp_K]
             print(f"\n   comment. {mat_list[i][2]} cross-section (xs) data at {self.uzrh_temp_K} does not exist")
-            print(f"   comment.   using closest available xs data at temperature: {closest_temp_K} K\n")
+            print(f"   comment.   using closest available xs data at temperature: {closest_temp_K} K")
 
         self.u235_mat_lib, self.u238_mat_lib, = mat_list[0][0], mat_list[1][0], 
         self.pu239_mat_lib, self.sm149_mat_lib = mat_list[2][0], mat_list[3][0]
@@ -288,7 +302,7 @@ class MCNP_File:
             closest_temp_K = find_closest_value(self.h2o_temp_K,list(O_TEMPS_K_MAT_DICT.keys()))
             self.o_mat_lib = O_TEMPS_K_MAT_DICT[closest_temp_K]
             print(f"\n   comment. oxygen cross-section (xs) data at {self.h2o_temp_K} K does not exist")
-            print(f"   comment.   using closest available xs data at temperature: {closest_temp_K} K\n")
+            print(f"   comment.   using closest available xs data at temperature: {closest_temp_K} K")
 
 
 
@@ -302,7 +316,7 @@ class MCNP_File:
           closest_temp_K = find_closest_value(self.h2o_temp_K,list(H2O_TEMPS_K_MT_DICT.keys()))
           self.h2o_mt_lib = H2O_TEMPS_K_MT_DICT[closest_temp_K]
           print(f"\n   comment. light water scattering S(a,B) data at {self.h2o_temp_K} K does not exist")
-          print(f"   comment.   using closest available S(a,B) data at temperature: {closest_temp_K} K\n")
+          print(f"   comment.   using closest available S(a,B) data at temperature: {closest_temp_K} K")
 
         mt_list = [[None, ZR_H_TEMPS_K_MT_DICT, 'zr_h'],
                    [None, H_ZR_TEMPS_K_MT_DICT, 'h_zr']]
@@ -314,7 +328,7 @@ class MCNP_File:
             closest_temp_K = find_closest_value(self.uzrh_temp_K,list(mt_list[i][1].keys()))
             mt_list[i][0] = mt_list[i][1][closest_temp_K]
             print(f"\n   comment. {mt_list[i][2]} scattering S(a,B) data at {self.uzrh_temp_K} does not exist")
-            print(f"   comment.   using closest available S(a,B) data at temperature: {closest_temp_K} K\n")
+            print(f"   comment.   using closest available S(a,B) data at temperature: {closest_temp_K} K")
 
         self.zr_h_mt_lib, self.h_zr_mt_lib = mt_list[0][0], mt_list[1][0]
 
@@ -330,10 +344,12 @@ class MCNP_File:
         output_file = f"{self.output_filename.split('.')[0]}" # general output filename without extension
         dst = self.outputs_folder
 
-        if self.run_type in ['banked', 'rodcal', 'rcty','sdm']:
+        """ instead of programming it here, just define which outputs to move when function is called in NeutronicsEngine.py
+        if self.run_type in ['banked', 'kntc', 'rodcal', 'rcty','sdm']:
             output_types_to_move = ['.o']
         elif self.run_type == 'plot':
             output_types_to_move = ['.ps']
+        """ 
 
         if not self.mcnp_skipped:
             for extension in output_types_to_move:
@@ -379,7 +395,7 @@ class MCNP_File:
             os.system(f"""mcnp6 i="{self.input_filepath}" n="{self.user_temp_folder}/{self.output_filename.split('.')[0]}." tasks {self.tasks}""")
             self.mcnp_skipped = False
         else:
-            print(f'\n   comment. skipping this mcnp run since results for {self.input_filename} already exist.\n')
+            print(f'\n   comment. skipping this mcnp run since results for {self.input_filename} already exist.')
             self.mcnp_skipped = True
 
 
@@ -463,7 +479,7 @@ class MCNP_File:
                             print(f' keff: {self.keff} +/- {self.keff_unc}')
           except:
             print(f"\n   warning. keff not found in {self.output_filepath}")
-            print(f"   warning.   skipping {self.output_filepath}\n")
+            print(f"   warning.   skipping {self.output_filepath}")
         else:
           print(f'\n   fatal. cannot find {self.results_folder}\n')
           sys.exit(2)

@@ -2,20 +2,19 @@ from Parameters import *
 import numpy as np
 import multiprocessing
 
-RANE_INTRO = "\n\n      _/_/_/         _/_/_/       _/      _/     _/_/_/_/_/\n    _/     _/     _/      _/     _/_/    _/     _/\n   _/_/_/_/      _/_/_/_/_/     _/  _/  _/     _/_/_/_/_/\n  _/   _/       _/      _/     _/    _/_/     _/\n _/     _/     _/      _/     _/      _/     _/_/_/_/_/\n\n"
+RANE_INTRO = "\n\n      _/_/_/         _/_/_/       _/      _/     _/_/_/_/_/\n    _/     _/     _/      _/     _/_/    _/     _/\n   _/_/_/_/      _/_/_/_/_/     _/  _/  _/     _/_/_/_/_/\n  _/   _/       _/      _/     _/    _/_/     _/\n _/     _/     _/      _/     _/      _/     _/_/_/_/_/\n"
 RANE_INSTRUCTIONS_SHORT = "Usage: NeutronicsEngine.py -r <run_type> -t <tasks> -m <run mcnp>"
 RANE_INSTRUCTIONS_LONG = "Instructions for Reed Automated Neutronics Engine"
-RUN_DESCRIPTIONS_DICT  = {'banked': 'banked rods', 
-                          'Coef_Mod': 'moderator temperature coefficient',
-                          'Coef_PNTC': 'fuel temperature coefficient (pntc)',
-                          'Coef_Void': 'void coefficient',
-                          'CriticalLoading': 'critical loading experiment',
-                          'FuelMaterials': 'fuel material cards',
+RUN_DESCRIPTIONS_DICT  = {'bank': 'banked rods', 
+                          'crit': 'critical loading experiment',
+                          'flux': 'fluxes at irradiation and core positions',
                           'kntc': 'kinetics parameters',
                           'plot': 'plot geometry and take images',
-                          'PowerDistribution': 'power distribution (power peaking factors)',
+                          'powr': 'power distribution (power peaking factors)',
                           'rodcal': 'rod calibration',
-                          'rcty': 'reactivity coefficients',
+                          'rcty_modr': 'moderator temperature coefficient',
+                          'rcty_fuel': 'fuel temperature coefficient',
+                          'rcty_void': 'void coefficient',
                           'sdm': 'shutdown margin'}
 
 """ Constants """
@@ -168,18 +167,18 @@ def find_h2o_temp_K_density(K):
             -46.170461e-6*C**3
             +105.56302e-9*C**4
             -280.54253e-12*C**5)/(1+16.897850e-3*C)/1000))
-        print(f"\n   comment. at {C} C, h2o density was calculated to be {density} g/cc \n")
+        print(f"\n   comment. at {C} C, h2o density was calculated to be {density} g/cc ")
         # Equation for water density given temperature in C, works for 0 to 150 C at 1 atm
         # https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4909168/
 
         if C < 0 or C > 150: 
             print(f"\n   warning. h2o has calculated density {density} g/cc at given temp {C} C, ")
-            print(f"   warning. but that is outside the range 0 - 150 C safely predicted by the formula \n")
+            print(f"   warning. but that is outside the range 0 - 150 C safely predicted by the formula ")
         return density
 
     except:
         print(f"\n   fatal. finding h2o density for temperature {K} K failed")
-        print(f"   fatal. ensure you are inputing a numeric-only str, float, or int into the function\n")
+        print(f"   fatal. ensure you are inputing a numeric-only str, float, or int into the function")
 
 def find_poly_reg(x, y, degree):
     results = {}

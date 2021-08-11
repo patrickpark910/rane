@@ -1,4 +1,4 @@
-1 Reed TRIGA (2021-06-19) - Core 49 - Run Type: rodcal - Printed: 2021-08-08 04:27:11
+1 Reed TRIGA (2021-06-19) - Core 49 - Run Type: rodcal - Printed: 2021-08-09 14:41:36
 c    __   ___  ___  __      __   ___  __   ___       __   __           __   ___       __  ___  __   __  
 c   |__) |__  |__  |  \    |__) |__  /__` |__   /\  |__) /  ` |__|    |__) |__   /\  /  `  |  /  \ |__) 
 c   |  \ |___ |___ |__/    |  \ |___ .__/ |___ /--\ |  \ \__, |  |    |  \ |___ /--\ \__,  |  \__/ |  \
@@ -130,7 +130,7 @@ c
 c    2021-02-13
 c    - Rewrote fuel mats with 2020 burnup data
 c    - Consolidated invidual fuel meat section mat cards into one mat card for each FE
-c    - Removed vol(ume)=77.096 argument from each fuel meat cell
+c    - Removed vol=77..096 argument from each fuel meat cell
 c
 c    2021-02-16
 c    - Added fuel mat start/end markers
@@ -140,16 +140,16 @@ c    - Changed AmBe and Ir-192 cells from hard-coded cells to fill universes (fi
 c
 c    2021-06-19
 c    - Changed from 1 to 5 KSRC points per core position at mid-plane of each fuel meat axial zone
-c    - Changed from averaged (5.66 g/cc) to unique (avg = 5.78 g/cc) fuel meat densities for every FE based 
+c    - Changed from averaged (5..66 g/cc) to unique (avg = 5..78 g/cc) fuel meat densities for every FE based 
 c      on Core Burnup spreadsheet
 c    - Control rod B4C densities changed from 1..72066 to 1..806693 (reverting the 5% depletion modeled by OSU in 2010)
 c      as that depletion approximation was based on OSU experiments of the OSTR core, not the RRR core
 c
+c    2021-08-08
+c    - Added Sm-149 to fuel mat cards based on poison formula (1 Sm-149 atom per 6880 U-235 atoms)
 c
-c
-c
-c
-c
+c    2021-08-09
+c    - Re-added 5% depletion
 c
 c
 c
@@ -342,17 +342,17 @@ c
 c Graphite element (TOS210D120) universe
 c
 8001  104  -2.70     312300 -312301 -311302          imp:n=1 u=80  $ Lower grid plate pin
-8002  102  -0.997748     312300 -312301  311302 -311306  imp:n=1 u=80 tmp=2.533494e-08 $ Water around lower grid plate pin
+8002  102  -0.997936     312300 -312301  311302 -311306  imp:n=1 u=80 tmp=2.526170e-08 $ Water around lower grid plate pin
 8003  104  -2.70     312301 -312302 -311305          imp:n=1 u=80  $ Bottom casing 
-8004  102  -0.997748     312301 -312306  311305 -311306  imp:n=1 u=80 tmp=2.533494e-08 $ Water around element
+8004  102  -0.997936     312301 -312306  311305 -311306  imp:n=1 u=80 tmp=2.526170e-08 $ Water around element
 8005  106  -1.56     312302 -312305 -311304          imp:n=1 u=80  $ Graphite slug
 8006  104  -2.70     312302 -312305  311304 -311305  imp:n=1 u=80  $ Element cladding
 8007  104  -2.70     312305 -312306 -311305          imp:n=1 u=80  $ SS top cap
 8008  104  -2.70     312306 -312307 -311303          imp:n=1 u=80  $ Tri-flute
-8009  102  -0.997748     312306 -312307  311303 -311306  imp:n=1 u=80 tmp=2.533494e-08 $ Water around tri-flute
+8009  102  -0.997936     312306 -312307  311303 -311306  imp:n=1 u=80 tmp=2.526170e-08 $ Water around tri-flute
 8010  104  -2.70     312307 -312308 -311302          imp:n=1 u=80  $ Element tip
-8011  102  -0.997748     312307 -312308  311302 -311306  imp:n=1 u=80 tmp=2.533494e-08 $ Water around tip
-8012  102  -0.997748     312308 -312309 -311306          imp:n=1 u=80 tmp=2.533494e-08 $ Water above element
+8011  102  -0.997936     312307 -312308  311302 -311306  imp:n=1 u=80 tmp=2.526170e-08 $ Water around tip
+8012  102  -0.997936     312308 -312309 -311306          imp:n=1 u=80 tmp=2.526170e-08 $ Water above element
 c
 c
 c
@@ -383,25 +383,25 @@ c TOS210D210 refers to the GA drawing number
 c
 c --- 18 - water universe ---
 c
-1801 102 -0.997748     312300 -312301 -311302          imp:n=1 u=18   tmp=2.533494e-08 $ Lower grid plate pin
-1802 102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=18   tmp=2.533494e-08 $ Water around grid plate pin 
-1803 102 -0.997748     312301 -312302 -311305          imp:n=1 u=18   tmp=2.533494e-08 $ Bottom casing 
-1804 102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=18   tmp=2.533494e-08 $ Water around fuel element
-1805 102 -0.997748     312302 -312303 -311304          imp:n=1 u=18   tmp=2.533494e-08 $ Lower graphite slug 
-1806 102 -0.997748     312302 -312305  311304 -311305  imp:n=1 u=18   tmp=2.533494e-08 $ Fuel cladding
-1807 102 -0.997748     312303 -312304 -311301          imp:n=1 u=18   tmp=2.533494e-08 $ Zirc pin 
-1808 102 -0.997748     312303 -302303  311301 -311304   imp:n=1 u=18  tmp=2.533494e-08 $ Fuel meat section 1
-1809 102 -0.997748     302303 -302306  311301 -311304   imp:n=1 u=18  tmp=2.533494e-08 $ Fuel meat section 2
-1810 102 -0.997748     302306 -302309  311301 -311304   imp:n=1 u=18  tmp=2.533494e-08 $ Fuel meat section 3
-1811 102 -0.997748     302309 -302312  311301 -311304   imp:n=1 u=18  tmp=2.533494e-08 $ Fuel meat section 4
-1812 102 -0.997748     302312 -312304  311301 -311304   imp:n=1 u=18  tmp=2.533494e-08 $ Fuel meat section 5
-1813 102 -0.997748     312304 -312305 -311304          imp:n=1 u=18   tmp=2.533494e-08 $ Upper graphite spacer
-1814 102 -0.997748     312305 -312306 -311305          imp:n=1 u=18   tmp=2.533494e-08 $ SS top cap 
-1815 102 -0.997748     312306 -312307 -311303          imp:n=1 u=18   tmp=2.533494e-08 $ Tri-flute 
-1816 102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=18   tmp=2.533494e-08 $ Water around tri-flute 
-1817 102 -0.997748     312307 -312308 -311302          imp:n=1 u=18   tmp=2.533494e-08 $ Fuel tip
-1818 102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=18   tmp=2.533494e-08 $ Water around fuel tip
-1819 102 -0.997748     312308 -312309 -311306          imp:n=1 u=18   tmp=2.533494e-08 $ Water above fuel element
+1801 102 -0.997936     312300 -312301 -311302          imp:n=1 u=18   tmp=2.526170e-08 $ Lower grid plate pin
+1802 102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=18   tmp=2.526170e-08 $ Water around grid plate pin 
+1803 102 -0.997936     312301 -312302 -311305          imp:n=1 u=18   tmp=2.526170e-08 $ Bottom casing 
+1804 102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=18   tmp=2.526170e-08 $ Water around fuel element
+1805 102 -0.997936     312302 -312303 -311304          imp:n=1 u=18   tmp=2.526170e-08 $ Lower graphite slug 
+1806 102 -0.997936     312302 -312305  311304 -311305  imp:n=1 u=18   tmp=2.526170e-08 $ Fuel cladding
+1807 102 -0.997936     312303 -312304 -311301          imp:n=1 u=18   tmp=2.526170e-08 $ Zirc pin 
+1808 102 -0.997936     312303 -302303  311301 -311304   imp:n=1 u=18  tmp=2.526170e-08 $ Fuel meat section 1
+1809 102 -0.997936     302303 -302306  311301 -311304   imp:n=1 u=18  tmp=2.526170e-08 $ Fuel meat section 2
+1810 102 -0.997936     302306 -302309  311301 -311304   imp:n=1 u=18  tmp=2.526170e-08 $ Fuel meat section 3
+1811 102 -0.997936     302309 -302312  311301 -311304   imp:n=1 u=18  tmp=2.526170e-08 $ Fuel meat section 4
+1812 102 -0.997936     302312 -312304  311301 -311304   imp:n=1 u=18  tmp=2.526170e-08 $ Fuel meat section 5
+1813 102 -0.997936     312304 -312305 -311304          imp:n=1 u=18   tmp=2.526170e-08 $ Upper graphite spacer
+1814 102 -0.997936     312305 -312306 -311305          imp:n=1 u=18   tmp=2.526170e-08 $ SS top cap 
+1815 102 -0.997936     312306 -312307 -311303          imp:n=1 u=18   tmp=2.526170e-08 $ Tri-flute 
+1816 102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=18   tmp=2.526170e-08 $ Water around tri-flute 
+1817 102 -0.997936     312307 -312308 -311302          imp:n=1 u=18   tmp=2.526170e-08 $ Fuel tip
+1818 102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=18   tmp=2.526170e-08 $ Water around fuel tip
+1819 102 -0.997936     312308 -312309 -311306          imp:n=1 u=18   tmp=2.526170e-08 $ Water above fuel element
 c
 c
 c
@@ -414,9 +414,9 @@ c
 c --- 7202 - SS clad (TOS210C219) universe --- 
 c                         
 720201   105 -7.85     312300 -312301 -311302          imp:n=1 u=7202  $ Lower grid plate pin                         
-720202   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=7202  tmp=2.533494e-08 $ Water around grid plate pin                       
+720202   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=7202  tmp=2.526170e-08 $ Water around grid plate pin                       
 720203   105 -7.85     312301 -312302 -311305          imp:n=1 u=7202  $ Bottom casing                          
-720204   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=7202  tmp=2.533494e-08 $ Water around fuel element                         
+720204   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=7202  tmp=2.526170e-08 $ Water around fuel element                         
 720205   106 -1.56     312302 -312303 -311304          imp:n=1 u=7202  $ Lower graphite slug                          
 720206   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=7202  $ Fuel cladding                         
 720207   108  0.042234 312303 -312304 -311301          imp:n=1 u=7202  tmp=2.533494e-08 $ Zirc pin                          
@@ -428,18 +428,18 @@ c
 720213   106 -1.56     312304 -312305 -311304          imp:n=1 u=7202  $ Upper graphite spacer                         
 720214   105 -7.85     312305 -312306 -311305          imp:n=1 u=7202  $ SS top cap                          
 720215   105 -7.85     312306 -312307 -311303          imp:n=1 u=7202  $ Tri-flute                          
-720216   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=7202  tmp=2.533494e-08 $ Water around tri-flute                          
+720216   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=7202  tmp=2.526170e-08 $ Water around tri-flute                          
 720217   105 -7.85     312307 -312308 -311302          imp:n=1 u=7202  $ Fuel tip                         
-720218   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=7202  tmp=2.533494e-08 $ Water around fuel tip                         
-720219   102 -0.997748     312308 -312309 -311306          imp:n=1 u=7202  tmp=2.533494e-08 $ Water above fuel element                         
+720218   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=7202  tmp=2.526170e-08 $ Water around fuel tip                         
+720219   102 -0.997936     312308 -312309 -311306          imp:n=1 u=7202  tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 7945 - SS clad (TOS210D210R) universe --- 
 c                         
 794501   105 -7.85     312300 -312301 -311302          imp:n=1 u=7945  $ Lower grid plate pin                         
-794502   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=7945  tmp=2.533494e-08 $ Water around grid plate pin                          
+794502   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=7945  tmp=2.526170e-08 $ Water around grid plate pin                          
 794503   105 -7.85     312301 -312302 -311305          imp:n=1 u=7945  $ Bottom casing                          
-794504   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=7945  tmp=2.533494e-08 $ Water around fuel element                         
+794504   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=7945  tmp=2.526170e-08 $ Water around fuel element                         
 794505   106 -1.56     312302 -312303 -311304          imp:n=1 u=7945  $ Lower graphite slug                          
 794506   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=7945  $ Fuel cladding                         
 794507   108  0.042234 312303 -312304 -311301          imp:n=1 u=7945  tmp=2.533494e-08 $ Zirc pin                          
@@ -451,18 +451,18 @@ c
 794513   106 -1.56     312304 -312305 -311304          imp:n=1 u=7945  $ Upper graphite spacer                         
 794514   105 -7.85     312305 -312306 -311305          imp:n=1 u=7945  $ SS top cap                          
 794515   105 -7.85     312306 -312307 -311303          imp:n=1 u=7945  $ Tri-flute                          
-794516   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=7945  tmp=2.533494e-08 $ Water around tri-flute                          
+794516   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=7945  tmp=2.526170e-08 $ Water around tri-flute                          
 794517   105 -7.85     312307 -312308 -311302          imp:n=1 u=7945  $ Fuel tip                         
-794518   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=7945  tmp=2.533494e-08 $ Water around fuel tip                         
-794519   102 -0.997748     312308 -312309 -311306          imp:n=1 u=7945  tmp=2.533494e-08 $ Water above fuel element                         
+794518   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=7945  tmp=2.526170e-08 $ Water around fuel tip                         
+794519   102 -0.997936     312308 -312309 -311306          imp:n=1 u=7945  tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 7946 - SS clad (TOS210D210R) universe --- 
 c                         
 794601   105 -7.85     312300 -312301 -311302          imp:n=1 u=7946  $ Lower grid plate pin                         
-794602   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=7946  tmp=2.533494e-08 $ Water around grid plate pin                          
+794602   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=7946  tmp=2.526170e-08 $ Water around grid plate pin                          
 794603   105 -7.85     312301 -312302 -311305          imp:n=1 u=7946  $ Bottom casing                          
-794604   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=7946  tmp=2.533494e-08 $ Water around fuel element                         
+794604   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=7946  tmp=2.526170e-08 $ Water around fuel element                         
 794605   106 -1.56     312302 -312303 -311304          imp:n=1 u=7946  $ Lower graphite slug                          
 794606   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=7946  $ Fuel cladding                         
 794607   108  0.042234 312303 -312304 -311301          imp:n=1 u=7946  tmp=2.533494e-08 $ Zirc pin                          
@@ -474,18 +474,18 @@ c
 794613   106 -1.56     312304 -312305 -311304          imp:n=1 u=7946  $ Upper graphite spacer                         
 794614   105 -7.85     312305 -312306 -311305          imp:n=1 u=7946  $ SS top cap                          
 794615   105 -7.85     312306 -312307 -311303          imp:n=1 u=7946  $ Tri-flute                          
-794616   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=7946  tmp=2.533494e-08 $ Water around tri-flute                          
+794616   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=7946  tmp=2.526170e-08 $ Water around tri-flute                          
 794617   105 -7.85     312307 -312308 -311302          imp:n=1 u=7946  $ Fuel tip                         
-794618   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=7946  tmp=2.533494e-08 $ Water around fuel tip                         
-794619   102 -0.997748     312308 -312309 -311306          imp:n=1 u=7946  tmp=2.533494e-08 $ Water above fuel element                         
+794618   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=7946  tmp=2.526170e-08 $ Water around fuel tip                         
+794619   102 -0.997936     312308 -312309 -311306          imp:n=1 u=7946  tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 8102 - SS clad (TOS210D210R) universe --- 
 c                         
 810201   105 -7.85     312300 -312301 -311302          imp:n=1 u=8102  $ Lower grid plate pin                         
-810202   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=8102  tmp=2.533494e-08 $ Water around grid plate pin                          
+810202   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=8102  tmp=2.526170e-08 $ Water around grid plate pin                          
 810203   105 -7.85     312301 -312302 -311305          imp:n=1 u=8102  $ Bottom casing                          
-810204   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=8102  tmp=2.533494e-08 $ Water around fuel element                         
+810204   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=8102  tmp=2.526170e-08 $ Water around fuel element                         
 810205   106 -1.56     312302 -312303 -311304          imp:n=1 u=8102  $ Lower graphite slug                          
 810206   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=8102  $ Fuel cladding                         
 810207   108  0.042234 312303 -312304 -311301          imp:n=1 u=8102  tmp=2.533494e-08 $ Zirc pin                          
@@ -497,18 +497,18 @@ c
 810213   106 -1.56     312304 -312305 -311304          imp:n=1 u=8102  $ Upper graphite spacer                         
 810214   105 -7.85     312305 -312306 -311305          imp:n=1 u=8102  $ SS top cap                          
 810215   105 -7.85     312306 -312307 -311303          imp:n=1 u=8102  $ Tri-flute                          
-810216   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=8102  tmp=2.533494e-08 $ Water around tri-flute                          
+810216   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=8102  tmp=2.526170e-08 $ Water around tri-flute                          
 810217   105 -7.85     312307 -312308 -311302          imp:n=1 u=8102  $ Fuel tip                         
-810218   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=8102  tmp=2.533494e-08 $ Water around fuel tip                         
-810219   102 -0.997748     312308 -312309 -311306          imp:n=1 u=8102  tmp=2.533494e-08 $ Water above fuel element                         
+810218   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=8102  tmp=2.526170e-08 $ Water around fuel tip                         
+810219   102 -0.997936     312308 -312309 -311306          imp:n=1 u=8102  tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 8103 - SS clad (TOS210D210R) universe --- 
 c                         
 810301   105 -7.85     312300 -312301 -311302          imp:n=1 u=8103  $ Lower grid plate pin                         
-810302   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=8103  tmp=2.533494e-08 $ Water around grid plate pin                          
+810302   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=8103  tmp=2.526170e-08 $ Water around grid plate pin                          
 810303   105 -7.85     312301 -312302 -311305          imp:n=1 u=8103  $ Bottom casing                          
-810304   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=8103  tmp=2.533494e-08 $ Water around fuel element                         
+810304   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=8103  tmp=2.526170e-08 $ Water around fuel element                         
 810305   106 -1.56     312302 -312303 -311304          imp:n=1 u=8103  $ Lower graphite slug                          
 810306   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=8103  $ Fuel cladding                         
 810307   108  0.042234 312303 -312304 -311301          imp:n=1 u=8103  tmp=2.533494e-08 $ Zirc pin                          
@@ -520,18 +520,18 @@ c
 810313   106 -1.56     312304 -312305 -311304          imp:n=1 u=8103  $ Upper graphite spacer                         
 810314   105 -7.85     312305 -312306 -311305          imp:n=1 u=8103  $ SS top cap                          
 810315   105 -7.85     312306 -312307 -311303          imp:n=1 u=8103  $ Tri-flute                          
-810316   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=8103  tmp=2.533494e-08 $ Water around tri-flute                          
+810316   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=8103  tmp=2.526170e-08 $ Water around tri-flute                          
 810317   105 -7.85     312307 -312308 -311302          imp:n=1 u=8103  $ Fuel tip                         
-810318   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=8103  tmp=2.533494e-08 $ Water around fuel tip                         
-810319   102 -0.997748     312308 -312309 -311306          imp:n=1 u=8103  tmp=2.533494e-08 $ Water above fuel element                         
+810318   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=8103  tmp=2.526170e-08 $ Water around fuel tip                         
+810319   102 -0.997936     312308 -312309 -311306          imp:n=1 u=8103  tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 8104 - SS clad (TOS210D210R) universe --- 
 c                         
 810401   105 -7.85     312300 -312301 -311302          imp:n=1 u=8104  $ Lower grid plate pin                         
-810402   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=8104  tmp=2.533494e-08 $ Water around grid plate pin                          
+810402   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=8104  tmp=2.526170e-08 $ Water around grid plate pin                          
 810403   105 -7.85     312301 -312302 -311305          imp:n=1 u=8104  $ Bottom casing                          
-810404   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=8104  tmp=2.533494e-08 $ Water around fuel element                         
+810404   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=8104  tmp=2.526170e-08 $ Water around fuel element                         
 810405   106 -1.56     312302 -312303 -311304          imp:n=1 u=8104  $ Lower graphite slug                          
 810406   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=8104  $ Fuel cladding                         
 810407   108  0.042234 312303 -312304 -311301          imp:n=1 u=8104  tmp=2.533494e-08 $ Zirc pin                          
@@ -543,18 +543,18 @@ c
 810413   106 -1.56     312304 -312305 -311304          imp:n=1 u=8104  $ Upper graphite spacer                         
 810414   105 -7.85     312305 -312306 -311305          imp:n=1 u=8104  $ SS top cap                          
 810415   105 -7.85     312306 -312307 -311303          imp:n=1 u=8104  $ Tri-flute                          
-810416   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=8104  tmp=2.533494e-08 $ Water around tri-flute                          
+810416   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=8104  tmp=2.526170e-08 $ Water around tri-flute                          
 810417   105 -7.85     312307 -312308 -311302          imp:n=1 u=8104  $ Fuel tip                         
-810418   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=8104  tmp=2.533494e-08 $ Water around fuel tip                         
-810419   102 -0.997748     312308 -312309 -311306          imp:n=1 u=8104  tmp=2.533494e-08 $ Water above fuel element                         
+810418   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=8104  tmp=2.526170e-08 $ Water around fuel tip                         
+810419   102 -0.997936     312308 -312309 -311306          imp:n=1 u=8104  tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 8105 - SS clad (TOS210D210R) universe --- 
 c                         
 810501   105 -7.85     312300 -312301 -311302          imp:n=1 u=8105  $ Lower grid plate pin                         
-810502   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=8105  tmp=2.533494e-08 $ Water around grid plate pin                          
+810502   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=8105  tmp=2.526170e-08 $ Water around grid plate pin                          
 810503   105 -7.85     312301 -312302 -311305          imp:n=1 u=8105  $ Bottom casing                          
-810504   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=8105  tmp=2.533494e-08 $ Water around fuel element                         
+810504   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=8105  tmp=2.526170e-08 $ Water around fuel element                         
 810505   106 -1.56     312302 -312303 -311304          imp:n=1 u=8105  $ Lower graphite slug                          
 810506   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=8105  $ Fuel cladding                         
 810507   108  0.042234 312303 -312304 -311301          imp:n=1 u=8105  tmp=2.533494e-08 $ Zirc pin                          
@@ -566,18 +566,18 @@ c
 810513   106 -1.56     312304 -312305 -311304          imp:n=1 u=8105  $ Upper graphite spacer                         
 810514   105 -7.85     312305 -312306 -311305          imp:n=1 u=8105  $ SS top cap                          
 810515   105 -7.85     312306 -312307 -311303          imp:n=1 u=8105  $ Tri-flute                          
-810516   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=8105  tmp=2.533494e-08 $ Water around tri-flute                          
+810516   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=8105  tmp=2.526170e-08 $ Water around tri-flute                          
 810517   105 -7.85     312307 -312308 -311302          imp:n=1 u=8105  $ Fuel tip                         
-810518   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=8105  tmp=2.533494e-08 $ Water around fuel tip                         
-810519   102 -0.997748     312308 -312309 -311306          imp:n=1 u=8105  tmp=2.533494e-08 $ Water above fuel element                         
+810518   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=8105  tmp=2.526170e-08 $ Water around fuel tip                         
+810519   102 -0.997936     312308 -312309 -311306          imp:n=1 u=8105  tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 9678 - SS clad (TOS210D210R) universe --- 
 c                         
 967801   105 -7.85     312300 -312301 -311302          imp:n=1 u=9678  $ Lower grid plate pin                         
-967802   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=9678  tmp=2.533494e-08 $ Water around grid plate pin                          
+967802   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=9678  tmp=2.526170e-08 $ Water around grid plate pin                          
 967803   105 -7.85     312301 -312302 -311305          imp:n=1 u=9678  $ Bottom casing                          
-967804   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=9678  tmp=2.533494e-08 $ Water around fuel element                         
+967804   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=9678  tmp=2.526170e-08 $ Water around fuel element                         
 967805   106 -1.56     312302 -312303 -311304          imp:n=1 u=9678  $ Lower graphite slug                          
 967806   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=9678  $ Fuel cladding                         
 967807   108  0.042234 312303 -312304 -311301          imp:n=1 u=9678  tmp=2.533494e-08 $ Zirc pin                          
@@ -589,18 +589,18 @@ c
 967813   106 -1.56     312304 -312305 -311304          imp:n=1 u=9678  $ Upper graphite spacer                         
 967814   105 -7.85     312305 -312306 -311305          imp:n=1 u=9678  $ SS top cap                          
 967815   105 -7.85     312306 -312307 -311303          imp:n=1 u=9678  $ Tri-flute                          
-967816   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=9678  tmp=2.533494e-08 $ Water around tri-flute                          
+967816   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=9678  tmp=2.526170e-08 $ Water around tri-flute                          
 967817   105 -7.85     312307 -312308 -311302          imp:n=1 u=9678  $ Fuel tip                         
-967818   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=9678  tmp=2.533494e-08 $ Water around fuel tip                         
-967819   102 -0.997748     312308 -312309 -311306          imp:n=1 u=9678  tmp=2.533494e-08 $ Water above fuel element                         
+967818   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=9678  tmp=2.526170e-08 $ Water around fuel tip                         
+967819   102 -0.997936     312308 -312309 -311306          imp:n=1 u=9678  tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 9679 - SS clad (TOS210D210R) universe --- 
 c                         
 967901   105 -7.85     312300 -312301 -311302          imp:n=1 u=9679  $ Lower grid plate pin                         
-967902   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=9679 tmp=2.533494e-08 $ Water around grid plate pin                          
+967902   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=9679 tmp=2.526170e-08 $ Water around grid plate pin                          
 967903   105 -7.85     312301 -312302 -311305          imp:n=1 u=9679  $ Bottom casing                          
-967904   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=9679 tmp=2.533494e-08 $ Water around fuel element                         
+967904   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=9679 tmp=2.526170e-08 $ Water around fuel element                         
 967905   106 -1.56     312302 -312303 -311304          imp:n=1 u=9679  $ Lower graphite slug                          
 967906   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=9679  $ Fuel cladding                         
 967907   108  0.042234 312303 -312304 -311301          imp:n=1 u=9679  tmp=2.533494e-08 $ Zirc pin                          
@@ -612,18 +612,18 @@ c
 967913   106 -1.56     312304 -312305 -311304          imp:n=1 u=9679  $ Upper graphite spacer                         
 967914   105 -7.85     312305 -312306 -311305          imp:n=1 u=9679  $ SS top cap                          
 967915   105 -7.85     312306 -312307 -311303          imp:n=1 u=9679  $ Tri-flute                          
-967916   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=9679 tmp=2.533494e-08 $ Water around tri-flute                          
+967916   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=9679 tmp=2.526170e-08 $ Water around tri-flute                          
 967917   105 -7.85     312307 -312308 -311302          imp:n=1 u=9679  $ Fuel tip                         
-967918   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=9679 tmp=2.533494e-08 $ Water around fuel tip                         
-967919   102 -0.997748     312308 -312309 -311306          imp:n=1 u=9679 tmp=2.533494e-08 $ Water above fuel element                         
+967918   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=9679 tmp=2.526170e-08 $ Water around fuel tip                         
+967919   102 -0.997936     312308 -312309 -311306          imp:n=1 u=9679 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 10705 - SS clad (TOS210D210R) universe --- 
 c                         
 107001   105 -7.85     312300 -312301 -311302          imp:n=1 u=1070  $ Lower grid plate pin                         
-107002   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=1070 tmp=2.533494e-08 $ Water around grid plate pin                          
+107002   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=1070 tmp=2.526170e-08 $ Water around grid plate pin                          
 107003   105 -7.85     312301 -312302 -311305          imp:n=1 u=1070  $ Bottom casing                          
-107004   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=1070 tmp=2.533494e-08 $ Water around fuel element                         
+107004   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=1070 tmp=2.526170e-08 $ Water around fuel element                         
 107005   106 -1.56     312302 -312303 -311304          imp:n=1 u=1070  $ Lower graphite slug                          
 107006   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=1070  $ Fuel cladding                         
 107007   108  0.042234 312303 -312304 -311301          imp:n=1 u=1070  tmp=2.533494e-08 $ Zirc pin                          
@@ -635,18 +635,18 @@ c
 107013   106 -1.56     312304 -312305 -311304          imp:n=1 u=1070  $ Upper graphite spacer                         
 107014   105 -7.85     312305 -312306 -311305          imp:n=1 u=1070  $ SS top cap                          
 107015   105 -7.85     312306 -312307 -311303          imp:n=1 u=1070  $ Tri-flute                          
-107016   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=1070 tmp=2.533494e-08 $ Water around tri-flute                          
+107016   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=1070 tmp=2.526170e-08 $ Water around tri-flute                          
 107017   105 -7.85     312307 -312308 -311302          imp:n=1 u=1070  $ Fuel tip                         
-107018   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=1070 tmp=2.533494e-08 $ Water around fuel tip                         
-107019   102 -0.997748     312308 -312309 -311306          imp:n=1 u=1070 tmp=2.533494e-08 $ Water above fuel element                         
+107018   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=1070 tmp=2.526170e-08 $ Water around fuel tip                         
+107019   102 -0.997936     312308 -312309 -311306          imp:n=1 u=1070 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3671 - SS clad (T0S210D210) universe --- 
 c                         
 367101   105 -7.85     312300 -312301 -311302          imp:n=1 u=3671  $ Lower grid plate pin                         
-367102   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3671 tmp=2.533494e-08 $ Water around grid plate pin                          
+367102   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3671 tmp=2.526170e-08 $ Water around grid plate pin                          
 367103   105 -7.85     312301 -312302 -311305          imp:n=1 u=3671  $ Bottom casing                          
-367104   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3671 tmp=2.533494e-08 $ Water around fuel element                         
+367104   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3671 tmp=2.526170e-08 $ Water around fuel element                         
 367105   106 -1.56     312302 -312303 -311304          imp:n=1 u=3671  $ Lower graphite slug                          
 367106   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3671  $ Fuel cladding                         
 367107   108  0.042234 312303 -312304 -311301          imp:n=1 u=3671  tmp=2.533494e-08 $ Zirc pin                          
@@ -658,18 +658,18 @@ c
 367113   106 -1.56     312304 -312305 -311304          imp:n=1 u=3671  $ Upper graphite spacer                         
 367114   105 -7.85     312305 -312306 -311305          imp:n=1 u=3671  $ SS top cap                          
 367115   105 -7.85     312306 -312307 -311303          imp:n=1 u=3671  $ Tri-flute                          
-367116   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3671 tmp=2.533494e-08 $ Water around tri-flute                          
+367116   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3671 tmp=2.526170e-08 $ Water around tri-flute                          
 367117   105 -7.85     312307 -312308 -311302          imp:n=1 u=3671  $ Fuel tip                         
-367118   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3671 tmp=2.533494e-08 $ Water around fuel tip                         
-367119   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3671 tmp=2.533494e-08 $ Water above fuel element                         
+367118   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3671 tmp=2.526170e-08 $ Water around fuel tip                         
+367119   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3671 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3673 - SS clad (T0S210D210) universe --- 
 c                         
 367301   105 -7.85     312300 -312301 -311302          imp:n=1 u=3673  $ Lower grid plate pin                         
-367302   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3673 tmp=2.533494e-08 $ Water around grid plate pin                          
+367302   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3673 tmp=2.526170e-08 $ Water around grid plate pin                          
 367303   105 -7.85     312301 -312302 -311305          imp:n=1 u=3673  $ Bottom casing                          
-367304   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3673 tmp=2.533494e-08 $ Water around fuel element                         
+367304   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3673 tmp=2.526170e-08 $ Water around fuel element                         
 367305   106 -1.56     312302 -312303 -311304          imp:n=1 u=3673  $ Lower graphite slug                          
 367306   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3673  $ Fuel cladding                         
 367307   108  0.042234 312303 -312304 -311301          imp:n=1 u=3673  tmp=2.533494e-08 $ Zirc pin                          
@@ -681,18 +681,18 @@ c
 367313   106 -1.56     312304 -312305 -311304          imp:n=1 u=3673  $ Upper graphite spacer                         
 367314   105 -7.85     312305 -312306 -311305          imp:n=1 u=3673  $ SS top cap                          
 367315   105 -7.85     312306 -312307 -311303          imp:n=1 u=3673  $ Tri-flute                          
-367316   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3673 tmp=2.533494e-08 $ Water around tri-flute                          
+367316   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3673 tmp=2.526170e-08 $ Water around tri-flute                          
 367317   105 -7.85     312307 -312308 -311302          imp:n=1 u=3673  $ Fuel tip                         
-367318   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3673 tmp=2.533494e-08 $ Water around fuel tip                         
-367319   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3673 tmp=2.533494e-08 $ Water above fuel element                         
+367318   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3673 tmp=2.526170e-08 $ Water around fuel tip                         
+367319   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3673 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3674 - SS clad (T0S210D210) universe --- 
 c                         
 367401   105 -7.85     312300 -312301 -311302          imp:n=1 u=3674  $ Lower grid plate pin                         
-367402   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3674 tmp=2.533494e-08 $ Water around grid plate pin                          
+367402   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3674 tmp=2.526170e-08 $ Water around grid plate pin                          
 367403   105 -7.85     312301 -312302 -311305          imp:n=1 u=3674  $ Bottom casing                          
-367404   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3674 tmp=2.533494e-08 $ Water around fuel element                         
+367404   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3674 tmp=2.526170e-08 $ Water around fuel element                         
 367405   106 -1.56     312302 -312303 -311304          imp:n=1 u=3674  $ Lower graphite slug                          
 367406   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3674  $ Fuel cladding                         
 367407   108  0.042234 312303 -312304 -311301          imp:n=1 u=3674  tmp=2.533494e-08 $ Zirc pin                          
@@ -704,18 +704,18 @@ c
 367413   106 -1.56     312304 -312305 -311304          imp:n=1 u=3674  $ Upper graphite spacer                         
 367414   105 -7.85     312305 -312306 -311305          imp:n=1 u=3674  $ SS top cap                          
 367415   105 -7.85     312306 -312307 -311303          imp:n=1 u=3674  $ Tri-flute                          
-367416   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3674 tmp=2.533494e-08 $ Water around tri-flute                          
+367416   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3674 tmp=2.526170e-08 $ Water around tri-flute                          
 367417   105 -7.85     312307 -312308 -311302          imp:n=1 u=3674  $ Fuel tip                         
-367418   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3674 tmp=2.533494e-08 $ Water around fuel tip                         
-367419   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3674 tmp=2.533494e-08 $ Water above fuel element                         
+367418   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3674 tmp=2.526170e-08 $ Water around fuel tip                         
+367419   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3674 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3676 - SS clad (T0S210D210) universe --- 
 c                         
 367601   105 -7.85     312300 -312301 -311302          imp:n=1 u=3676  $ Lower grid plate pin                         
-367602   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3676 tmp=2.533494e-08 $ Water around grid plate pin                          
+367602   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3676 tmp=2.526170e-08 $ Water around grid plate pin                          
 367603   105 -7.85     312301 -312302 -311305          imp:n=1 u=3676  $ Bottom casing                          
-367604   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3676 tmp=2.533494e-08 $ Water around fuel element                         
+367604   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3676 tmp=2.526170e-08 $ Water around fuel element                         
 367605   106 -1.56     312302 -312303 -311304          imp:n=1 u=3676  $ Lower graphite slug                          
 367606   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3676  $ Fuel cladding                         
 367607   108  0.042234 312303 -312304 -311301          imp:n=1 u=3676  tmp=2.533494e-08 $ Zirc pin                          
@@ -727,18 +727,18 @@ c
 367613   106 -1.56     312304 -312305 -311304          imp:n=1 u=3676  $ Upper graphite spacer                         
 367614   105 -7.85     312305 -312306 -311305          imp:n=1 u=3676  $ SS top cap                          
 367615   105 -7.85     312306 -312307 -311303          imp:n=1 u=3676  $ Tri-flute                          
-367616   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3676 tmp=2.533494e-08 $ Water around tri-flute                          
+367616   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3676 tmp=2.526170e-08 $ Water around tri-flute                          
 367617   105 -7.85     312307 -312308 -311302          imp:n=1 u=3676  $ Fuel tip                         
-367618   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3676 tmp=2.533494e-08 $ Water around fuel tip                         
-367619   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3676 tmp=2.533494e-08 $ Water above fuel element                         
+367618   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3676 tmp=2.526170e-08 $ Water around fuel tip                         
+367619   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3676 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3677 - SS clad (T0S210D210) universe --- 
 c                         
 367701   105 -7.85     312300 -312301 -311302          imp:n=1 u=3677  $ Lower grid plate pin                         
-367702   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3677 tmp=2.533494e-08 $ Water around grid plate pin                          
+367702   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3677 tmp=2.526170e-08 $ Water around grid plate pin                          
 367703   105 -7.85     312301 -312302 -311305          imp:n=1 u=3677  $ Bottom casing                          
-367704   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3677 tmp=2.533494e-08 $ Water around fuel element                         
+367704   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3677 tmp=2.526170e-08 $ Water around fuel element                         
 367705   106 -1.56     312302 -312303 -311304          imp:n=1 u=3677  $ Lower graphite slug                          
 367706   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3677  $ Fuel cladding                         
 367707   108  0.042234 312303 -312304 -311301          imp:n=1 u=3677  tmp=2.533494e-08 $ Zirc pin                          
@@ -750,18 +750,18 @@ c
 367713   106 -1.56     312304 -312305 -311304          imp:n=1 u=3677  $ Upper graphite spacer                         
 367714   105 -7.85     312305 -312306 -311305          imp:n=1 u=3677  $ SS top cap                          
 367715   105 -7.85     312306 -312307 -311303          imp:n=1 u=3677  $ Tri-flute                          
-367716   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3677 tmp=2.533494e-08 $ Water around tri-flute                          
+367716   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3677 tmp=2.526170e-08 $ Water around tri-flute                          
 367717   105 -7.85     312307 -312308 -311302          imp:n=1 u=3677  $ Fuel tip                         
-367718   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3677 tmp=2.533494e-08 $ Water around fuel tip                         
-367719   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3677 tmp=2.533494e-08 $ Water above fuel element                         
+367718   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3677 tmp=2.526170e-08 $ Water around fuel tip                         
+367719   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3677 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3679 - SS clad (T0S210D210) universe --- 
 c                         
 367901   105 -7.85     312300 -312301 -311302          imp:n=1 u=3679  $ Lower grid plate pin                         
-367902   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3679 tmp=2.533494e-08 $ Water around grid plate pin                          
+367902   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3679 tmp=2.526170e-08 $ Water around grid plate pin                          
 367903   105 -7.85     312301 -312302 -311305          imp:n=1 u=3679  $ Bottom casing                          
-367904   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3679 tmp=2.533494e-08 $ Water around fuel element                         
+367904   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3679 tmp=2.526170e-08 $ Water around fuel element                         
 367905   106 -1.56     312302 -312303 -311304          imp:n=1 u=3679  $ Lower graphite slug                          
 367906   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3679  $ Fuel cladding                         
 367907   108  0.042234 312303 -312304 -311301          imp:n=1 u=3679  tmp=2.533494e-08 $ Zirc pin                          
@@ -773,18 +773,18 @@ c
 367913   106 -1.56     312304 -312305 -311304          imp:n=1 u=3679  $ Upper graphite spacer                         
 367914   105 -7.85     312305 -312306 -311305          imp:n=1 u=3679  $ SS top cap                          
 367915   105 -7.85     312306 -312307 -311303          imp:n=1 u=3679  $ Tri-flute                          
-367916   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3679 tmp=2.533494e-08 $ Water around tri-flute                          
+367916   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3679 tmp=2.526170e-08 $ Water around tri-flute                          
 367917   105 -7.85     312307 -312308 -311302          imp:n=1 u=3679  $ Fuel tip                         
-367918   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3679 tmp=2.533494e-08 $ Water around fuel tip                         
-367919   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3679 tmp=2.533494e-08 $ Water above fuel element                         
+367918   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3679 tmp=2.526170e-08 $ Water around fuel tip                         
+367919   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3679 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3682 - SS clad (T0S210D210) universe --- 
 c                         
 368201   105 -7.85     312300 -312301 -311302          imp:n=1 u=3682  $ Lower grid plate pin                         
-368202   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3682 tmp=2.533494e-08 $ Water around grid plate pin                          
+368202   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3682 tmp=2.526170e-08 $ Water around grid plate pin                          
 368203   105 -7.85     312301 -312302 -311305          imp:n=1 u=3682  $ Bottom casing                          
-368204   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3682 tmp=2.533494e-08 $ Water around fuel element                         
+368204   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3682 tmp=2.526170e-08 $ Water around fuel element                         
 368205   106 -1.56     312302 -312303 -311304          imp:n=1 u=3682  $ Lower graphite slug                          
 368206   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3682  $ Fuel cladding                         
 368207   108  0.042234 312303 -312304 -311301          imp:n=1 u=3682  tmp=2.533494e-08 $ Zirc pin                          
@@ -796,18 +796,18 @@ c
 368213   106 -1.56     312304 -312305 -311304          imp:n=1 u=3682  $ Upper graphite spacer                         
 368214   105 -7.85     312305 -312306 -311305          imp:n=1 u=3682  $ SS top cap                          
 368215   105 -7.85     312306 -312307 -311303          imp:n=1 u=3682  $ Tri-flute                          
-368216   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3682 tmp=2.533494e-08 $ Water around tri-flute                          
+368216   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3682 tmp=2.526170e-08 $ Water around tri-flute                          
 368217   105 -7.85     312307 -312308 -311302          imp:n=1 u=3682  $ Fuel tip                         
-368218   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3682 tmp=2.533494e-08 $ Water around fuel tip                         
-368219   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3682 tmp=2.533494e-08 $ Water above fuel element                         
+368218   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3682 tmp=2.526170e-08 $ Water around fuel tip                         
+368219   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3682 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3683 - SS clad (T0S210D210) universe --- 
 c                         
 368301   105 -7.85     312300 -312301 -311302          imp:n=1 u=3683  $ Lower grid plate pin                         
-368302   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3683 tmp=2.533494e-08 $ Water around grid plate pin                          
+368302   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3683 tmp=2.526170e-08 $ Water around grid plate pin                          
 368303   105 -7.85     312301 -312302 -311305          imp:n=1 u=3683  $ Bottom casing                          
-368304   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3683 tmp=2.533494e-08 $ Water around fuel element                         
+368304   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3683 tmp=2.526170e-08 $ Water around fuel element                         
 368305   106 -1.56     312302 -312303 -311304          imp:n=1 u=3683  $ Lower graphite slug                          
 368306   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3683  $ Fuel cladding                         
 368307   108  0.042234 312303 -312304 -311301          imp:n=1 u=3683  tmp=2.533494e-08 $ Zirc pin                          
@@ -819,18 +819,18 @@ c
 368313   106 -1.56     312304 -312305 -311304          imp:n=1 u=3683  $ Upper graphite spacer                         
 368314   105 -7.85     312305 -312306 -311305          imp:n=1 u=3683  $ SS top cap                          
 368315   105 -7.85     312306 -312307 -311303          imp:n=1 u=3683  $ Tri-flute                          
-368316   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3683 tmp=2.533494e-08 $ Water around tri-flute                          
+368316   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3683 tmp=2.526170e-08 $ Water around tri-flute                          
 368317   105 -7.85     312307 -312308 -311302          imp:n=1 u=3683  $ Fuel tip                         
-368318   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3683 tmp=2.533494e-08 $ Water around fuel tip                         
-368319   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3683 tmp=2.533494e-08 $ Water above fuel element                         
+368318   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3683 tmp=2.526170e-08 $ Water around fuel tip                         
+368319   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3683 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3685 - SS clad (T0S210D210) universe --- 
 c                         
 368501   105 -7.85     312300 -312301 -311302          imp:n=1 u=3685  $ Lower grid plate pin                         
-368502   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3685 tmp=2.533494e-08 $ Water around grid plate pin                          
+368502   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3685 tmp=2.526170e-08 $ Water around grid plate pin                          
 368503   105 -7.85     312301 -312302 -311305          imp:n=1 u=3685  $ Bottom casing                          
-368504   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3685 tmp=2.533494e-08 $ Water around fuel element                         
+368504   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3685 tmp=2.526170e-08 $ Water around fuel element                         
 368505   106 -1.56     312302 -312303 -311304          imp:n=1 u=3685  $ Lower graphite slug                          
 368506   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3685  $ Fuel cladding                         
 368507   108  0.042234 312303 -312304 -311301          imp:n=1 u=3685  tmp=2.533494e-08 $ Zirc pin                          
@@ -842,18 +842,18 @@ c
 368513   106 -1.56     312304 -312305 -311304          imp:n=1 u=3685  $ Upper graphite spacer                         
 368514   105 -7.85     312305 -312306 -311305          imp:n=1 u=3685  $ SS top cap                          
 368515   105 -7.85     312306 -312307 -311303          imp:n=1 u=3685  $ Tri-flute                          
-368516   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3685 tmp=2.533494e-08 $ Water around tri-flute                          
+368516   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3685 tmp=2.526170e-08 $ Water around tri-flute                          
 368517   105 -7.85     312307 -312308 -311302          imp:n=1 u=3685  $ Fuel tip                         
-368518   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3685 tmp=2.533494e-08 $ Water around fuel tip                         
-368519   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3685 tmp=2.533494e-08 $ Water above fuel element                         
+368518   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3685 tmp=2.526170e-08 $ Water around fuel tip                         
+368519   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3685 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3721 - SS clad (T0S210D210) universe --- 
 c                         
 372101   105 -7.85     312300 -312301 -311302          imp:n=1 u=3721  $ Lower grid plate pin                         
-372102   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3721 tmp=2.533494e-08 $ Water around grid plate pin                          
+372102   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3721 tmp=2.526170e-08 $ Water around grid plate pin                          
 372103   105 -7.85     312301 -312302 -311305          imp:n=1 u=3721  $ Bottom casing                          
-372104   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3721 tmp=2.533494e-08 $ Water around fuel element                         
+372104   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3721 tmp=2.526170e-08 $ Water around fuel element                         
 372105   106 -1.56     312302 -312303 -311304          imp:n=1 u=3721  $ Lower graphite slug                          
 372106   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3721  $ Fuel cladding                         
 372107   108  0.042234 312303 -312304 -311301          imp:n=1 u=3721  tmp=2.533494e-08 $ Zirc pin                          
@@ -865,18 +865,18 @@ c
 372113   106 -1.56     312304 -312305 -311304          imp:n=1 u=3721  $ Upper graphite spacer                         
 372114   105 -7.85     312305 -312306 -311305          imp:n=1 u=3721  $ SS top cap                          
 372115   105 -7.85     312306 -312307 -311303          imp:n=1 u=3721  $ Tri-flute                          
-372116   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3721 tmp=2.533494e-08 $ Water around tri-flute                          
+372116   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3721 tmp=2.526170e-08 $ Water around tri-flute                          
 372117   105 -7.85     312307 -312308 -311302          imp:n=1 u=3721  $ Fuel tip                         
-372118   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3721 tmp=2.533494e-08 $ Water around fuel tip                         
-372119   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3721 tmp=2.533494e-08 $ Water above fuel element                         
+372118   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3721 tmp=2.526170e-08 $ Water around fuel tip                         
+372119   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3721 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3743 - SS clad (T0S210D210) universe --- 
 c                         
 374301   105 -7.85     312300 -312301 -311302          imp:n=1 u=3743  $ Lower grid plate pin                         
-374302   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3743 tmp=2.533494e-08 $ Water around grid plate pin                          
+374302   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3743 tmp=2.526170e-08 $ Water around grid plate pin                          
 374303   105 -7.85     312301 -312302 -311305          imp:n=1 u=3743  $ Bottom casing                          
-374304   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3743 tmp=2.533494e-08 $ Water around fuel element                         
+374304   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3743 tmp=2.526170e-08 $ Water around fuel element                         
 374305   106 -1.56     312302 -312303 -311304          imp:n=1 u=3743  $ Lower graphite slug                          
 374306   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3743  $ Fuel cladding                         
 374307   108  0.042234 312303 -312304 -311301          imp:n=1 u=3743  tmp=2.533494e-08 $ Zirc pin                          
@@ -888,18 +888,18 @@ c
 374313   106 -1.56     312304 -312305 -311304          imp:n=1 u=3743  $ Upper graphite spacer                         
 374314   105 -7.85     312305 -312306 -311305          imp:n=1 u=3743  $ SS top cap                          
 374315   105 -7.85     312306 -312307 -311303          imp:n=1 u=3743  $ Tri-flute                          
-374316   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3743 tmp=2.533494e-08 $ Water around tri-flute                          
+374316   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3743 tmp=2.526170e-08 $ Water around tri-flute                          
 374317   105 -7.85     312307 -312308 -311302          imp:n=1 u=3743  $ Fuel tip                         
-374318   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3743 tmp=2.533494e-08 $ Water around fuel tip                         
-374319   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3743 tmp=2.533494e-08 $ Water above fuel element                         
+374318   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3743 tmp=2.526170e-08 $ Water around fuel tip                         
+374319   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3743 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3748 - SS clad (T0S210D210) universe --- 
 c                         
 374801   105 -7.85     312300 -312301 -311302          imp:n=1 u=3748  $ Lower grid plate pin                         
-374802   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3748 tmp=2.533494e-08 $ Water around grid plate pin                          
+374802   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3748 tmp=2.526170e-08 $ Water around grid plate pin                          
 374803   105 -7.85     312301 -312302 -311305          imp:n=1 u=3748  $ Bottom casing                          
-374804   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3748 tmp=2.533494e-08 $ Water around fuel element                         
+374804   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3748 tmp=2.526170e-08 $ Water around fuel element                         
 374805   106 -1.56     312302 -312303 -311304          imp:n=1 u=3748  $ Lower graphite slug                          
 374806   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3748  $ Fuel cladding                         
 374807   108  0.042234 312303 -312304 -311301          imp:n=1 u=3748  tmp=2.533494e-08 $ Zirc pin                          
@@ -911,18 +911,18 @@ c
 374813   106 -1.56     312304 -312305 -311304          imp:n=1 u=3748  $ Upper graphite spacer                         
 374814   105 -7.85     312305 -312306 -311305          imp:n=1 u=3748  $ SS top cap                          
 374815   105 -7.85     312306 -312307 -311303          imp:n=1 u=3748  $ Tri-flute                          
-374816   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3748 tmp=2.533494e-08 $ Water around tri-flute                          
+374816   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3748 tmp=2.526170e-08 $ Water around tri-flute                          
 374817   105 -7.85     312307 -312308 -311302          imp:n=1 u=3748  $ Fuel tip                         
-374818   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3748 tmp=2.533494e-08 $ Water around fuel tip                         
-374819   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3748 tmp=2.533494e-08 $ Water above fuel element                         
+374818   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3748 tmp=2.526170e-08 $ Water around fuel tip                         
+374819   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3748 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3774 - SS clad (T0S210D210) universe --- 
 c                         
 377401   105 -7.85     312300 -312301 -311302          imp:n=1 u=3774  $ Lower grid plate pin                         
-377402   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3774 tmp=2.533494e-08 $ Water around grid plate pin                          
+377402   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3774 tmp=2.526170e-08 $ Water around grid plate pin                          
 377403   105 -7.85     312301 -312302 -311305          imp:n=1 u=3774  $ Bottom casing                          
-377404   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3774 tmp=2.533494e-08 $ Water around fuel element                         
+377404   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3774 tmp=2.526170e-08 $ Water around fuel element                         
 377405   106 -1.56     312302 -312303 -311304          imp:n=1 u=3774  $ Lower graphite slug                          
 377406   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3774  $ Fuel cladding                         
 377407   108  0.042234 312303 -312304 -311301          imp:n=1 u=3774  tmp=2.533494e-08 $ Zirc pin                          
@@ -934,18 +934,18 @@ c
 377413   106 -1.56     312304 -312305 -311304          imp:n=1 u=3774  $ Upper graphite spacer                         
 377414   105 -7.85     312305 -312306 -311305          imp:n=1 u=3774  $ SS top cap                          
 377415   105 -7.85     312306 -312307 -311303          imp:n=1 u=3774  $ Tri-flute                          
-377416   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3774 tmp=2.533494e-08 $ Water around tri-flute                          
+377416   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3774 tmp=2.526170e-08 $ Water around tri-flute                          
 377417   105 -7.85     312307 -312308 -311302          imp:n=1 u=3774  $ Fuel tip                         
-377418   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3774 tmp=2.533494e-08 $ Water around fuel tip                         
-377419   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3774 tmp=2.533494e-08 $ Water above fuel element                         
+377418   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3774 tmp=2.526170e-08 $ Water around fuel tip                         
+377419   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3774 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3810 - SS clad (T0S210D210) universe --- 
 c                         
 381001   105 -7.85     312300 -312301 -311302          imp:n=1 u=3810  $ Lower grid plate pin                         
-381002   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3810 tmp=2.533494e-08 $ Water around grid plate pin                          
+381002   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3810 tmp=2.526170e-08 $ Water around grid plate pin                          
 381003   105 -7.85     312301 -312302 -311305          imp:n=1 u=3810  $ Bottom casing                          
-381004   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3810 tmp=2.533494e-08 $ Water around fuel element                         
+381004   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3810 tmp=2.526170e-08 $ Water around fuel element                         
 381005   106 -1.56     312302 -312303 -311304          imp:n=1 u=3810  $ Lower graphite slug                          
 381006   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3810  $ Fuel cladding                         
 381007   108  0.042234 312303 -312304 -311301          imp:n=1 u=3810  tmp=2.533494e-08 $ Zirc pin                          
@@ -957,18 +957,18 @@ c
 381013   106 -1.56     312304 -312305 -311304          imp:n=1 u=3810  $ Upper graphite spacer                         
 381014   105 -7.85     312305 -312306 -311305          imp:n=1 u=3810  $ SS top cap                          
 381015   105 -7.85     312306 -312307 -311303          imp:n=1 u=3810  $ Tri-flute                          
-381016   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3810 tmp=2.533494e-08 $ Water around tri-flute                          
+381016   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3810 tmp=2.526170e-08 $ Water around tri-flute                          
 381017   105 -7.85     312307 -312308 -311302          imp:n=1 u=3810  $ Fuel tip                         
-381018   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3810 tmp=2.533494e-08 $ Water around fuel tip                         
-381019   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3810 tmp=2.533494e-08 $ Water above fuel element                         
+381018   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3810 tmp=2.526170e-08 $ Water around fuel tip                         
+381019   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3810 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3835 - SS clad (T0S210D210) universe --- 
 c                         
 383501   105 -7.85     312300 -312301 -311302          imp:n=1 u=3835  $ Lower grid plate pin                         
-383502   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3835 tmp=2.533494e-08 $ Water around grid plate pin                          
+383502   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3835 tmp=2.526170e-08 $ Water around grid plate pin                          
 383503   105 -7.85     312301 -312302 -311305          imp:n=1 u=3835  $ Bottom casing                          
-383504   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3835 tmp=2.533494e-08 $ Water around fuel element                         
+383504   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3835 tmp=2.526170e-08 $ Water around fuel element                         
 383505   106 -1.56     312302 -312303 -311304          imp:n=1 u=3835  $ Lower graphite slug                          
 383506   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3835  $ Fuel cladding                         
 383507   108  0.042234 312303 -312304 -311301          imp:n=1 u=3835  tmp=2.533494e-08 $ Zirc pin                          
@@ -980,18 +980,18 @@ c
 383513   106 -1.56     312304 -312305 -311304          imp:n=1 u=3835  $ Upper graphite spacer                         
 383514   105 -7.85     312305 -312306 -311305          imp:n=1 u=3835  $ SS top cap                          
 383515   105 -7.85     312306 -312307 -311303          imp:n=1 u=3835  $ Tri-flute                          
-383516   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3835 tmp=2.533494e-08 $ Water around tri-flute                          
+383516   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3835 tmp=2.526170e-08 $ Water around tri-flute                          
 383517   105 -7.85     312307 -312308 -311302          imp:n=1 u=3835  $ Fuel tip                         
-383518   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3835 tmp=2.533494e-08 $ Water around fuel tip                         
-383519   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3835 tmp=2.533494e-08 $ Water above fuel element                         
+383518   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3835 tmp=2.526170e-08 $ Water around fuel tip                         
+383519   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3835 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3840 - SS clad (T0S210D210) universe --- 
 c                         
 384001   105 -7.85     312300 -312301 -311302          imp:n=1 u=3840  $ Lower grid plate pin                         
-384002   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3840 tmp=2.533494e-08 $ Water around grid plate pin                          
+384002   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3840 tmp=2.526170e-08 $ Water around grid plate pin                          
 384003   105 -7.85     312301 -312302 -311305          imp:n=1 u=3840  $ Bottom casing                          
-384004   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3840 tmp=2.533494e-08 $ Water around fuel element                         
+384004   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3840 tmp=2.526170e-08 $ Water around fuel element                         
 384005   106 -1.56     312302 -312303 -311304          imp:n=1 u=3840  $ Lower graphite slug                          
 384006   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3840  $ Fuel cladding                         
 384007   108  0.042234 312303 -312304 -311301          imp:n=1 u=3840  tmp=2.533494e-08 $ Zirc pin                          
@@ -1003,18 +1003,18 @@ c
 384013   106 -1.56     312304 -312305 -311304          imp:n=1 u=3840  $ Upper graphite spacer                         
 384014   105 -7.85     312305 -312306 -311305          imp:n=1 u=3840  $ SS top cap                          
 384015   105 -7.85     312306 -312307 -311303          imp:n=1 u=3840  $ Tri-flute                          
-384016   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3840 tmp=2.533494e-08 $ Water around tri-flute                          
+384016   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3840 tmp=2.526170e-08 $ Water around tri-flute                          
 384017   105 -7.85     312307 -312308 -311302          imp:n=1 u=3840  $ Fuel tip                         
-384018   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3840 tmp=2.533494e-08 $ Water around fuel tip                         
-384019   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3840 tmp=2.533494e-08 $ Water above fuel element                         
+384018   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3840 tmp=2.526170e-08 $ Water around fuel tip                         
+384019   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3840 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3851 - SS clad (T0S210D210) universe --- 
 c                         
 385101   105 -7.85     312300 -312301 -311302          imp:n=1 u=3851  $ Lower grid plate pin                         
-385102   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3851 tmp=2.533494e-08 $ Water around grid plate pin                          
+385102   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3851 tmp=2.526170e-08 $ Water around grid plate pin                          
 385103   105 -7.85     312301 -312302 -311305          imp:n=1 u=3851  $ Bottom casing                          
-385104   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3851 tmp=2.533494e-08 $ Water around fuel element                         
+385104   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3851 tmp=2.526170e-08 $ Water around fuel element                         
 385105   106 -1.56     312302 -312303 -311304          imp:n=1 u=3851  $ Lower graphite slug                          
 385106   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3851  $ Fuel cladding                         
 385107   108  0.042234 312303 -312304 -311301          imp:n=1 u=3851  tmp=2.533494e-08 $ Zirc pin                          
@@ -1026,18 +1026,18 @@ c
 385113   106 -1.56     312304 -312305 -311304          imp:n=1 u=3851  $ Upper graphite spacer                         
 385114   105 -7.85     312305 -312306 -311305          imp:n=1 u=3851  $ SS top cap                          
 385115   105 -7.85     312306 -312307 -311303          imp:n=1 u=3851  $ Tri-flute                          
-385116   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3851 tmp=2.533494e-08 $ Water around tri-flute                          
+385116   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3851 tmp=2.526170e-08 $ Water around tri-flute                          
 385117   105 -7.85     312307 -312308 -311302          imp:n=1 u=3851  $ Fuel tip                         
-385118   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3851 tmp=2.533494e-08 $ Water around fuel tip                         
-385119   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3851 tmp=2.533494e-08 $ Water above fuel element                         
+385118   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3851 tmp=2.526170e-08 $ Water around fuel tip                         
+385119   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3851 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3852 - SS clad (T0S210D210) universe --- 
 c                         
 385201   105 -7.85     312300 -312301 -311302          imp:n=1 u=3852  $ Lower grid plate pin                         
-385202   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3852 tmp=2.533494e-08 $ Water around grid plate pin                          
+385202   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3852 tmp=2.526170e-08 $ Water around grid plate pin                          
 385203   105 -7.85     312301 -312302 -311305          imp:n=1 u=3852  $ Bottom casing                          
-385204   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3852 tmp=2.533494e-08 $ Water around fuel element                         
+385204   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3852 tmp=2.526170e-08 $ Water around fuel element                         
 385205   106 -1.56     312302 -312303 -311304          imp:n=1 u=3852  $ Lower graphite slug                          
 385206   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3852  $ Fuel cladding                         
 385207   108  0.042234 312303 -312304 -311301          imp:n=1 u=3852  tmp=2.533494e-08 $ Zirc pin                          
@@ -1049,18 +1049,18 @@ c
 385213   106 -1.56     312304 -312305 -311304          imp:n=1 u=3852  $ Upper graphite spacer                         
 385214   105 -7.85     312305 -312306 -311305          imp:n=1 u=3852  $ SS top cap                          
 385215   105 -7.85     312306 -312307 -311303          imp:n=1 u=3852  $ Tri-flute                          
-385216   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3852 tmp=2.533494e-08 $ Water around tri-flute                          
+385216   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3852 tmp=2.526170e-08 $ Water around tri-flute                          
 385217   105 -7.85     312307 -312308 -311302          imp:n=1 u=3852  $ Fuel tip                         
-385218   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3852 tmp=2.533494e-08 $ Water around fuel tip                         
-385219   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3852 tmp=2.533494e-08 $ Water above fuel element                         
+385218   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3852 tmp=2.526170e-08 $ Water around fuel tip                         
+385219   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3852 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3853 - SS clad (T0S210D210) universe --- 
 c                         
 385301   105 -7.85     312300 -312301 -311302          imp:n=1 u=3853  $ Lower grid plate pin                         
-385302   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3853 tmp=2.533494e-08 $ Water around grid plate pin                          
+385302   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3853 tmp=2.526170e-08 $ Water around grid plate pin                          
 385303   105 -7.85     312301 -312302 -311305          imp:n=1 u=3853  $ Bottom casing                          
-385304   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3853 tmp=2.533494e-08 $ Water around fuel element                         
+385304   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3853 tmp=2.526170e-08 $ Water around fuel element                         
 385305   106 -1.56     312302 -312303 -311304          imp:n=1 u=3853  $ Lower graphite slug                          
 385306   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3853  $ Fuel cladding                         
 385307   108  0.042234 312303 -312304 -311301          imp:n=1 u=3853  tmp=2.533494e-08 $ Zirc pin                          
@@ -1072,18 +1072,18 @@ c
 385313   106 -1.56     312304 -312305 -311304          imp:n=1 u=3853  $ Upper graphite spacer                         
 385314   105 -7.85     312305 -312306 -311305          imp:n=1 u=3853  $ SS top cap                          
 385315   105 -7.85     312306 -312307 -311303          imp:n=1 u=3853  $ Tri-flute                          
-385316   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3853 tmp=2.533494e-08 $ Water around tri-flute                          
+385316   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3853 tmp=2.526170e-08 $ Water around tri-flute                          
 385317   105 -7.85     312307 -312308 -311302          imp:n=1 u=3853  $ Fuel tip                         
-385318   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3853 tmp=2.533494e-08 $ Water around fuel tip                         
-385319   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3853 tmp=2.533494e-08 $ Water above fuel element                         
+385318   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3853 tmp=2.526170e-08 $ Water around fuel tip                         
+385319   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3853 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3854 - SS clad (T0S210D210) universe --- 
 c                         
 385401   105 -7.85     312300 -312301 -311302          imp:n=1 u=3854  $ Lower grid plate pin                         
-385402   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3854 tmp=2.533494e-08 $ Water around grid plate pin                          
+385402   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3854 tmp=2.526170e-08 $ Water around grid plate pin                          
 385403   105 -7.85     312301 -312302 -311305          imp:n=1 u=3854  $ Bottom casing                          
-385404   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3854 tmp=2.533494e-08 $ Water around fuel element                         
+385404   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3854 tmp=2.526170e-08 $ Water around fuel element                         
 385405   106 -1.56     312302 -312303 -311304          imp:n=1 u=3854  $ Lower graphite slug                          
 385406   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3854  $ Fuel cladding                         
 385407   108  0.042234 312303 -312304 -311301          imp:n=1 u=3854  tmp=2.533494e-08 $ Zirc pin                          
@@ -1095,18 +1095,18 @@ c
 385413   106 -1.56     312304 -312305 -311304          imp:n=1 u=3854  $ Upper graphite spacer                         
 385414   105 -7.85     312305 -312306 -311305          imp:n=1 u=3854  $ SS top cap                          
 385415   105 -7.85     312306 -312307 -311303          imp:n=1 u=3854  $ Tri-flute                          
-385416   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3854 tmp=2.533494e-08 $ Water around tri-flute                          
+385416   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3854 tmp=2.526170e-08 $ Water around tri-flute                          
 385417   105 -7.85     312307 -312308 -311302          imp:n=1 u=3854  $ Fuel tip                         
-385418   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3854 tmp=2.533494e-08 $ Water around fuel tip                         
-385419   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3854 tmp=2.533494e-08 $ Water above fuel element                         
+385418   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3854 tmp=2.526170e-08 $ Water around fuel tip                         
+385419   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3854 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3855 - SS clad (T0S210D210) universe --- 
 c                         
 385501   105 -7.85     312300 -312301 -311302          imp:n=1 u=3855  $ Lower grid plate pin                         
-385502   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3855 tmp=2.533494e-08 $ Water around grid plate pin                          
+385502   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3855 tmp=2.526170e-08 $ Water around grid plate pin                          
 385503   105 -7.85     312301 -312302 -311305          imp:n=1 u=3855  $ Bottom casing                          
-385504   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3855 tmp=2.533494e-08 $ Water around fuel element                         
+385504   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3855 tmp=2.526170e-08 $ Water around fuel element                         
 385505   106 -1.56     312302 -312303 -311304          imp:n=1 u=3855  $ Lower graphite slug                          
 385506   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3855  $ Fuel cladding                         
 385507   108  0.042234 312303 -312304 -311301          imp:n=1 u=3855  tmp=2.533494e-08 $ Zirc pin                          
@@ -1118,18 +1118,18 @@ c
 385513   106 -1.56     312304 -312305 -311304          imp:n=1 u=3855  $ Upper graphite spacer                         
 385514   105 -7.85     312305 -312306 -311305          imp:n=1 u=3855  $ SS top cap                          
 385515   105 -7.85     312306 -312307 -311303          imp:n=1 u=3855  $ Tri-flute                          
-385516   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3855 tmp=2.533494e-08 $ Water around tri-flute                          
+385516   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3855 tmp=2.526170e-08 $ Water around tri-flute                          
 385517   105 -7.85     312307 -312308 -311302          imp:n=1 u=3855  $ Fuel tip                         
-385518   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3855 tmp=2.533494e-08 $ Water around fuel tip                         
-385519   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3855 tmp=2.533494e-08 $ Water above fuel element                         
+385518   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3855 tmp=2.526170e-08 $ Water around fuel tip                         
+385519   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3855 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3856 - SS clad (T0S210D210) universe --- 
 c                         
 385601   105 -7.85     312300 -312301 -311302          imp:n=1 u=3856  $ Lower grid plate pin                         
-385602   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3856 tmp=2.533494e-08 $ Water around grid plate pin                          
+385602   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3856 tmp=2.526170e-08 $ Water around grid plate pin                          
 385603   105 -7.85     312301 -312302 -311305          imp:n=1 u=3856  $ Bottom casing                          
-385604   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3856 tmp=2.533494e-08 $ Water around fuel element                         
+385604   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3856 tmp=2.526170e-08 $ Water around fuel element                         
 385605   106 -1.56     312302 -312303 -311304          imp:n=1 u=3856  $ Lower graphite slug                          
 385606   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3856  $ Fuel cladding                         
 385607   108  0.042234 312303 -312304 -311301          imp:n=1 u=3856  tmp=2.533494e-08 $ Zirc pin                          
@@ -1141,18 +1141,18 @@ c
 385613   106 -1.56     312304 -312305 -311304          imp:n=1 u=3856  $ Upper graphite spacer                         
 385614   105 -7.85     312305 -312306 -311305          imp:n=1 u=3856  $ SS top cap                          
 385615   105 -7.85     312306 -312307 -311303          imp:n=1 u=3856  $ Tri-flute                          
-385616   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3856 tmp=2.533494e-08 $ Water around tri-flute                          
+385616   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3856 tmp=2.526170e-08 $ Water around tri-flute                          
 385617   105 -7.85     312307 -312308 -311302          imp:n=1 u=3856  $ Fuel tip                         
-385618   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3856 tmp=2.533494e-08 $ Water around fuel tip                         
-385619   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3856 tmp=2.533494e-08 $ Water above fuel element                         
+385618   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3856 tmp=2.526170e-08 $ Water around fuel tip                         
+385619   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3856 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3858 - SS clad (T0S210D210) universe --- 
 c                         
 385801   105 -7.85     312300 -312301 -311302          imp:n=1 u=3858  $ Lower grid plate pin                         
-385802   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3858 tmp=2.533494e-08 $ Water around grid plate pin                          
+385802   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3858 tmp=2.526170e-08 $ Water around grid plate pin                          
 385803   105 -7.85     312301 -312302 -311305          imp:n=1 u=3858  $ Bottom casing                          
-385804   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3858 tmp=2.533494e-08 $ Water around fuel element                         
+385804   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3858 tmp=2.526170e-08 $ Water around fuel element                         
 385805   106 -1.56     312302 -312303 -311304          imp:n=1 u=3858  $ Lower graphite slug                          
 385806   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3858  $ Fuel cladding                         
 385807   108  0.042234 312303 -312304 -311301          imp:n=1 u=3858  tmp=2.533494e-08 $ Zirc pin                          
@@ -1164,18 +1164,18 @@ c
 385813   106 -1.56     312304 -312305 -311304          imp:n=1 u=3858  $ Upper graphite spacer                         
 385814   105 -7.85     312305 -312306 -311305          imp:n=1 u=3858  $ SS top cap                          
 385815   105 -7.85     312306 -312307 -311303          imp:n=1 u=3858  $ Tri-flute                          
-385816   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3858 tmp=2.533494e-08 $ Water around tri-flute                          
+385816   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3858 tmp=2.526170e-08 $ Water around tri-flute                          
 385817   105 -7.85     312307 -312308 -311302          imp:n=1 u=3858  $ Fuel tip                         
-385818   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3858 tmp=2.533494e-08 $ Water around fuel tip                         
-385819   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3858 tmp=2.533494e-08 $ Water above fuel element                         
+385818   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3858 tmp=2.526170e-08 $ Water around fuel tip                         
+385819   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3858 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3862 - SS clad (T0S210D210) universe --- 
 c                         
 386201   105 -7.85     312300 -312301 -311302          imp:n=1 u=3862  $ Lower grid plate pin                         
-386202   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3862 tmp=2.533494e-08 $ Water around grid plate pin                          
+386202   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3862 tmp=2.526170e-08 $ Water around grid plate pin                          
 386203   105 -7.85     312301 -312302 -311305          imp:n=1 u=3862  $ Bottom casing                          
-386204   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3862 tmp=2.533494e-08 $ Water around fuel element                         
+386204   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3862 tmp=2.526170e-08 $ Water around fuel element                         
 386205   106 -1.56     312302 -312303 -311304          imp:n=1 u=3862  $ Lower graphite slug                          
 386206   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3862  $ Fuel cladding                         
 386207   108  0.042234 312303 -312304 -311301          imp:n=1 u=3862  tmp=2.533494e-08 $ Zirc pin                          
@@ -1187,18 +1187,18 @@ c
 386213   106 -1.56     312304 -312305 -311304          imp:n=1 u=3862  $ Upper graphite spacer                         
 386214   105 -7.85     312305 -312306 -311305          imp:n=1 u=3862  $ SS top cap                          
 386215   105 -7.85     312306 -312307 -311303          imp:n=1 u=3862  $ Tri-flute                          
-386216   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3862 tmp=2.533494e-08 $ Water around tri-flute                          
+386216   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3862 tmp=2.526170e-08 $ Water around tri-flute                          
 386217   105 -7.85     312307 -312308 -311302          imp:n=1 u=3862  $ Fuel tip                         
-386218   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3862 tmp=2.533494e-08 $ Water around fuel tip                         
-386219   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3862 tmp=2.533494e-08 $ Water above fuel element                         
+386218   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3862 tmp=2.526170e-08 $ Water around fuel tip                         
+386219   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3862 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3864 - SS clad (T0S210D210) universe --- 
 c                         
 386401   105 -7.85     312300 -312301 -311302          imp:n=1 u=3864  $ Lower grid plate pin                         
-386402   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3864 tmp=2.533494e-08 $ Water around grid plate pin                          
+386402   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3864 tmp=2.526170e-08 $ Water around grid plate pin                          
 386403   105 -7.85     312301 -312302 -311305          imp:n=1 u=3864  $ Bottom casing                          
-386404   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3864 tmp=2.533494e-08 $ Water around fuel element                         
+386404   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3864 tmp=2.526170e-08 $ Water around fuel element                         
 386405   106 -1.56     312302 -312303 -311304          imp:n=1 u=3864  $ Lower graphite slug                          
 386406   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3864  $ Fuel cladding                         
 386407   108  0.042234 312303 -312304 -311301          imp:n=1 u=3864  tmp=2.533494e-08 $ Zirc pin                          
@@ -1210,18 +1210,18 @@ c
 386413   106 -1.56     312304 -312305 -311304          imp:n=1 u=3864  $ Upper graphite spacer                         
 386414   105 -7.85     312305 -312306 -311305          imp:n=1 u=3864  $ SS top cap                          
 386415   105 -7.85     312306 -312307 -311303          imp:n=1 u=3864  $ Tri-flute                          
-386416   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3864 tmp=2.533494e-08 $ Water around tri-flute                          
+386416   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3864 tmp=2.526170e-08 $ Water around tri-flute                          
 386417   105 -7.85     312307 -312308 -311302          imp:n=1 u=3864  $ Fuel tip                         
-386418   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3864 tmp=2.533494e-08 $ Water around fuel tip                         
-386419   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3864 tmp=2.533494e-08 $ Water above fuel element                         
+386418   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3864 tmp=2.526170e-08 $ Water around fuel tip                         
+386419   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3864 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3865 - SS clad (T0S210D210) universe --- 
 c                         
 386501   105 -7.85     312300 -312301 -311302          imp:n=1 u=3865  $ Lower grid plate pin                         
-386502   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3865 tmp=2.533494e-08 $ Water around grid plate pin                          
+386502   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3865 tmp=2.526170e-08 $ Water around grid plate pin                          
 386503   105 -7.85     312301 -312302 -311305          imp:n=1 u=3865  $ Bottom casing                          
-386504   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3865 tmp=2.533494e-08 $ Water around fuel element                         
+386504   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3865 tmp=2.526170e-08 $ Water around fuel element                         
 386505   106 -1.56     312302 -312303 -311304          imp:n=1 u=3865  $ Lower graphite slug                          
 386506   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3865  $ Fuel cladding                         
 386507   108  0.042234 312303 -312304 -311301          imp:n=1 u=3865  tmp=2.533494e-08 $ Zirc pin                          
@@ -1233,18 +1233,18 @@ c
 386513   106 -1.56     312304 -312305 -311304          imp:n=1 u=3865  $ Upper graphite spacer                         
 386514   105 -7.85     312305 -312306 -311305          imp:n=1 u=3865  $ SS top cap                          
 386515   105 -7.85     312306 -312307 -311303          imp:n=1 u=3865  $ Tri-flute                          
-386516   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3865 tmp=2.533494e-08 $ Water around tri-flute                          
+386516   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3865 tmp=2.526170e-08 $ Water around tri-flute                          
 386517   105 -7.85     312307 -312308 -311302          imp:n=1 u=3865  $ Fuel tip                         
-386518   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3865 tmp=2.533494e-08 $ Water around fuel tip                         
-386519   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3865 tmp=2.533494e-08 $ Water above fuel element                         
+386518   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3865 tmp=2.526170e-08 $ Water around fuel tip                         
+386519   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3865 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3866 - SS clad (T0S210D210) universe --- 
 c                         
 386601   105 -7.85     312300 -312301 -311302          imp:n=1 u=3866  $ Lower grid plate pin                         
-386602   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3866 tmp=2.533494e-08 $ Water around grid plate pin                          
+386602   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3866 tmp=2.526170e-08 $ Water around grid plate pin                          
 386603   105 -7.85     312301 -312302 -311305          imp:n=1 u=3866  $ Bottom casing                          
-386604   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3866 tmp=2.533494e-08 $ Water around fuel element                         
+386604   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3866 tmp=2.526170e-08 $ Water around fuel element                         
 386605   106 -1.56     312302 -312303 -311304          imp:n=1 u=3866  $ Lower graphite slug                          
 386606   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3866  $ Fuel cladding                         
 386607   108  0.042234 312303 -312304 -311301          imp:n=1 u=3866  tmp=2.533494e-08 $ Zirc pin                          
@@ -1256,18 +1256,18 @@ c
 386613   106 -1.56     312304 -312305 -311304          imp:n=1 u=3866  $ Upper graphite spacer                         
 386614   105 -7.85     312305 -312306 -311305          imp:n=1 u=3866  $ SS top cap                          
 386615   105 -7.85     312306 -312307 -311303          imp:n=1 u=3866  $ Tri-flute                          
-386616   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3866 tmp=2.533494e-08 $ Water around tri-flute                          
+386616   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3866 tmp=2.526170e-08 $ Water around tri-flute                          
 386617   105 -7.85     312307 -312308 -311302          imp:n=1 u=3866  $ Fuel tip                         
-386618   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3866 tmp=2.533494e-08 $ Water around fuel tip                         
-386619   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3866 tmp=2.533494e-08 $ Water above fuel element                         
+386618   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3866 tmp=2.526170e-08 $ Water around fuel tip                         
+386619   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3866 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3868 - SS clad (T0S210D210) universe --- 
 c                         
 386801   105 -7.85     312300 -312301 -311302          imp:n=1 u=3868  $ Lower grid plate pin                         
-386802   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3868 tmp=2.533494e-08 $ Water around grid plate pin                          
+386802   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3868 tmp=2.526170e-08 $ Water around grid plate pin                          
 386803   105 -7.85     312301 -312302 -311305          imp:n=1 u=3868  $ Bottom casing                          
-386804   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3868 tmp=2.533494e-08 $ Water around fuel element                         
+386804   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3868 tmp=2.526170e-08 $ Water around fuel element                         
 386805   106 -1.56     312302 -312303 -311304          imp:n=1 u=3868  $ Lower graphite slug                          
 386806   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3868  $ Fuel cladding                         
 386807   108  0.042234 312303 -312304 -311301          imp:n=1 u=3868  tmp=2.533494e-08 $ Zirc pin                          
@@ -1279,18 +1279,18 @@ c
 386813   106 -1.56     312304 -312305 -311304          imp:n=1 u=3868  $ Upper graphite spacer                         
 386814   105 -7.85     312305 -312306 -311305          imp:n=1 u=3868  $ SS top cap                          
 386815   105 -7.85     312306 -312307 -311303          imp:n=1 u=3868  $ Tri-flute                          
-386816   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3868 tmp=2.533494e-08 $ Water around tri-flute                          
+386816   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3868 tmp=2.526170e-08 $ Water around tri-flute                          
 386817   105 -7.85     312307 -312308 -311302          imp:n=1 u=3868  $ Fuel tip                         
-386818   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3868 tmp=2.533494e-08 $ Water around fuel tip                         
-386819   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3868 tmp=2.533494e-08 $ Water above fuel element                         
+386818   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3868 tmp=2.526170e-08 $ Water around fuel tip                         
+386819   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3868 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3870 - SS clad (T0S210D210) universe --- 
 c                         
 387001   105 -7.85     312300 -312301 -311302          imp:n=1 u=3870  $ Lower grid plate pin                         
-387002   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3870 tmp=2.533494e-08 $ Water around grid plate pin                          
+387002   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3870 tmp=2.526170e-08 $ Water around grid plate pin                          
 387003   105 -7.85     312301 -312302 -311305          imp:n=1 u=3870  $ Bottom casing                          
-387004   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3870 tmp=2.533494e-08 $ Water around fuel element                         
+387004   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3870 tmp=2.526170e-08 $ Water around fuel element                         
 387005   106 -1.56     312302 -312303 -311304          imp:n=1 u=3870  $ Lower graphite slug                          
 387006   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3870  $ Fuel cladding                         
 387007   108  0.042234 312303 -312304 -311301          imp:n=1 u=3870  tmp=2.533494e-08 $ Zirc pin                          
@@ -1302,18 +1302,18 @@ c
 387013   106 -1.56     312304 -312305 -311304          imp:n=1 u=3870  $ Upper graphite spacer                         
 387014   105 -7.85     312305 -312306 -311305          imp:n=1 u=3870  $ SS top cap                          
 387015   105 -7.85     312306 -312307 -311303          imp:n=1 u=3870  $ Tri-flute                          
-387016   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3870 tmp=2.533494e-08 $ Water around tri-flute                          
+387016   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3870 tmp=2.526170e-08 $ Water around tri-flute                          
 387017   105 -7.85     312307 -312308 -311302          imp:n=1 u=3870  $ Fuel tip                         
-387018   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3870 tmp=2.533494e-08 $ Water around fuel tip                         
-387019   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3870 tmp=2.533494e-08 $ Water above fuel element                         
+387018   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3870 tmp=2.526170e-08 $ Water around fuel tip                         
+387019   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3870 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3872 - SS clad (T0S210D210) universe --- 
 c                         
 387201   105 -7.85     312300 -312301 -311302          imp:n=1 u=3872  $ Lower grid plate pin                         
-387202   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3872 tmp=2.533494e-08 $ Water around grid plate pin                          
+387202   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3872 tmp=2.526170e-08 $ Water around grid plate pin                          
 387203   105 -7.85     312301 -312302 -311305          imp:n=1 u=3872  $ Bottom casing                          
-387204   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3872 tmp=2.533494e-08 $ Water around fuel element                         
+387204   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3872 tmp=2.526170e-08 $ Water around fuel element                         
 387205   106 -1.56     312302 -312303 -311304          imp:n=1 u=3872  $ Lower graphite slug                          
 387206   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3872  $ Fuel cladding                         
 387207   108  0.042234 312303 -312304 -311301          imp:n=1 u=3872  tmp=2.533494e-08 $ Zirc pin                          
@@ -1325,18 +1325,18 @@ c
 387213   106 -1.56     312304 -312305 -311304          imp:n=1 u=3872  $ Upper graphite spacer                         
 387214   105 -7.85     312305 -312306 -311305          imp:n=1 u=3872  $ SS top cap                          
 387215   105 -7.85     312306 -312307 -311303          imp:n=1 u=3872  $ Tri-flute                          
-387216   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3872 tmp=2.533494e-08 $ Water around tri-flute                          
+387216   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3872 tmp=2.526170e-08 $ Water around tri-flute                          
 387217   105 -7.85     312307 -312308 -311302          imp:n=1 u=3872  $ Fuel tip                         
-387218   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3872 tmp=2.533494e-08 $ Water around fuel tip                         
-387219   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3872 tmp=2.533494e-08 $ Water above fuel element                         
+387218   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3872 tmp=2.526170e-08 $ Water around fuel tip                         
+387219   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3872 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 3874 - SS clad (T0S210D210) universe --- 
 c                         
 387401   105 -7.85     312300 -312301 -311302          imp:n=1 u=3874  $ Lower grid plate pin                         
-387402   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=3874 tmp=2.533494e-08 $ Water around grid plate pin                          
+387402   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=3874 tmp=2.526170e-08 $ Water around grid plate pin                          
 387403   105 -7.85     312301 -312302 -311305          imp:n=1 u=3874  $ Bottom casing                          
-387404   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=3874 tmp=2.533494e-08 $ Water around fuel element                         
+387404   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=3874 tmp=2.526170e-08 $ Water around fuel element                         
 387405   106 -1.56     312302 -312303 -311304          imp:n=1 u=3874  $ Lower graphite slug                          
 387406   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=3874  $ Fuel cladding                         
 387407   108  0.042234 312303 -312304 -311301          imp:n=1 u=3874  tmp=2.533494e-08 $ Zirc pin                          
@@ -1348,18 +1348,18 @@ c
 387413   106 -1.56     312304 -312305 -311304          imp:n=1 u=3874  $ Upper graphite spacer                         
 387414   105 -7.85     312305 -312306 -311305          imp:n=1 u=3874  $ SS top cap                          
 387415   105 -7.85     312306 -312307 -311303          imp:n=1 u=3874  $ Tri-flute                          
-387416   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=3874 tmp=2.533494e-08 $ Water around tri-flute                          
+387416   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=3874 tmp=2.526170e-08 $ Water around tri-flute                          
 387417   105 -7.85     312307 -312308 -311302          imp:n=1 u=3874  $ Fuel tip                         
-387418   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=3874 tmp=2.533494e-08 $ Water around fuel tip                         
-387419   102 -0.997748     312308 -312309 -311306          imp:n=1 u=3874 tmp=2.533494e-08 $ Water above fuel element                         
+387418   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=3874 tmp=2.526170e-08 $ Water around fuel tip                         
+387419   102 -0.997936     312308 -312309 -311306          imp:n=1 u=3874 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4046 - SS clad (T0S210D210) universe --- 
 c                         
 404601   105 -7.85     312300 -312301 -311302          imp:n=1 u=4046  $ Lower grid plate pin                         
-404602   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4046 tmp=2.533494e-08 $ Water around grid plate pin                          
+404602   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4046 tmp=2.526170e-08 $ Water around grid plate pin                          
 404603   105 -7.85     312301 -312302 -311305          imp:n=1 u=4046  $ Bottom casing                          
-404604   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4046 tmp=2.533494e-08 $ Water around fuel element                         
+404604   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4046 tmp=2.526170e-08 $ Water around fuel element                         
 404605   106 -1.56     312302 -312303 -311304          imp:n=1 u=4046  $ Lower graphite slug                          
 404606   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4046  $ Fuel cladding                         
 404607   108  0.042234 312303 -312304 -311301          imp:n=1 u=4046  tmp=2.533494e-08 $ Zirc pin                          
@@ -1371,18 +1371,18 @@ c
 404613   106 -1.56     312304 -312305 -311304          imp:n=1 u=4046  $ Upper graphite spacer                         
 404614   105 -7.85     312305 -312306 -311305          imp:n=1 u=4046  $ SS top cap                          
 404615   105 -7.85     312306 -312307 -311303          imp:n=1 u=4046  $ Tri-flute                          
-404616   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4046 tmp=2.533494e-08 $ Water around tri-flute                          
+404616   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4046 tmp=2.526170e-08 $ Water around tri-flute                          
 404617   105 -7.85     312307 -312308 -311302          imp:n=1 u=4046  $ Fuel tip                         
-404618   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4046 tmp=2.533494e-08 $ Water around fuel tip                         
-404619   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4046 tmp=2.533494e-08 $ Water above fuel element                         
+404618   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4046 tmp=2.526170e-08 $ Water around fuel tip                         
+404619   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4046 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4049 - SS clad (T0S210D210) universe --- 
 c                         
 404901   105 -7.85     312300 -312301 -311302          imp:n=1 u=4049  $ Lower grid plate pin                         
-404902   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4049 tmp=2.533494e-08 $ Water around grid plate pin                          
+404902   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4049 tmp=2.526170e-08 $ Water around grid plate pin                          
 404903   105 -7.85     312301 -312302 -311305          imp:n=1 u=4049  $ Bottom casing                          
-404904   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4049 tmp=2.533494e-08 $ Water around fuel element                         
+404904   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4049 tmp=2.526170e-08 $ Water around fuel element                         
 404905   106 -1.56     312302 -312303 -311304          imp:n=1 u=4049  $ Lower graphite slug                          
 404906   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4049  $ Fuel cladding                         
 404907   108  0.042234 312303 -312304 -311301          imp:n=1 u=4049  tmp=2.533494e-08 $ Zirc pin                          
@@ -1394,18 +1394,18 @@ c
 404913   106 -1.56     312304 -312305 -311304          imp:n=1 u=4049  $ Upper graphite spacer                         
 404914   105 -7.85     312305 -312306 -311305          imp:n=1 u=4049  $ SS top cap                          
 404915   105 -7.85     312306 -312307 -311303          imp:n=1 u=4049  $ Tri-flute                          
-404916   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4049 tmp=2.533494e-08 $ Water around tri-flute                          
+404916   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4049 tmp=2.526170e-08 $ Water around tri-flute                          
 404917   105 -7.85     312307 -312308 -311302          imp:n=1 u=4049  $ Fuel tip                         
-404918   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4049 tmp=2.533494e-08 $ Water around fuel tip                         
-404919   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4049 tmp=2.533494e-08 $ Water above fuel element                         
+404918   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4049 tmp=2.526170e-08 $ Water around fuel tip                         
+404919   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4049 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4050 - SS clad (T0S210D210) universe --- 
 c                         
 405001   105 -7.85     312300 -312301 -311302          imp:n=1 u=4050  $ Lower grid plate pin                         
-405002   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4050 tmp=2.533494e-08 $ Water around grid plate pin                          
+405002   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4050 tmp=2.526170e-08 $ Water around grid plate pin                          
 405003   105 -7.85     312301 -312302 -311305          imp:n=1 u=4050  $ Bottom casing                          
-405004   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4050 tmp=2.533494e-08 $ Water around fuel element                         
+405004   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4050 tmp=2.526170e-08 $ Water around fuel element                         
 405005   106 -1.56     312302 -312303 -311304          imp:n=1 u=4050  $ Lower graphite slug                          
 405006   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4050  $ Fuel cladding                         
 405007   108  0.042234 312303 -312304 -311301          imp:n=1 u=4050  tmp=2.533494e-08 $ Zirc pin                          
@@ -1417,18 +1417,18 @@ c
 405013   106 -1.56     312304 -312305 -311304          imp:n=1 u=4050  $ Upper graphite spacer                         
 405014   105 -7.85     312305 -312306 -311305          imp:n=1 u=4050  $ SS top cap                          
 405015   105 -7.85     312306 -312307 -311303          imp:n=1 u=4050  $ Tri-flute                          
-405016   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4050 tmp=2.533494e-08 $ Water around tri-flute                          
+405016   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4050 tmp=2.526170e-08 $ Water around tri-flute                          
 405017   105 -7.85     312307 -312308 -311302          imp:n=1 u=4050  $ Fuel tip                         
-405018   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4050 tmp=2.533494e-08 $ Water around fuel tip                         
-405019   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4050 tmp=2.533494e-08 $ Water above fuel element                         
+405018   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4050 tmp=2.526170e-08 $ Water around fuel tip                         
+405019   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4050 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4053 - SS clad (T0S210D210) universe --- 
 c                         
 405301   105 -7.85     312300 -312301 -311302          imp:n=1 u=4053  $ Lower grid plate pin                         
-405302   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4053 tmp=2.533494e-08 $ Water around grid plate pin                          
+405302   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4053 tmp=2.526170e-08 $ Water around grid plate pin                          
 405303   105 -7.85     312301 -312302 -311305          imp:n=1 u=4053  $ Bottom casing                          
-405304   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4053 tmp=2.533494e-08 $ Water around fuel element                         
+405304   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4053 tmp=2.526170e-08 $ Water around fuel element                         
 405305   106 -1.56     312302 -312303 -311304          imp:n=1 u=4053  $ Lower graphite slug                          
 405306   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4053  $ Fuel cladding                         
 405307   108  0.042234 312303 -312304 -311301          imp:n=1 u=4053  tmp=2.533494e-08 $ Zirc pin                          
@@ -1440,18 +1440,18 @@ c
 405313   106 -1.56     312304 -312305 -311304          imp:n=1 u=4053  $ Upper graphite spacer                         
 405314   105 -7.85     312305 -312306 -311305          imp:n=1 u=4053  $ SS top cap                          
 405315   105 -7.85     312306 -312307 -311303          imp:n=1 u=4053  $ Tri-flute                          
-405316   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4053 tmp=2.533494e-08 $ Water around tri-flute                          
+405316   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4053 tmp=2.526170e-08 $ Water around tri-flute                          
 405317   105 -7.85     312307 -312308 -311302          imp:n=1 u=4053  $ Fuel tip                         
-405318   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4053 tmp=2.533494e-08 $ Water around fuel tip                         
-405319   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4053 tmp=2.533494e-08 $ Water above fuel element                         
+405318   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4053 tmp=2.526170e-08 $ Water around fuel tip                         
+405319   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4053 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4054 - SS clad (T0S210D210) universe --- 
 c                         
 405401   105 -7.85     312300 -312301 -311302          imp:n=1 u=4054  $ Lower grid plate pin                         
-405402   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4054 tmp=2.533494e-08 $ Water around grid plate pin                          
+405402   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4054 tmp=2.526170e-08 $ Water around grid plate pin                          
 405403   105 -7.85     312301 -312302 -311305          imp:n=1 u=4054  $ Bottom casing                          
-405404   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4054 tmp=2.533494e-08 $ Water around fuel element                         
+405404   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4054 tmp=2.526170e-08 $ Water around fuel element                         
 405405   106 -1.56     312302 -312303 -311304          imp:n=1 u=4054  $ Lower graphite slug                          
 405406   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4054  $ Fuel cladding                         
 405407   108  0.042234 312303 -312304 -311301          imp:n=1 u=4054  tmp=2.533494e-08 $ Zirc pin                          
@@ -1463,18 +1463,18 @@ c
 405413   106 -1.56     312304 -312305 -311304          imp:n=1 u=4054  $ Upper graphite spacer                         
 405414   105 -7.85     312305 -312306 -311305          imp:n=1 u=4054  $ SS top cap                          
 405415   105 -7.85     312306 -312307 -311303          imp:n=1 u=4054  $ Tri-flute                          
-405416   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4054 tmp=2.533494e-08 $ Water around tri-flute                          
+405416   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4054 tmp=2.526170e-08 $ Water around tri-flute                          
 405417   105 -7.85     312307 -312308 -311302          imp:n=1 u=4054  $ Fuel tip                         
-405418   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4054 tmp=2.533494e-08 $ Water around fuel tip                         
-405419   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4054 tmp=2.533494e-08 $ Water above fuel element                         
+405418   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4054 tmp=2.526170e-08 $ Water around fuel tip                         
+405419   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4054 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4055 - SS clad (T0S210D210) universe --- 
 c                         
 405501   105 -7.85     312300 -312301 -311302          imp:n=1 u=4055  $ Lower grid plate pin                         
-405502   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4055 tmp=2.533494e-08 $ Water around grid plate pin                          
+405502   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4055 tmp=2.526170e-08 $ Water around grid plate pin                          
 405503   105 -7.85     312301 -312302 -311305          imp:n=1 u=4055  $ Bottom casing                          
-405504   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4055 tmp=2.533494e-08 $ Water around fuel element                         
+405504   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4055 tmp=2.526170e-08 $ Water around fuel element                         
 405505   106 -1.56     312302 -312303 -311304          imp:n=1 u=4055  $ Lower graphite slug                          
 405506   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4055  $ Fuel cladding                         
 405507   108  0.042234 312303 -312304 -311301          imp:n=1 u=4055  tmp=2.533494e-08 $ Zirc pin                          
@@ -1486,18 +1486,18 @@ c
 405513   106 -1.56     312304 -312305 -311304          imp:n=1 u=4055  $ Upper graphite spacer                         
 405514   105 -7.85     312305 -312306 -311305          imp:n=1 u=4055  $ SS top cap                          
 405515   105 -7.85     312306 -312307 -311303          imp:n=1 u=4055  $ Tri-flute                          
-405516   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4055 tmp=2.533494e-08 $ Water around tri-flute                          
+405516   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4055 tmp=2.526170e-08 $ Water around tri-flute                          
 405517   105 -7.85     312307 -312308 -311302          imp:n=1 u=4055  $ Fuel tip                         
-405518   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4055 tmp=2.533494e-08 $ Water around fuel tip                         
-405519   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4055 tmp=2.533494e-08 $ Water above fuel element                         
+405518   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4055 tmp=2.526170e-08 $ Water around fuel tip                         
+405519   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4055 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4057 - SS clad (T0S210D210) universe --- 
 c                         
 405701   105 -7.85     312300 -312301 -311302          imp:n=1 u=4057  $ Lower grid plate pin                         
-405702   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4057 tmp=2.533494e-08 $ Water around grid plate pin                          
+405702   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4057 tmp=2.526170e-08 $ Water around grid plate pin                          
 405703   105 -7.85     312301 -312302 -311305          imp:n=1 u=4057  $ Bottom casing                          
-405704   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4057 tmp=2.533494e-08 $ Water around fuel element                         
+405704   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4057 tmp=2.526170e-08 $ Water around fuel element                         
 405705   106 -1.56     312302 -312303 -311304          imp:n=1 u=4057  $ Lower graphite slug                          
 405706   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4057  $ Fuel cladding                         
 405707   108  0.042234 312303 -312304 -311301          imp:n=1 u=4057  tmp=2.533494e-08 $ Zirc pin                          
@@ -1509,18 +1509,18 @@ c
 405713   106 -1.56     312304 -312305 -311304          imp:n=1 u=4057  $ Upper graphite spacer                         
 405714   105 -7.85     312305 -312306 -311305          imp:n=1 u=4057  $ SS top cap                          
 405715   105 -7.85     312306 -312307 -311303          imp:n=1 u=4057  $ Tri-flute                          
-405716   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4057 tmp=2.533494e-08 $ Water around tri-flute                          
+405716   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4057 tmp=2.526170e-08 $ Water around tri-flute                          
 405717   105 -7.85     312307 -312308 -311302          imp:n=1 u=4057  $ Fuel tip                         
-405718   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4057 tmp=2.533494e-08 $ Water around fuel tip                         
-405719   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4057 tmp=2.533494e-08 $ Water above fuel element                         
+405718   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4057 tmp=2.526170e-08 $ Water around fuel tip                         
+405719   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4057 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4060 - SS clad (T0S210D210) universe --- 
 c                         
 406001   105 -7.85     312300 -312301 -311302          imp:n=1 u=4060  $ Lower grid plate pin                         
-406002   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4060 tmp=2.533494e-08 $ Water around grid plate pin                          
+406002   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4060 tmp=2.526170e-08 $ Water around grid plate pin                          
 406003   105 -7.85     312301 -312302 -311305          imp:n=1 u=4060  $ Bottom casing                          
-406004   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4060 tmp=2.533494e-08 $ Water around fuel element                         
+406004   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4060 tmp=2.526170e-08 $ Water around fuel element                         
 406005   106 -1.56     312302 -312303 -311304          imp:n=1 u=4060  $ Lower graphite slug                          
 406006   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4060  $ Fuel cladding                         
 406007   108  0.042234 312303 -312304 -311301          imp:n=1 u=4060  tmp=2.533494e-08 $ Zirc pin                          
@@ -1532,18 +1532,18 @@ c
 406013   106 -1.56     312304 -312305 -311304          imp:n=1 u=4060  $ Upper graphite spacer                         
 406014   105 -7.85     312305 -312306 -311305          imp:n=1 u=4060  $ SS top cap                          
 406015   105 -7.85     312306 -312307 -311303          imp:n=1 u=4060  $ Tri-flute                          
-406016   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4060 tmp=2.533494e-08 $ Water around tri-flute                          
+406016   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4060 tmp=2.526170e-08 $ Water around tri-flute                          
 406017   105 -7.85     312307 -312308 -311302          imp:n=1 u=4060  $ Fuel tip                         
-406018   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4060 tmp=2.533494e-08 $ Water around fuel tip                         
-406019   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4060 tmp=2.533494e-08 $ Water above fuel element                         
+406018   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4060 tmp=2.526170e-08 $ Water around fuel tip                         
+406019   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4060 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4061 - SS clad (T0S210D210) universe --- 
 c                         
 406101   105 -7.85     312300 -312301 -311302          imp:n=1 u=4061  $ Lower grid plate pin                         
-406102   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4061 tmp=2.533494e-08 $ Water around grid plate pin                          
+406102   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4061 tmp=2.526170e-08 $ Water around grid plate pin                          
 406103   105 -7.85     312301 -312302 -311305          imp:n=1 u=4061  $ Bottom casing                          
-406104   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4061 tmp=2.533494e-08 $ Water around fuel element                         
+406104   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4061 tmp=2.526170e-08 $ Water around fuel element                         
 406105   106 -1.56     312302 -312303 -311304          imp:n=1 u=4061  $ Lower graphite slug                          
 406106   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4061  $ Fuel cladding                         
 406107   108  0.042234 312303 -312304 -311301          imp:n=1 u=4061  tmp=2.533494e-08 $ Zirc pin                          
@@ -1555,18 +1555,18 @@ c
 406113   106 -1.56     312304 -312305 -311304          imp:n=1 u=4061  $ Upper graphite spacer                         
 406114   105 -7.85     312305 -312306 -311305          imp:n=1 u=4061  $ SS top cap                          
 406115   105 -7.85     312306 -312307 -311303          imp:n=1 u=4061  $ Tri-flute                          
-406116   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4061 tmp=2.533494e-08 $ Water around tri-flute                          
+406116   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4061 tmp=2.526170e-08 $ Water around tri-flute                          
 406117   105 -7.85     312307 -312308 -311302          imp:n=1 u=4061  $ Fuel tip                         
-406118   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4061 tmp=2.533494e-08 $ Water around fuel tip                         
-406119   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4061 tmp=2.533494e-08 $ Water above fuel element                         
+406118   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4061 tmp=2.526170e-08 $ Water around fuel tip                         
+406119   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4061 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4062 - SS clad (T0S210D210) universe --- 
 c                         
 406201   105 -7.85     312300 -312301 -311302          imp:n=1 u=4062  $ Lower grid plate pin                         
-406202   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4062 tmp=2.533494e-08 $ Water around grid plate pin                          
+406202   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4062 tmp=2.526170e-08 $ Water around grid plate pin                          
 406203   105 -7.85     312301 -312302 -311305          imp:n=1 u=4062  $ Bottom casing                          
-406204   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4062 tmp=2.533494e-08 $ Water around fuel element                         
+406204   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4062 tmp=2.526170e-08 $ Water around fuel element                         
 406205   106 -1.56     312302 -312303 -311304          imp:n=1 u=4062  $ Lower graphite slug                          
 406206   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4062  $ Fuel cladding                         
 406207   108  0.042234 312303 -312304 -311301          imp:n=1 u=4062  tmp=2.533494e-08 $ Zirc pin                          
@@ -1578,18 +1578,18 @@ c
 406213   106 -1.56     312304 -312305 -311304          imp:n=1 u=4062  $ Upper graphite spacer                         
 406214   105 -7.85     312305 -312306 -311305          imp:n=1 u=4062  $ SS top cap                          
 406215   105 -7.85     312306 -312307 -311303          imp:n=1 u=4062  $ Tri-flute                          
-406216   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4062 tmp=2.533494e-08 $ Water around tri-flute                          
+406216   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4062 tmp=2.526170e-08 $ Water around tri-flute                          
 406217   105 -7.85     312307 -312308 -311302          imp:n=1 u=4062  $ Fuel tip                         
-406218   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4062 tmp=2.533494e-08 $ Water around fuel tip                         
-406219   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4062 tmp=2.533494e-08 $ Water above fuel element                         
+406218   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4062 tmp=2.526170e-08 $ Water around fuel tip                         
+406219   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4062 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4063 - SS clad (T0S210D210) universe --- 
 c                         
 406301   105 -7.85     312300 -312301 -311302          imp:n=1 u=4063  $ Lower grid plate pin                         
-406302   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4063 tmp=2.533494e-08 $ Water around grid plate pin                          
+406302   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4063 tmp=2.526170e-08 $ Water around grid plate pin                          
 406303   105 -7.85     312301 -312302 -311305          imp:n=1 u=4063  $ Bottom casing                          
-406304   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4063 tmp=2.533494e-08 $ Water around fuel element                         
+406304   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4063 tmp=2.526170e-08 $ Water around fuel element                         
 406305   106 -1.56     312302 -312303 -311304          imp:n=1 u=4063  $ Lower graphite slug                          
 406306   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4063  $ Fuel cladding                         
 406307   108  0.042234 312303 -312304 -311301          imp:n=1 u=4063  tmp=2.533494e-08 $ Zirc pin                          
@@ -1601,18 +1601,18 @@ c
 406313   106 -1.56     312304 -312305 -311304          imp:n=1 u=4063  $ Upper graphite spacer                         
 406314   105 -7.85     312305 -312306 -311305          imp:n=1 u=4063  $ SS top cap                          
 406315   105 -7.85     312306 -312307 -311303          imp:n=1 u=4063  $ Tri-flute                          
-406316   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4063 tmp=2.533494e-08 $ Water around tri-flute                          
+406316   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4063 tmp=2.526170e-08 $ Water around tri-flute                          
 406317   105 -7.85     312307 -312308 -311302          imp:n=1 u=4063  $ Fuel tip                         
-406318   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4063 tmp=2.533494e-08 $ Water around fuel tip                         
-406319   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4063 tmp=2.533494e-08 $ Water above fuel element                         
+406318   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4063 tmp=2.526170e-08 $ Water around fuel tip                         
+406319   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4063 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4064 - SS clad (T0S210D210) universe --- 
 c                         
 406401   105 -7.85     312300 -312301 -311302          imp:n=1 u=4064  $ Lower grid plate pin                         
-406402   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4064 tmp=2.533494e-08 $ Water around grid plate pin                          
+406402   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4064 tmp=2.526170e-08 $ Water around grid plate pin                          
 406403   105 -7.85     312301 -312302 -311305          imp:n=1 u=4064  $ Bottom casing                          
-406404   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4064 tmp=2.533494e-08 $ Water around fuel element                         
+406404   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4064 tmp=2.526170e-08 $ Water around fuel element                         
 406405   106 -1.56     312302 -312303 -311304          imp:n=1 u=4064  $ Lower graphite slug                          
 406406   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4064  $ Fuel cladding                         
 406407   108  0.042234 312303 -312304 -311301          imp:n=1 u=4064  tmp=2.533494e-08 $ Zirc pin                          
@@ -1624,18 +1624,18 @@ c
 406413   106 -1.56     312304 -312305 -311304          imp:n=1 u=4064  $ Upper graphite spacer                         
 406414   105 -7.85     312305 -312306 -311305          imp:n=1 u=4064  $ SS top cap                          
 406415   105 -7.85     312306 -312307 -311303          imp:n=1 u=4064  $ Tri-flute                          
-406416   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4064 tmp=2.533494e-08 $ Water around tri-flute                          
+406416   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4064 tmp=2.526170e-08 $ Water around tri-flute                          
 406417   105 -7.85     312307 -312308 -311302          imp:n=1 u=4064  $ Fuel tip                         
-406418   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4064 tmp=2.533494e-08 $ Water around fuel tip                         
-406419   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4064 tmp=2.533494e-08 $ Water above fuel element                         
+406418   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4064 tmp=2.526170e-08 $ Water around fuel tip                         
+406419   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4064 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4065 - SS clad (T0S210D210) universe --- 
 c                         
 406501   105 -7.85     312300 -312301 -311302          imp:n=1 u=4065  $ Lower grid plate pin                         
-406502   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4065 tmp=2.533494e-08 $ Water around grid plate pin                          
+406502   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4065 tmp=2.526170e-08 $ Water around grid plate pin                          
 406503   105 -7.85     312301 -312302 -311305          imp:n=1 u=4065  $ Bottom casing                          
-406504   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4065 tmp=2.533494e-08 $ Water around fuel element                         
+406504   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4065 tmp=2.526170e-08 $ Water around fuel element                         
 406505   106 -1.56     312302 -312303 -311304          imp:n=1 u=4065  $ Lower graphite slug                          
 406506   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4065  $ Fuel cladding                         
 406507   108  0.042234 312303 -312304 -311301          imp:n=1 u=4065  tmp=2.533494e-08 $ Zirc pin                          
@@ -1647,18 +1647,18 @@ c
 406513   106 -1.56     312304 -312305 -311304          imp:n=1 u=4065  $ Upper graphite spacer                         
 406514   105 -7.85     312305 -312306 -311305          imp:n=1 u=4065  $ SS top cap                          
 406515   105 -7.85     312306 -312307 -311303          imp:n=1 u=4065  $ Tri-flute                          
-406516   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4065 tmp=2.533494e-08 $ Water around tri-flute                          
+406516   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4065 tmp=2.526170e-08 $ Water around tri-flute                          
 406517   105 -7.85     312307 -312308 -311302          imp:n=1 u=4065  $ Fuel tip                         
-406518   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4065 tmp=2.533494e-08 $ Water around fuel tip                         
-406519   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4065 tmp=2.533494e-08 $ Water above fuel element                         
+406518   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4065 tmp=2.526170e-08 $ Water around fuel tip                         
+406519   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4065 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4066 - SS clad (T0S210D210) universe --- 
 c                         
 406601   105 -7.85     312300 -312301 -311302          imp:n=1 u=4066  $ Lower grid plate pin                         
-406602   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4066 tmp=2.533494e-08 $ Water around grid plate pin                          
+406602   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4066 tmp=2.526170e-08 $ Water around grid plate pin                          
 406603   105 -7.85     312301 -312302 -311305          imp:n=1 u=4066  $ Bottom casing                          
-406604   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4066 tmp=2.533494e-08 $ Water around fuel element                         
+406604   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4066 tmp=2.526170e-08 $ Water around fuel element                         
 406605   106 -1.56     312302 -312303 -311304          imp:n=1 u=4066  $ Lower graphite slug                          
 406606   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4066  $ Fuel cladding                         
 406607   108  0.042234 312303 -312304 -311301          imp:n=1 u=4066  tmp=2.533494e-08 $ Zirc pin                          
@@ -1670,18 +1670,18 @@ c
 406613   106 -1.56     312304 -312305 -311304          imp:n=1 u=4066  $ Upper graphite spacer                         
 406614   105 -7.85     312305 -312306 -311305          imp:n=1 u=4066  $ SS top cap                          
 406615   105 -7.85     312306 -312307 -311303          imp:n=1 u=4066  $ Tri-flute                          
-406616   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4066 tmp=2.533494e-08 $ Water around tri-flute                          
+406616   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4066 tmp=2.526170e-08 $ Water around tri-flute                          
 406617   105 -7.85     312307 -312308 -311302          imp:n=1 u=4066  $ Fuel tip                         
-406618   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4066 tmp=2.533494e-08 $ Water around fuel tip                         
-406619   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4066 tmp=2.533494e-08 $ Water above fuel element                         
+406618   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4066 tmp=2.526170e-08 $ Water around fuel tip                         
+406619   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4066 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4068 - SS clad (T0S210D210) universe --- 
 c                         
 406801   105 -7.85     312300 -312301 -311302          imp:n=1 u=4068  $ Lower grid plate pin                         
-406802   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4068 tmp=2.533494e-08 $ Water around grid plate pin                          
+406802   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4068 tmp=2.526170e-08 $ Water around grid plate pin                          
 406803   105 -7.85     312301 -312302 -311305          imp:n=1 u=4068  $ Bottom casing                          
-406804   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4068 tmp=2.533494e-08 $ Water around fuel element                         
+406804   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4068 tmp=2.526170e-08 $ Water around fuel element                         
 406805   106 -1.56     312302 -312303 -311304          imp:n=1 u=4068  $ Lower graphite slug                          
 406806   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4068  $ Fuel cladding                         
 406807   108  0.042234 312303 -312304 -311301          imp:n=1 u=4068  tmp=2.533494e-08 $ Zirc pin                          
@@ -1693,18 +1693,18 @@ c
 406813   106 -1.56     312304 -312305 -311304          imp:n=1 u=4068  $ Upper graphite spacer                         
 406814   105 -7.85     312305 -312306 -311305          imp:n=1 u=4068  $ SS top cap                          
 406815   105 -7.85     312306 -312307 -311303          imp:n=1 u=4068  $ Tri-flute                          
-406816   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4068 tmp=2.533494e-08 $ Water around tri-flute                          
+406816   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4068 tmp=2.526170e-08 $ Water around tri-flute                          
 406817   105 -7.85     312307 -312308 -311302          imp:n=1 u=4068  $ Fuel tip                         
-406818   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4068 tmp=2.533494e-08 $ Water around fuel tip                         
-406819   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4068 tmp=2.533494e-08 $ Water above fuel element                         
+406818   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4068 tmp=2.526170e-08 $ Water around fuel tip                         
+406819   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4068 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4069 - SS clad (T0S210D210) universe --- 
 c                         
 406901   105 -7.85     312300 -312301 -311302          imp:n=1 u=4069  $ Lower grid plate pin                         
-406902   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4069 tmp=2.533494e-08 $ Water around grid plate pin                          
+406902   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4069 tmp=2.526170e-08 $ Water around grid plate pin                          
 406903   105 -7.85     312301 -312302 -311305          imp:n=1 u=4069  $ Bottom casing                          
-406904   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4069 tmp=2.533494e-08 $ Water around fuel element                         
+406904   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4069 tmp=2.526170e-08 $ Water around fuel element                         
 406905   106 -1.56     312302 -312303 -311304          imp:n=1 u=4069  $ Lower graphite slug                          
 406906   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4069  $ Fuel cladding                         
 406907   108  0.042234 312303 -312304 -311301          imp:n=1 u=4069  tmp=2.533494e-08 $ Zirc pin                          
@@ -1716,18 +1716,18 @@ c
 406913   106 -1.56     312304 -312305 -311304          imp:n=1 u=4069  $ Upper graphite spacer                         
 406914   105 -7.85     312305 -312306 -311305          imp:n=1 u=4069  $ SS top cap                          
 406915   105 -7.85     312306 -312307 -311303          imp:n=1 u=4069  $ Tri-flute                          
-406916   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4069 tmp=2.533494e-08 $ Water around tri-flute                          
+406916   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4069 tmp=2.526170e-08 $ Water around tri-flute                          
 406917   105 -7.85     312307 -312308 -311302          imp:n=1 u=4069  $ Fuel tip                         
-406918   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4069 tmp=2.533494e-08 $ Water around fuel tip                         
-406919   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4069 tmp=2.533494e-08 $ Water above fuel element                         
+406918   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4069 tmp=2.526170e-08 $ Water around fuel tip                         
+406919   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4069 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4070 - SS clad (T0S210D210) universe --- 
 c                         
 407001   105 -7.85     312300 -312301 -311302          imp:n=1 u=4070  $ Lower grid plate pin                         
-407002   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4070 tmp=2.533494e-08 $ Water around grid plate pin                          
+407002   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4070 tmp=2.526170e-08 $ Water around grid plate pin                          
 407003   105 -7.85     312301 -312302 -311305          imp:n=1 u=4070  $ Bottom casing                          
-407004   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4070 tmp=2.533494e-08 $ Water around fuel element                         
+407004   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4070 tmp=2.526170e-08 $ Water around fuel element                         
 407005   106 -1.56     312302 -312303 -311304          imp:n=1 u=4070  $ Lower graphite slug                          
 407006   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4070  $ Fuel cladding                         
 407007   108  0.042234 312303 -312304 -311301          imp:n=1 u=4070  tmp=2.533494e-08 $ Zirc pin                          
@@ -1739,18 +1739,18 @@ c
 407013   106 -1.56     312304 -312305 -311304          imp:n=1 u=4070  $ Upper graphite spacer                         
 407014   105 -7.85     312305 -312306 -311305          imp:n=1 u=4070  $ SS top cap                          
 407015   105 -7.85     312306 -312307 -311303          imp:n=1 u=4070  $ Tri-flute                          
-407016   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4070 tmp=2.533494e-08 $ Water around tri-flute                          
+407016   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4070 tmp=2.526170e-08 $ Water around tri-flute                          
 407017   105 -7.85     312307 -312308 -311302          imp:n=1 u=4070  $ Fuel tip                         
-407018   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4070 tmp=2.533494e-08 $ Water around fuel tip                         
-407019   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4070 tmp=2.533494e-08 $ Water above fuel element                         
+407018   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4070 tmp=2.526170e-08 $ Water around fuel tip                         
+407019   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4070 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4071 - SS clad (T0S210D210) universe --- 
 c                         
 407101   105 -7.85     312300 -312301 -311302          imp:n=1 u=4071  $ Lower grid plate pin                         
-407102   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4071 tmp=2.533494e-08 $ Water around grid plate pin                          
+407102   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4071 tmp=2.526170e-08 $ Water around grid plate pin                          
 407103   105 -7.85     312301 -312302 -311305          imp:n=1 u=4071  $ Bottom casing                          
-407104   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4071 tmp=2.533494e-08 $ Water around fuel element                         
+407104   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4071 tmp=2.526170e-08 $ Water around fuel element                         
 407105   106 -1.56     312302 -312303 -311304          imp:n=1 u=4071  $ Lower graphite slug                          
 407106   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4071  $ Fuel cladding                         
 407107   108  0.042234 312303 -312304 -311301          imp:n=1 u=4071  tmp=2.533494e-08 $ Zirc pin                          
@@ -1762,18 +1762,18 @@ c
 407113   106 -1.56     312304 -312305 -311304          imp:n=1 u=4071  $ Upper graphite spacer                         
 407114   105 -7.85     312305 -312306 -311305          imp:n=1 u=4071  $ SS top cap                          
 407115   105 -7.85     312306 -312307 -311303          imp:n=1 u=4071  $ Tri-flute                          
-407116   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4071 tmp=2.533494e-08 $ Water around tri-flute                          
+407116   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4071 tmp=2.526170e-08 $ Water around tri-flute                          
 407117   105 -7.85     312307 -312308 -311302          imp:n=1 u=4071  $ Fuel tip                         
-407118   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4071 tmp=2.533494e-08 $ Water around fuel tip                         
-407119   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4071 tmp=2.533494e-08 $ Water above fuel element                         
+407118   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4071 tmp=2.526170e-08 $ Water around fuel tip                         
+407119   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4071 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4074 - SS clad (T0S210D210) universe --- 
 c                         
 407401   105 -7.85     312300 -312301 -311302          imp:n=1 u=4074  $ Lower grid plate pin                         
-407402   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4074 tmp=2.533494e-08 $ Water around grid plate pin                          
+407402   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4074 tmp=2.526170e-08 $ Water around grid plate pin                          
 407403   105 -7.85     312301 -312302 -311305          imp:n=1 u=4074  $ Bottom casing                          
-407404   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4074 tmp=2.533494e-08 $ Water around fuel element                         
+407404   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4074 tmp=2.526170e-08 $ Water around fuel element                         
 407405   106 -1.56     312302 -312303 -311304          imp:n=1 u=4074  $ Lower graphite slug                          
 407406   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4074  $ Fuel cladding                         
 407407   108  0.042234 312303 -312304 -311301          imp:n=1 u=4074  tmp=2.533494e-08 $ Zirc pin                          
@@ -1785,18 +1785,18 @@ c
 407413   106 -1.56     312304 -312305 -311304          imp:n=1 u=4074  $ Upper graphite spacer                         
 407414   105 -7.85     312305 -312306 -311305          imp:n=1 u=4074  $ SS top cap                          
 407415   105 -7.85     312306 -312307 -311303          imp:n=1 u=4074  $ Tri-flute                          
-407416   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4074 tmp=2.533494e-08 $ Water around tri-flute                          
+407416   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4074 tmp=2.526170e-08 $ Water around tri-flute                          
 407417   105 -7.85     312307 -312308 -311302          imp:n=1 u=4074  $ Fuel tip                         
-407418   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4074 tmp=2.533494e-08 $ Water around fuel tip                         
-407419   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4074 tmp=2.533494e-08 $ Water above fuel element                         
+407418   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4074 tmp=2.526170e-08 $ Water around fuel tip                         
+407419   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4074 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4077 - SS clad (T0S210D210) universe --- 
 c                         
 407701   105 -7.85     312300 -312301 -311302          imp:n=1 u=4077  $ Lower grid plate pin                         
-407702   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4077 tmp=2.533494e-08 $ Water around grid plate pin                          
+407702   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4077 tmp=2.526170e-08 $ Water around grid plate pin                          
 407703   105 -7.85     312301 -312302 -311305          imp:n=1 u=4077  $ Bottom casing                          
-407704   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4077 tmp=2.533494e-08 $ Water around fuel element                         
+407704   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4077 tmp=2.526170e-08 $ Water around fuel element                         
 407705   106 -1.56     312302 -312303 -311304          imp:n=1 u=4077  $ Lower graphite slug                          
 407706   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4077  $ Fuel cladding                         
 407707   108  0.042234 312303 -312304 -311301          imp:n=1 u=4077  tmp=2.533494e-08 $ Zirc pin                          
@@ -1808,18 +1808,18 @@ c
 407713   106 -1.56     312304 -312305 -311304          imp:n=1 u=4077  $ Upper graphite spacer                         
 407714   105 -7.85     312305 -312306 -311305          imp:n=1 u=4077  $ SS top cap                          
 407715   105 -7.85     312306 -312307 -311303          imp:n=1 u=4077  $ Tri-flute                          
-407716   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4077 tmp=2.533494e-08 $ Water around tri-flute                          
+407716   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4077 tmp=2.526170e-08 $ Water around tri-flute                          
 407717   105 -7.85     312307 -312308 -311302          imp:n=1 u=4077  $ Fuel tip                         
-407718   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4077 tmp=2.533494e-08 $ Water around fuel tip                         
-407719   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4077 tmp=2.533494e-08 $ Water above fuel element                         
+407718   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4077 tmp=2.526170e-08 $ Water around fuel tip                         
+407719   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4077 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4081 - SS clad (T0S210D210) universe --- 
 c                         
 408101   105 -7.85     312300 -312301 -311302          imp:n=1 u=4081  $ Lower grid plate pin                         
-408102   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4081 tmp=2.533494e-08 $ Water around grid plate pin                          
+408102   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4081 tmp=2.526170e-08 $ Water around grid plate pin                          
 408103   105 -7.85     312301 -312302 -311305          imp:n=1 u=4081  $ Bottom casing                          
-408104   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4081 tmp=2.533494e-08 $ Water around fuel element                         
+408104   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4081 tmp=2.526170e-08 $ Water around fuel element                         
 408105   106 -1.56     312302 -312303 -311304          imp:n=1 u=4081  $ Lower graphite slug                          
 408106   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4081  $ Fuel cladding                         
 408107   108  0.042234 312303 -312304 -311301          imp:n=1 u=4081  tmp=2.533494e-08 $ Zirc pin                          
@@ -1831,18 +1831,18 @@ c
 408113   106 -1.56     312304 -312305 -311304          imp:n=1 u=4081  $ Upper graphite spacer                         
 408114   105 -7.85     312305 -312306 -311305          imp:n=1 u=4081  $ SS top cap                          
 408115   105 -7.85     312306 -312307 -311303          imp:n=1 u=4081  $ Tri-flute                          
-408116   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4081 tmp=2.533494e-08 $ Water around tri-flute                          
+408116   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4081 tmp=2.526170e-08 $ Water around tri-flute                          
 408117   105 -7.85     312307 -312308 -311302          imp:n=1 u=4081  $ Fuel tip                         
-408118   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4081 tmp=2.533494e-08 $ Water around fuel tip                         
-408119   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4081 tmp=2.533494e-08 $ Water above fuel element                         
+408118   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4081 tmp=2.526170e-08 $ Water around fuel tip                         
+408119   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4081 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4082 - SS clad (T0S210D210) universe --- 
 c                         
 408201   105 -7.85     312300 -312301 -311302          imp:n=1 u=4082  $ Lower grid plate pin                         
-408202   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4082 tmp=2.533494e-08 $ Water around grid plate pin                          
+408202   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4082 tmp=2.526170e-08 $ Water around grid plate pin                          
 408203   105 -7.85     312301 -312302 -311305          imp:n=1 u=4082  $ Bottom casing                          
-408204   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4082 tmp=2.533494e-08 $ Water around fuel element                         
+408204   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4082 tmp=2.526170e-08 $ Water around fuel element                         
 408205   106 -1.56     312302 -312303 -311304          imp:n=1 u=4082  $ Lower graphite slug                          
 408206   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4082  $ Fuel cladding                         
 408207   108  0.042234 312303 -312304 -311301          imp:n=1 u=4082  tmp=2.533494e-08 $ Zirc pin                          
@@ -1854,18 +1854,18 @@ c
 408213   106 -1.56     312304 -312305 -311304          imp:n=1 u=4082  $ Upper graphite spacer                         
 408214   105 -7.85     312305 -312306 -311305          imp:n=1 u=4082  $ SS top cap                          
 408215   105 -7.85     312306 -312307 -311303          imp:n=1 u=4082  $ Tri-flute                          
-408216   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4082 tmp=2.533494e-08 $ Water around tri-flute                          
+408216   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4082 tmp=2.526170e-08 $ Water around tri-flute                          
 408217   105 -7.85     312307 -312308 -311302          imp:n=1 u=4082  $ Fuel tip                         
-408218   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4082 tmp=2.533494e-08 $ Water around fuel tip                         
-408219   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4082 tmp=2.533494e-08 $ Water above fuel element                         
+408218   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4082 tmp=2.526170e-08 $ Water around fuel tip                         
+408219   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4082 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4083 - SS clad (T0S210D210) universe --- 
 c                         
 408301   105 -7.85     312300 -312301 -311302          imp:n=1 u=4083  $ Lower grid plate pin                         
-408302   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4083 tmp=2.533494e-08 $ Water around grid plate pin                          
+408302   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4083 tmp=2.526170e-08 $ Water around grid plate pin                          
 408303   105 -7.85     312301 -312302 -311305          imp:n=1 u=4083  $ Bottom casing                          
-408304   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4083 tmp=2.533494e-08 $ Water around fuel element                         
+408304   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4083 tmp=2.526170e-08 $ Water around fuel element                         
 408305   106 -1.56     312302 -312303 -311304          imp:n=1 u=4083  $ Lower graphite slug                          
 408306   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4083  $ Fuel cladding                         
 408307   108  0.042234 312303 -312304 -311301          imp:n=1 u=4083  tmp=2.533494e-08 $ Zirc pin                          
@@ -1877,18 +1877,18 @@ c
 408313   106 -1.56     312304 -312305 -311304          imp:n=1 u=4083  $ Upper graphite spacer                         
 408314   105 -7.85     312305 -312306 -311305          imp:n=1 u=4083  $ SS top cap                          
 408315   105 -7.85     312306 -312307 -311303          imp:n=1 u=4083  $ Tri-flute                          
-408316   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4083 tmp=2.533494e-08 $ Water around tri-flute                          
+408316   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4083 tmp=2.526170e-08 $ Water around tri-flute                          
 408317   105 -7.85     312307 -312308 -311302          imp:n=1 u=4083  $ Fuel tip                         
-408318   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4083 tmp=2.533494e-08 $ Water around fuel tip                         
-408319   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4083 tmp=2.533494e-08 $ Water above fuel element                         
+408318   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4083 tmp=2.526170e-08 $ Water around fuel tip                         
+408319   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4083 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4085 - SS clad (T0S210D210) universe --- 
 c                         
 408501   105 -7.85     312300 -312301 -311302          imp:n=1 u=4085  $ Lower grid plate pin                         
-408502   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4085 tmp=2.533494e-08 $ Water around grid plate pin                          
+408502   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4085 tmp=2.526170e-08 $ Water around grid plate pin                          
 408503   105 -7.85     312301 -312302 -311305          imp:n=1 u=4085  $ Bottom casing                          
-408504   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4085 tmp=2.533494e-08 $ Water around fuel element                         
+408504   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4085 tmp=2.526170e-08 $ Water around fuel element                         
 408505   106 -1.56     312302 -312303 -311304          imp:n=1 u=4085  $ Lower graphite slug                          
 408506   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4085  $ Fuel cladding                         
 408507   108  0.042234 312303 -312304 -311301          imp:n=1 u=4085  tmp=2.533494e-08 $ Zirc pin                          
@@ -1900,18 +1900,18 @@ c
 408513   106 -1.56     312304 -312305 -311304          imp:n=1 u=4085  $ Upper graphite spacer                         
 408514   105 -7.85     312305 -312306 -311305          imp:n=1 u=4085  $ SS top cap                          
 408515   105 -7.85     312306 -312307 -311303          imp:n=1 u=4085  $ Tri-flute                          
-408516   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4085 tmp=2.533494e-08 $ Water around tri-flute                          
+408516   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4085 tmp=2.526170e-08 $ Water around tri-flute                          
 408517   105 -7.85     312307 -312308 -311302          imp:n=1 u=4085  $ Fuel tip                         
-408518   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4085 tmp=2.533494e-08 $ Water around fuel tip                         
-408519   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4085 tmp=2.533494e-08 $ Water above fuel element                         
+408518   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4085 tmp=2.526170e-08 $ Water around fuel tip                         
+408519   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4085 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4086 - SS clad (T0S210D210) universe --- 
 c                         
 408601   105 -7.85     312300 -312301 -311302          imp:n=1 u=4086  $ Lower grid plate pin                         
-408602   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4086 tmp=2.533494e-08 $ Water around grid plate pin                          
+408602   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4086 tmp=2.526170e-08 $ Water around grid plate pin                          
 408603   105 -7.85     312301 -312302 -311305          imp:n=1 u=4086  $ Bottom casing                          
-408604   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4086 tmp=2.533494e-08 $ Water around fuel element                         
+408604   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4086 tmp=2.526170e-08 $ Water around fuel element                         
 408605   106 -1.56     312302 -312303 -311304          imp:n=1 u=4086  $ Lower graphite slug                          
 408606   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4086  $ Fuel cladding                         
 408607   108  0.042234 312303 -312304 -311301          imp:n=1 u=4086  tmp=2.533494e-08 $ Zirc pin                          
@@ -1923,18 +1923,18 @@ c
 408613   106 -1.56     312304 -312305 -311304          imp:n=1 u=4086  $ Upper graphite spacer                         
 408614   105 -7.85     312305 -312306 -311305          imp:n=1 u=4086  $ SS top cap                          
 408615   105 -7.85     312306 -312307 -311303          imp:n=1 u=4086  $ Tri-flute                          
-408616   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4086 tmp=2.533494e-08 $ Water around tri-flute                          
+408616   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4086 tmp=2.526170e-08 $ Water around tri-flute                          
 408617   105 -7.85     312307 -312308 -311302          imp:n=1 u=4086  $ Fuel tip                         
-408618   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4086 tmp=2.533494e-08 $ Water around fuel tip                         
-408619   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4086 tmp=2.533494e-08 $ Water above fuel element                         
+408618   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4086 tmp=2.526170e-08 $ Water around fuel tip                         
+408619   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4086 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4087 - SS clad (T0S210D210) universe --- 
 c                         
 408701   105 -7.85     312300 -312301 -311302          imp:n=1 u=4087  $ Lower grid plate pin                         
-408702   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4087 tmp=2.533494e-08 $ Water around grid plate pin                          
+408702   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4087 tmp=2.526170e-08 $ Water around grid plate pin                          
 408703   105 -7.85     312301 -312302 -311305          imp:n=1 u=4087  $ Bottom casing                          
-408704   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4087 tmp=2.533494e-08 $ Water around fuel element                         
+408704   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4087 tmp=2.526170e-08 $ Water around fuel element                         
 408705   106 -1.56     312302 -312303 -311304          imp:n=1 u=4087  $ Lower graphite slug                          
 408706   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4087  $ Fuel cladding                         
 408707   108  0.042234 312303 -312304 -311301          imp:n=1 u=4087  tmp=2.533494e-08 $ Zirc pin                          
@@ -1946,18 +1946,18 @@ c
 408713   106 -1.56     312304 -312305 -311304          imp:n=1 u=4087  $ Upper graphite spacer                         
 408714   105 -7.85     312305 -312306 -311305          imp:n=1 u=4087  $ SS top cap                          
 408715   105 -7.85     312306 -312307 -311303          imp:n=1 u=4087  $ Tri-flute                          
-408716   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4087 tmp=2.533494e-08 $ Water around tri-flute                          
+408716   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4087 tmp=2.526170e-08 $ Water around tri-flute                          
 408717   105 -7.85     312307 -312308 -311302          imp:n=1 u=4087  $ Fuel tip                         
-408718   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4087 tmp=2.533494e-08 $ Water around fuel tip                         
-408719   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4087 tmp=2.533494e-08 $ Water above fuel element                         
+408718   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4087 tmp=2.526170e-08 $ Water around fuel tip                         
+408719   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4087 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4088 - SS clad (T0S210D210) universe --- 
 c                         
 408801   105 -7.85     312300 -312301 -311302          imp:n=1 u=4088  $ Lower grid plate pin                         
-408802   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4088 tmp=2.533494e-08 $ Water around grid plate pin                          
+408802   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4088 tmp=2.526170e-08 $ Water around grid plate pin                          
 408803   105 -7.85     312301 -312302 -311305          imp:n=1 u=4088  $ Bottom casing                          
-408804   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4088 tmp=2.533494e-08 $ Water around fuel element                         
+408804   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4088 tmp=2.526170e-08 $ Water around fuel element                         
 408805   106 -1.56     312302 -312303 -311304          imp:n=1 u=4088  $ Lower graphite slug                          
 408806   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4088  $ Fuel cladding                         
 408807   108  0.042234 312303 -312304 -311301          imp:n=1 u=4088  tmp=2.533494e-08 $ Zirc pin                          
@@ -1969,18 +1969,18 @@ c
 408813   106 -1.56     312304 -312305 -311304          imp:n=1 u=4088  $ Upper graphite spacer                         
 408814   105 -7.85     312305 -312306 -311305          imp:n=1 u=4088  $ SS top cap                          
 408815   105 -7.85     312306 -312307 -311303          imp:n=1 u=4088  $ Tri-flute                          
-408816   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4088 tmp=2.533494e-08 $ Water around tri-flute                          
+408816   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4088 tmp=2.526170e-08 $ Water around tri-flute                          
 408817   105 -7.85     312307 -312308 -311302          imp:n=1 u=4088  $ Fuel tip                         
-408818   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4088 tmp=2.533494e-08 $ Water around fuel tip                         
-408819   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4088 tmp=2.533494e-08 $ Water above fuel element                         
+408818   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4088 tmp=2.526170e-08 $ Water around fuel tip                         
+408819   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4088 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4090 - SS clad (T0S210D210) universe --- 
 c                         
 409001   105 -7.85     312300 -312301 -311302          imp:n=1 u=4090  $ Lower grid plate pin                         
-409002   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4090 tmp=2.533494e-08 $ Water around grid plate pin                          
+409002   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4090 tmp=2.526170e-08 $ Water around grid plate pin                          
 409003   105 -7.85     312301 -312302 -311305          imp:n=1 u=4090  $ Bottom casing                          
-409004   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4090 tmp=2.533494e-08 $ Water around fuel element                         
+409004   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4090 tmp=2.526170e-08 $ Water around fuel element                         
 409005   106 -1.56     312302 -312303 -311304          imp:n=1 u=4090  $ Lower graphite slug                          
 409006   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4090  $ Fuel cladding                         
 409007   108  0.042234 312303 -312304 -311301          imp:n=1 u=4090  tmp=2.533494e-08 $ Zirc pin                          
@@ -1992,18 +1992,18 @@ c
 409013   106 -1.56     312304 -312305 -311304          imp:n=1 u=4090  $ Upper graphite spacer                         
 409014   105 -7.85     312305 -312306 -311305          imp:n=1 u=4090  $ SS top cap                          
 409015   105 -7.85     312306 -312307 -311303          imp:n=1 u=4090  $ Tri-flute                          
-409016   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4090 tmp=2.533494e-08 $ Water around tri-flute                          
+409016   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4090 tmp=2.526170e-08 $ Water around tri-flute                          
 409017   105 -7.85     312307 -312308 -311302          imp:n=1 u=4090  $ Fuel tip                         
-409018   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4090 tmp=2.533494e-08 $ Water around fuel tip                         
-409019   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4090 tmp=2.533494e-08 $ Water above fuel element                         
+409018   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4090 tmp=2.526170e-08 $ Water around fuel tip                         
+409019   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4090 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4091 - SS clad (T0S210D210) universe --- 
 c                         
 409101   105 -7.85     312300 -312301 -311302          imp:n=1 u=4091  $ Lower grid plate pin                         
-409102   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4091 tmp=2.533494e-08 $ Water around grid plate pin                          
+409102   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4091 tmp=2.526170e-08 $ Water around grid plate pin                          
 409103   105 -7.85     312301 -312302 -311305          imp:n=1 u=4091  $ Bottom casing                          
-409104   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4091 tmp=2.533494e-08 $ Water around fuel element                         
+409104   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4091 tmp=2.526170e-08 $ Water around fuel element                         
 409105   106 -1.56     312302 -312303 -311304          imp:n=1 u=4091  $ Lower graphite slug                          
 409106   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4091  $ Fuel cladding                         
 409107   108  0.042234 312303 -312304 -311301          imp:n=1 u=4091  tmp=2.533494e-08 $ Zirc pin                          
@@ -2015,18 +2015,18 @@ c
 409113   106 -1.56     312304 -312305 -311304          imp:n=1 u=4091  $ Upper graphite spacer                         
 409114   105 -7.85     312305 -312306 -311305          imp:n=1 u=4091  $ SS top cap                          
 409115   105 -7.85     312306 -312307 -311303          imp:n=1 u=4091  $ Tri-flute                          
-409116   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4091 tmp=2.533494e-08 $ Water around tri-flute                          
+409116   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4091 tmp=2.526170e-08 $ Water around tri-flute                          
 409117   105 -7.85     312307 -312308 -311302          imp:n=1 u=4091  $ Fuel tip                         
-409118   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4091 tmp=2.533494e-08 $ Water around fuel tip                         
-409119   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4091 tmp=2.533494e-08 $ Water above fuel element                         
+409118   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4091 tmp=2.526170e-08 $ Water around fuel tip                         
+409119   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4091 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4094 - SS clad (T0S210D210) universe --- 
 c                         
 409401   105 -7.85     312300 -312301 -311302          imp:n=1 u=4094  $ Lower grid plate pin                         
-409402   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4094 tmp=2.533494e-08 $ Water around grid plate pin                          
+409402   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4094 tmp=2.526170e-08 $ Water around grid plate pin                          
 409403   105 -7.85     312301 -312302 -311305          imp:n=1 u=4094  $ Bottom casing                          
-409404   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4094 tmp=2.533494e-08 $ Water around fuel element                         
+409404   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4094 tmp=2.526170e-08 $ Water around fuel element                         
 409405   106 -1.56     312302 -312303 -311304          imp:n=1 u=4094  $ Lower graphite slug                          
 409406   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4094  $ Fuel cladding                         
 409407   108  0.042234 312303 -312304 -311301          imp:n=1 u=4094  tmp=2.533494e-08 $ Zirc pin                          
@@ -2038,18 +2038,18 @@ c
 409413   106 -1.56     312304 -312305 -311304          imp:n=1 u=4094  $ Upper graphite spacer                         
 409414   105 -7.85     312305 -312306 -311305          imp:n=1 u=4094  $ SS top cap                          
 409415   105 -7.85     312306 -312307 -311303          imp:n=1 u=4094  $ Tri-flute                          
-409416   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4094 tmp=2.533494e-08 $ Water around tri-flute                          
+409416   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4094 tmp=2.526170e-08 $ Water around tri-flute                          
 409417   105 -7.85     312307 -312308 -311302          imp:n=1 u=4094  $ Fuel tip                         
-409418   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4094 tmp=2.533494e-08 $ Water around fuel tip                         
-409419   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4094 tmp=2.533494e-08 $ Water above fuel element                         
+409418   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4094 tmp=2.526170e-08 $ Water around fuel tip                         
+409419   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4094 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4095 - SS clad (T0S210D210) universe --- 
 c                         
 409501   105 -7.85     312300 -312301 -311302          imp:n=1 u=4095  $ Lower grid plate pin                         
-409502   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4095 tmp=2.533494e-08 $ Water around grid plate pin                          
+409502   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4095 tmp=2.526170e-08 $ Water around grid plate pin                          
 409503   105 -7.85     312301 -312302 -311305          imp:n=1 u=4095  $ Bottom casing                          
-409504   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4095 tmp=2.533494e-08 $ Water around fuel element                         
+409504   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4095 tmp=2.526170e-08 $ Water around fuel element                         
 409505   106 -1.56     312302 -312303 -311304          imp:n=1 u=4095  $ Lower graphite slug                          
 409506   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4095  $ Fuel cladding                         
 409507   108  0.042234 312303 -312304 -311301          imp:n=1 u=4095  tmp=2.533494e-08 $ Zirc pin                          
@@ -2061,18 +2061,18 @@ c
 409513   106 -1.56     312304 -312305 -311304          imp:n=1 u=4095  $ Upper graphite spacer                         
 409514   105 -7.85     312305 -312306 -311305          imp:n=1 u=4095  $ SS top cap                          
 409515   105 -7.85     312306 -312307 -311303          imp:n=1 u=4095  $ Tri-flute                          
-409516   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4095 tmp=2.533494e-08 $ Water around tri-flute                          
+409516   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4095 tmp=2.526170e-08 $ Water around tri-flute                          
 409517   105 -7.85     312307 -312308 -311302          imp:n=1 u=4095  $ Fuel tip                         
-409518   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4095 tmp=2.533494e-08 $ Water around fuel tip                         
-409519   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4095 tmp=2.533494e-08 $ Water above fuel element                         
+409518   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4095 tmp=2.526170e-08 $ Water around fuel tip                         
+409519   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4095 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4103 - SS clad (T0S210D210) universe --- 
 c                         
 410301   105 -7.85     312300 -312301 -311302          imp:n=1 u=4103  $ Lower grid plate pin                         
-410302   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4103 tmp=2.533494e-08 $ Water around grid plate pin                          
+410302   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4103 tmp=2.526170e-08 $ Water around grid plate pin                          
 410303   105 -7.85     312301 -312302 -311305          imp:n=1 u=4103  $ Bottom casing                          
-410304   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4103 tmp=2.533494e-08 $ Water around fuel element                         
+410304   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4103 tmp=2.526170e-08 $ Water around fuel element                         
 410305   106 -1.56     312302 -312303 -311304          imp:n=1 u=4103  $ Lower graphite slug                          
 410306   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4103  $ Fuel cladding                         
 410307   108  0.042234 312303 -312304 -311301          imp:n=1 u=4103  tmp=2.533494e-08 $ Zirc pin                          
@@ -2084,18 +2084,18 @@ c
 410313   106 -1.56     312304 -312305 -311304          imp:n=1 u=4103  $ Upper graphite spacer                         
 410314   105 -7.85     312305 -312306 -311305          imp:n=1 u=4103  $ SS top cap                          
 410315   105 -7.85     312306 -312307 -311303          imp:n=1 u=4103  $ Tri-flute                          
-410316   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4103 tmp=2.533494e-08 $ Water around tri-flute                          
+410316   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4103 tmp=2.526170e-08 $ Water around tri-flute                          
 410317   105 -7.85     312307 -312308 -311302          imp:n=1 u=4103  $ Fuel tip                         
-410318   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4103 tmp=2.533494e-08 $ Water around fuel tip                         
-410319   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4103 tmp=2.533494e-08 $ Water above fuel element                         
+410318   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4103 tmp=2.526170e-08 $ Water around fuel tip                         
+410319   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4103 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4104 - SS clad (T0S210D210) universe --- 
 c                         
 410401   105 -7.85     312300 -312301 -311302          imp:n=1 u=4104  $ Lower grid plate pin                         
-410402   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4104 tmp=2.533494e-08 $ Water around grid plate pin                          
+410402   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4104 tmp=2.526170e-08 $ Water around grid plate pin                          
 410403   105 -7.85     312301 -312302 -311305          imp:n=1 u=4104  $ Bottom casing                          
-410404   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4104 tmp=2.533494e-08 $ Water around fuel element                         
+410404   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4104 tmp=2.526170e-08 $ Water around fuel element                         
 410405   106 -1.56     312302 -312303 -311304          imp:n=1 u=4104  $ Lower graphite slug                          
 410406   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4104  $ Fuel cladding                         
 410407   108  0.042234 312303 -312304 -311301          imp:n=1 u=4104  tmp=2.533494e-08 $ Zirc pin                          
@@ -2107,18 +2107,18 @@ c
 410413   106 -1.56     312304 -312305 -311304          imp:n=1 u=4104  $ Upper graphite spacer                         
 410414   105 -7.85     312305 -312306 -311305          imp:n=1 u=4104  $ SS top cap                          
 410415   105 -7.85     312306 -312307 -311303          imp:n=1 u=4104  $ Tri-flute                          
-410416   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4104 tmp=2.533494e-08 $ Water around tri-flute                          
+410416   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4104 tmp=2.526170e-08 $ Water around tri-flute                          
 410417   105 -7.85     312307 -312308 -311302          imp:n=1 u=4104  $ Fuel tip                         
-410418   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4104 tmp=2.533494e-08 $ Water around fuel tip                         
-410419   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4104 tmp=2.533494e-08 $ Water above fuel element                         
+410418   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4104 tmp=2.526170e-08 $ Water around fuel tip                         
+410419   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4104 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4106 - SS clad (T0S210D210) universe --- 
 c                         
 410601   105 -7.85     312300 -312301 -311302          imp:n=1 u=4106  $ Lower grid plate pin                         
-410602   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4106 tmp=2.533494e-08 $ Water around grid plate pin                          
+410602   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4106 tmp=2.526170e-08 $ Water around grid plate pin                          
 410603   105 -7.85     312301 -312302 -311305          imp:n=1 u=4106  $ Bottom casing                          
-410604   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4106 tmp=2.533494e-08 $ Water around fuel element                         
+410604   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4106 tmp=2.526170e-08 $ Water around fuel element                         
 410605   106 -1.56     312302 -312303 -311304          imp:n=1 u=4106  $ Lower graphite slug                          
 410606   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4106  $ Fuel cladding                         
 410607   108  0.042234 312303 -312304 -311301          imp:n=1 u=4106  tmp=2.533494e-08 $ Zirc pin                          
@@ -2130,18 +2130,18 @@ c
 410613   106 -1.56     312304 -312305 -311304          imp:n=1 u=4106  $ Upper graphite spacer                         
 410614   105 -7.85     312305 -312306 -311305          imp:n=1 u=4106  $ SS top cap                          
 410615   105 -7.85     312306 -312307 -311303          imp:n=1 u=4106  $ Tri-flute                          
-410616   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4106 tmp=2.533494e-08 $ Water around tri-flute                          
+410616   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4106 tmp=2.526170e-08 $ Water around tri-flute                          
 410617   105 -7.85     312307 -312308 -311302          imp:n=1 u=4106  $ Fuel tip                         
-410618   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4106 tmp=2.533494e-08 $ Water around fuel tip                         
-410619   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4106 tmp=2.533494e-08 $ Water above fuel element                         
+410618   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4106 tmp=2.526170e-08 $ Water around fuel tip                         
+410619   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4106 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4107 - SS clad (T0S210D210) universe --- 
 c                         
 410701   105 -7.85     312300 -312301 -311302          imp:n=1 u=4107  $ Lower grid plate pin                         
-410702   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4107 tmp=2.533494e-08 $ Water around grid plate pin                          
+410702   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4107 tmp=2.526170e-08 $ Water around grid plate pin                          
 410703   105 -7.85     312301 -312302 -311305          imp:n=1 u=4107  $ Bottom casing                          
-410704   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4107 tmp=2.533494e-08 $ Water around fuel element                         
+410704   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4107 tmp=2.526170e-08 $ Water around fuel element                         
 410705   106 -1.56     312302 -312303 -311304          imp:n=1 u=4107  $ Lower graphite slug                          
 410706   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4107  $ Fuel cladding                         
 410707   108  0.042234 312303 -312304 -311301          imp:n=1 u=4107  tmp=2.533494e-08 $ Zirc pin                          
@@ -2153,18 +2153,18 @@ c
 410713   106 -1.56     312304 -312305 -311304          imp:n=1 u=4107  $ Upper graphite spacer                         
 410714   105 -7.85     312305 -312306 -311305          imp:n=1 u=4107  $ SS top cap                          
 410715   105 -7.85     312306 -312307 -311303          imp:n=1 u=4107  $ Tri-flute                          
-410716   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4107 tmp=2.533494e-08 $ Water around tri-flute                          
+410716   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4107 tmp=2.526170e-08 $ Water around tri-flute                          
 410717   105 -7.85     312307 -312308 -311302          imp:n=1 u=4107  $ Fuel tip                         
-410718   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4107 tmp=2.533494e-08 $ Water around fuel tip                         
-410719   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4107 tmp=2.533494e-08 $ Water above fuel element                         
+410718   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4107 tmp=2.526170e-08 $ Water around fuel tip                         
+410719   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4107 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4110 - SS clad (T0S210D210) universe --- 
 c                         
 411001   105 -7.85     312300 -312301 -311302          imp:n=1 u=4110  $ Lower grid plate pin                         
-411002   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4110 tmp=2.533494e-08 $ Water around grid plate pin                          
+411002   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4110 tmp=2.526170e-08 $ Water around grid plate pin                          
 411003   105 -7.85     312301 -312302 -311305          imp:n=1 u=4110  $ Bottom casing                          
-411004   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4110 tmp=2.533494e-08 $ Water around fuel element                         
+411004   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4110 tmp=2.526170e-08 $ Water around fuel element                         
 411005   106 -1.56     312302 -312303 -311304          imp:n=1 u=4110  $ Lower graphite slug                          
 411006   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4110  $ Fuel cladding                         
 411007   108  0.042234 312303 -312304 -311301          imp:n=1 u=4110  tmp=2.533494e-08 $ Zirc pin                          
@@ -2176,18 +2176,18 @@ c
 411013   106 -1.56     312304 -312305 -311304          imp:n=1 u=4110  $ Upper graphite spacer                         
 411014   105 -7.85     312305 -312306 -311305          imp:n=1 u=4110  $ SS top cap                          
 411015   105 -7.85     312306 -312307 -311303          imp:n=1 u=4110  $ Tri-flute                          
-411016   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4110 tmp=2.533494e-08 $ Water around tri-flute                          
+411016   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4110 tmp=2.526170e-08 $ Water around tri-flute                          
 411017   105 -7.85     312307 -312308 -311302          imp:n=1 u=4110  $ Fuel tip                         
-411018   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4110 tmp=2.533494e-08 $ Water around fuel tip                         
-411019   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4110 tmp=2.533494e-08 $ Water above fuel element                         
+411018   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4110 tmp=2.526170e-08 $ Water around fuel tip                         
+411019   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4110 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4111 - SS clad (T0S210D210) universe --- 
 c                         
 411101   105 -7.85     312300 -312301 -311302          imp:n=1 u=4111  $ Lower grid plate pin                         
-411102   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4111 tmp=2.533494e-08 $ Water around grid plate pin                          
+411102   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4111 tmp=2.526170e-08 $ Water around grid plate pin                          
 411103   105 -7.85     312301 -312302 -311305          imp:n=1 u=4111  $ Bottom casing                          
-411104   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4111 tmp=2.533494e-08 $ Water around fuel element                         
+411104   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4111 tmp=2.526170e-08 $ Water around fuel element                         
 411105   106 -1.56     312302 -312303 -311304          imp:n=1 u=4111  $ Lower graphite slug                          
 411106   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4111  $ Fuel cladding                         
 411107   108  0.042234 312303 -312304 -311301          imp:n=1 u=4111  tmp=2.533494e-08 $ Zirc pin                          
@@ -2199,18 +2199,18 @@ c
 411113   106 -1.56     312304 -312305 -311304          imp:n=1 u=4111  $ Upper graphite spacer                         
 411114   105 -7.85     312305 -312306 -311305          imp:n=1 u=4111  $ SS top cap                          
 411115   105 -7.85     312306 -312307 -311303          imp:n=1 u=4111  $ Tri-flute                          
-411116   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4111 tmp=2.533494e-08 $ Water around tri-flute                          
+411116   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4111 tmp=2.526170e-08 $ Water around tri-flute                          
 411117   105 -7.85     312307 -312308 -311302          imp:n=1 u=4111  $ Fuel tip                         
-411118   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4111 tmp=2.533494e-08 $ Water around fuel tip                         
-411119   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4111 tmp=2.533494e-08 $ Water above fuel element                         
+411118   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4111 tmp=2.526170e-08 $ Water around fuel tip                         
+411119   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4111 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4113 - SS clad (T0S210D210) universe --- 
 c                         
 411301   105 -7.85     312300 -312301 -311302          imp:n=1 u=4113  $ Lower grid plate pin                         
-411302   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4113 tmp=2.533494e-08 $ Water around grid plate pin                          
+411302   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4113 tmp=2.526170e-08 $ Water around grid plate pin                          
 411303   105 -7.85     312301 -312302 -311305          imp:n=1 u=4113  $ Bottom casing                          
-411304   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4113 tmp=2.533494e-08 $ Water around fuel element                         
+411304   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4113 tmp=2.526170e-08 $ Water around fuel element                         
 411305   106 -1.56     312302 -312303 -311304          imp:n=1 u=4113  $ Lower graphite slug                          
 411306   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4113  $ Fuel cladding                         
 411307   108  0.042234 312303 -312304 -311301          imp:n=1 u=4113  tmp=2.533494e-08 $ Zirc pin                          
@@ -2222,18 +2222,18 @@ c
 411313   106 -1.56     312304 -312305 -311304          imp:n=1 u=4113  $ Upper graphite spacer                         
 411314   105 -7.85     312305 -312306 -311305          imp:n=1 u=4113  $ SS top cap                          
 411315   105 -7.85     312306 -312307 -311303          imp:n=1 u=4113  $ Tri-flute                          
-411316   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4113 tmp=2.533494e-08 $ Water around tri-flute                          
+411316   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4113 tmp=2.526170e-08 $ Water around tri-flute                          
 411317   105 -7.85     312307 -312308 -311302          imp:n=1 u=4113  $ Fuel tip                         
-411318   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4113 tmp=2.533494e-08 $ Water around fuel tip                         
-411319   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4113 tmp=2.533494e-08 $ Water above fuel element                         
+411318   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4113 tmp=2.526170e-08 $ Water around fuel tip                         
+411319   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4113 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4114 - SS clad (T0S210D210) universe --- 
 c                         
 411401   105 -7.85     312300 -312301 -311302          imp:n=1 u=4114  $ Lower grid plate pin                         
-411402   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4114 tmp=2.533494e-08 $ Water around grid plate pin                          
+411402   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4114 tmp=2.526170e-08 $ Water around grid plate pin                          
 411403   105 -7.85     312301 -312302 -311305          imp:n=1 u=4114  $ Bottom casing                          
-411404   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4114 tmp=2.533494e-08 $ Water around fuel element                         
+411404   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4114 tmp=2.526170e-08 $ Water around fuel element                         
 411405   106 -1.56     312302 -312303 -311304          imp:n=1 u=4114  $ Lower graphite slug                          
 411406   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4114  $ Fuel cladding                         
 411407   108  0.042234 312303 -312304 -311301          imp:n=1 u=4114  tmp=2.533494e-08 $ Zirc pin                          
@@ -2245,18 +2245,18 @@ c
 411413   106 -1.56     312304 -312305 -311304          imp:n=1 u=4114  $ Upper graphite spacer                         
 411414   105 -7.85     312305 -312306 -311305          imp:n=1 u=4114  $ SS top cap                          
 411415   105 -7.85     312306 -312307 -311303          imp:n=1 u=4114  $ Tri-flute                          
-411416   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4114 tmp=2.533494e-08 $ Water around tri-flute                          
+411416   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4114 tmp=2.526170e-08 $ Water around tri-flute                          
 411417   105 -7.85     312307 -312308 -311302          imp:n=1 u=4114  $ Fuel tip                         
-411418   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4114 tmp=2.533494e-08 $ Water around fuel tip                         
-411419   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4114 tmp=2.533494e-08 $ Water above fuel element                         
+411418   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4114 tmp=2.526170e-08 $ Water around fuel tip                         
+411419   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4114 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4117 - SS clad (T0S210D210) universe --- 
 c                         
 411701   105 -7.85     312300 -312301 -311302          imp:n=1 u=4117  $ Lower grid plate pin                         
-411702   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4117 tmp=2.533494e-08 $ Water around grid plate pin                          
+411702   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4117 tmp=2.526170e-08 $ Water around grid plate pin                          
 411703   105 -7.85     312301 -312302 -311305          imp:n=1 u=4117  $ Bottom casing                          
-411704   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4117 tmp=2.533494e-08 $ Water around fuel element                         
+411704   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4117 tmp=2.526170e-08 $ Water around fuel element                         
 411705   106 -1.56     312302 -312303 -311304          imp:n=1 u=4117  $ Lower graphite slug                          
 411706   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4117  $ Fuel cladding                         
 411707   108  0.042234 312303 -312304 -311301          imp:n=1 u=4117  tmp=2.533494e-08 $ Zirc pin                          
@@ -2268,18 +2268,18 @@ c
 411713   106 -1.56     312304 -312305 -311304          imp:n=1 u=4117  $ Upper graphite spacer                         
 411714   105 -7.85     312305 -312306 -311305          imp:n=1 u=4117  $ SS top cap                          
 411715   105 -7.85     312306 -312307 -311303          imp:n=1 u=4117  $ Tri-flute                          
-411716   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4117 tmp=2.533494e-08 $ Water around tri-flute                          
+411716   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4117 tmp=2.526170e-08 $ Water around tri-flute                          
 411717   105 -7.85     312307 -312308 -311302          imp:n=1 u=4117  $ Fuel tip                         
-411718   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4117 tmp=2.533494e-08 $ Water around fuel tip                         
-411719   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4117 tmp=2.533494e-08 $ Water above fuel element                         
+411718   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4117 tmp=2.526170e-08 $ Water around fuel tip                         
+411719   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4117 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4118 - SS clad (T0S210D210) universe --- 
 c                         
 411801   105 -7.85     312300 -312301 -311302          imp:n=1 u=4118  $ Lower grid plate pin                         
-411802   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4118 tmp=2.533494e-08 $ Water around grid plate pin                          
+411802   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4118 tmp=2.526170e-08 $ Water around grid plate pin                          
 411803   105 -7.85     312301 -312302 -311305          imp:n=1 u=4118  $ Bottom casing                          
-411804   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4118 tmp=2.533494e-08 $ Water around fuel element                         
+411804   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4118 tmp=2.526170e-08 $ Water around fuel element                         
 411805   106 -1.56     312302 -312303 -311304          imp:n=1 u=4118  $ Lower graphite slug                          
 411806   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4118  $ Fuel cladding                         
 411807   108  0.042234 312303 -312304 -311301          imp:n=1 u=4118  tmp=2.533494e-08 $ Zirc pin                          
@@ -2291,18 +2291,18 @@ c
 411813   106 -1.56     312304 -312305 -311304          imp:n=1 u=4118  $ Upper graphite spacer                         
 411814   105 -7.85     312305 -312306 -311305          imp:n=1 u=4118  $ SS top cap                          
 411815   105 -7.85     312306 -312307 -311303          imp:n=1 u=4118  $ Tri-flute                          
-411816   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4118 tmp=2.533494e-08 $ Water around tri-flute                          
+411816   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4118 tmp=2.526170e-08 $ Water around tri-flute                          
 411817   105 -7.85     312307 -312308 -311302          imp:n=1 u=4118  $ Fuel tip                         
-411818   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4118 tmp=2.533494e-08 $ Water around fuel tip                         
-411819   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4118 tmp=2.533494e-08 $ Water above fuel element                         
+411818   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4118 tmp=2.526170e-08 $ Water around fuel tip                         
+411819   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4118 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4119 - SS clad (T0S210D210) universe --- 
 c                         
 411901   105 -7.85     312300 -312301 -311302          imp:n=1 u=4119  $ Lower grid plate pin                         
-411902   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4119 tmp=2.533494e-08 $ Water around grid plate pin                          
+411902   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4119 tmp=2.526170e-08 $ Water around grid plate pin                          
 411903   105 -7.85     312301 -312302 -311305          imp:n=1 u=4119  $ Bottom casing                          
-411904   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4119 tmp=2.533494e-08 $ Water around fuel element                         
+411904   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4119 tmp=2.526170e-08 $ Water around fuel element                         
 411905   106 -1.56     312302 -312303 -311304          imp:n=1 u=4119  $ Lower graphite slug                          
 411906   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4119  $ Fuel cladding                         
 411907   108  0.042234 312303 -312304 -311301          imp:n=1 u=4119  tmp=2.533494e-08 $ Zirc pin                          
@@ -2314,18 +2314,18 @@ c
 411913   106 -1.56     312304 -312305 -311304          imp:n=1 u=4119  $ Upper graphite spacer                         
 411914   105 -7.85     312305 -312306 -311305          imp:n=1 u=4119  $ SS top cap                          
 411915   105 -7.85     312306 -312307 -311303          imp:n=1 u=4119  $ Tri-flute                          
-411916   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4119 tmp=2.533494e-08 $ Water around tri-flute                          
+411916   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4119 tmp=2.526170e-08 $ Water around tri-flute                          
 411917   105 -7.85     312307 -312308 -311302          imp:n=1 u=4119  $ Fuel tip                         
-411918   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4119 tmp=2.533494e-08 $ Water around fuel tip                         
-411919   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4119 tmp=2.533494e-08 $ Water above fuel element                         
+411918   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4119 tmp=2.526170e-08 $ Water around fuel tip                         
+411919   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4119 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4120 - SS clad (T0S210D210) universe --- 
 c                         
 412001   105 -7.85     312300 -312301 -311302          imp:n=1 u=4120  $ Lower grid plate pin                         
-412002   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4120 tmp=2.533494e-08 $ Water around grid plate pin                          
+412002   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4120 tmp=2.526170e-08 $ Water around grid plate pin                          
 412003   105 -7.85     312301 -312302 -311305          imp:n=1 u=4120  $ Bottom casing                          
-412004   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4120 tmp=2.533494e-08 $ Water around fuel element                         
+412004   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4120 tmp=2.526170e-08 $ Water around fuel element                         
 412005   106 -1.56     312302 -312303 -311304          imp:n=1 u=4120  $ Lower graphite slug                          
 412006   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4120  $ Fuel cladding                         
 412007   108  0.042234 312303 -312304 -311301          imp:n=1 u=4120  tmp=2.533494e-08 $ Zirc pin                          
@@ -2337,18 +2337,18 @@ c
 412013   106 -1.56     312304 -312305 -311304          imp:n=1 u=4120  $ Upper graphite spacer                         
 412014   105 -7.85     312305 -312306 -311305          imp:n=1 u=4120  $ SS top cap                          
 412015   105 -7.85     312306 -312307 -311303          imp:n=1 u=4120  $ Tri-flute                          
-412016   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4120 tmp=2.533494e-08 $ Water around tri-flute                          
+412016   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4120 tmp=2.526170e-08 $ Water around tri-flute                          
 412017   105 -7.85     312307 -312308 -311302          imp:n=1 u=4120  $ Fuel tip                         
-412018   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4120 tmp=2.533494e-08 $ Water around fuel tip                         
-412019   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4120 tmp=2.533494e-08 $ Water above fuel element                         
+412018   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4120 tmp=2.526170e-08 $ Water around fuel tip                         
+412019   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4120 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4121 - SS clad (T0S210D210) universe --- 
 c                         
 412101   105 -7.85     312300 -312301 -311302          imp:n=1 u=4121  $ Lower grid plate pin                         
-412102   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4121 tmp=2.533494e-08 $ Water around grid plate pin                          
+412102   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4121 tmp=2.526170e-08 $ Water around grid plate pin                          
 412103   105 -7.85     312301 -312302 -311305          imp:n=1 u=4121  $ Bottom casing                          
-412104   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4121 tmp=2.533494e-08 $ Water around fuel element                         
+412104   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4121 tmp=2.526170e-08 $ Water around fuel element                         
 412105   106 -1.56     312302 -312303 -311304          imp:n=1 u=4121  $ Lower graphite slug                          
 412106   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4121  $ Fuel cladding                         
 412107   108  0.042234 312303 -312304 -311301          imp:n=1 u=4121  tmp=2.533494e-08 $ Zirc pin                          
@@ -2360,18 +2360,18 @@ c
 412113   106 -1.56     312304 -312305 -311304          imp:n=1 u=4121  $ Upper graphite spacer                         
 412114   105 -7.85     312305 -312306 -311305          imp:n=1 u=4121  $ SS top cap                          
 412115   105 -7.85     312306 -312307 -311303          imp:n=1 u=4121  $ Tri-flute                          
-412116   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4121 tmp=2.533494e-08 $ Water around tri-flute                          
+412116   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4121 tmp=2.526170e-08 $ Water around tri-flute                          
 412117   105 -7.85     312307 -312308 -311302          imp:n=1 u=4121  $ Fuel tip                         
-412118   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4121 tmp=2.533494e-08 $ Water around fuel tip                         
-412119   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4121 tmp=2.533494e-08 $ Water above fuel element                         
+412118   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4121 tmp=2.526170e-08 $ Water around fuel tip                         
+412119   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4121 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4122 - SS clad (T0S210D210) universe --- 
 c                         
 412201   105 -7.85     312300 -312301 -311302          imp:n=1 u=4122  $ Lower grid plate pin                         
-412202   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4122 tmp=2.533494e-08 $ Water around grid plate pin                          
+412202   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4122 tmp=2.526170e-08 $ Water around grid plate pin                          
 412203   105 -7.85     312301 -312302 -311305          imp:n=1 u=4122  $ Bottom casing                          
-412204   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4122 tmp=2.533494e-08 $ Water around fuel element                         
+412204   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4122 tmp=2.526170e-08 $ Water around fuel element                         
 412205   106 -1.56     312302 -312303 -311304          imp:n=1 u=4122  $ Lower graphite slug                          
 412206   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4122  $ Fuel cladding                         
 412207   108  0.042234 312303 -312304 -311301          imp:n=1 u=4122  tmp=2.533494e-08 $ Zirc pin                          
@@ -2383,18 +2383,18 @@ c
 412213   106 -1.56     312304 -312305 -311304          imp:n=1 u=4122  $ Upper graphite spacer                         
 412214   105 -7.85     312305 -312306 -311305          imp:n=1 u=4122  $ SS top cap                          
 412215   105 -7.85     312306 -312307 -311303          imp:n=1 u=4122  $ Tri-flute                          
-412216   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4122 tmp=2.533494e-08 $ Water around tri-flute                          
+412216   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4122 tmp=2.526170e-08 $ Water around tri-flute                          
 412217   105 -7.85     312307 -312308 -311302          imp:n=1 u=4122  $ Fuel tip                         
-412218   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4122 tmp=2.533494e-08 $ Water around fuel tip                         
-412219   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4122 tmp=2.533494e-08 $ Water above fuel element                         
+412218   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4122 tmp=2.526170e-08 $ Water around fuel tip                         
+412219   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4122 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4123 - SS clad (T0S210D210) universe --- 
 c                         
 412301   105 -7.85     312300 -312301 -311302          imp:n=1 u=4123  $ Lower grid plate pin                         
-412302   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4123 tmp=2.533494e-08 $ Water around grid plate pin                          
+412302   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4123 tmp=2.526170e-08 $ Water around grid plate pin                          
 412303   105 -7.85     312301 -312302 -311305          imp:n=1 u=4123  $ Bottom casing                          
-412304   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4123 tmp=2.533494e-08 $ Water around fuel element                         
+412304   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4123 tmp=2.526170e-08 $ Water around fuel element                         
 412305   106 -1.56     312302 -312303 -311304          imp:n=1 u=4123  $ Lower graphite slug                          
 412306   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4123  $ Fuel cladding                         
 412307   108  0.042234 312303 -312304 -311301          imp:n=1 u=4123  tmp=2.533494e-08 $ Zirc pin                          
@@ -2406,18 +2406,18 @@ c
 412313   106 -1.56     312304 -312305 -311304          imp:n=1 u=4123  $ Upper graphite spacer                         
 412314   105 -7.85     312305 -312306 -311305          imp:n=1 u=4123  $ SS top cap                          
 412315   105 -7.85     312306 -312307 -311303          imp:n=1 u=4123  $ Tri-flute                          
-412316   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4123 tmp=2.533494e-08 $ Water around tri-flute                          
+412316   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4123 tmp=2.526170e-08 $ Water around tri-flute                          
 412317   105 -7.85     312307 -312308 -311302          imp:n=1 u=4123  $ Fuel tip                         
-412318   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4123 tmp=2.533494e-08 $ Water around fuel tip                         
-412319   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4123 tmp=2.533494e-08 $ Water above fuel element                         
+412318   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4123 tmp=2.526170e-08 $ Water around fuel tip                         
+412319   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4123 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4125 - SS clad (T0S210D210) universe --- 
 c                         
 412501   105 -7.85     312300 -312301 -311302          imp:n=1 u=4125  $ Lower grid plate pin                         
-412502   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4125 tmp=2.533494e-08 $ Water around grid plate pin                          
+412502   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4125 tmp=2.526170e-08 $ Water around grid plate pin                          
 412503   105 -7.85     312301 -312302 -311305          imp:n=1 u=4125  $ Bottom casing                          
-412504   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4125 tmp=2.533494e-08 $ Water around fuel element                         
+412504   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4125 tmp=2.526170e-08 $ Water around fuel element                         
 412505   106 -1.56     312302 -312303 -311304          imp:n=1 u=4125  $ Lower graphite slug                          
 412506   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4125  $ Fuel cladding                         
 412507   108  0.042234 312303 -312304 -311301          imp:n=1 u=4125  tmp=2.533494e-08 $ Zirc pin                          
@@ -2429,18 +2429,18 @@ c
 412513   106 -1.56     312304 -312305 -311304          imp:n=1 u=4125  $ Upper graphite spacer                         
 412514   105 -7.85     312305 -312306 -311305          imp:n=1 u=4125  $ SS top cap                          
 412515   105 -7.85     312306 -312307 -311303          imp:n=1 u=4125  $ Tri-flute                          
-412516   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4125 tmp=2.533494e-08 $ Water around tri-flute                          
+412516   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4125 tmp=2.526170e-08 $ Water around tri-flute                          
 412517   105 -7.85     312307 -312308 -311302          imp:n=1 u=4125  $ Fuel tip                         
-412518   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4125 tmp=2.533494e-08 $ Water around fuel tip                         
-412519   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4125 tmp=2.533494e-08 $ Water above fuel element                         
+412518   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4125 tmp=2.526170e-08 $ Water around fuel tip                         
+412519   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4125 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4126 - SS clad (T0S210D210) universe --- 
 c                         
 412601   105 -7.85     312300 -312301 -311302          imp:n=1 u=4126  $ Lower grid plate pin                         
-412602   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4126 tmp=2.533494e-08 $ Water around grid plate pin                          
+412602   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4126 tmp=2.526170e-08 $ Water around grid plate pin                          
 412603   105 -7.85     312301 -312302 -311305          imp:n=1 u=4126  $ Bottom casing                          
-412604   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4126 tmp=2.533494e-08 $ Water around fuel element                         
+412604   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4126 tmp=2.526170e-08 $ Water around fuel element                         
 412605   106 -1.56     312302 -312303 -311304          imp:n=1 u=4126  $ Lower graphite slug                          
 412606   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4126  $ Fuel cladding                         
 412607   108  0.042234 312303 -312304 -311301          imp:n=1 u=4126  tmp=2.533494e-08 $ Zirc pin                          
@@ -2452,18 +2452,18 @@ c
 412613   106 -1.56     312304 -312305 -311304          imp:n=1 u=4126  $ Upper graphite spacer                         
 412614   105 -7.85     312305 -312306 -311305          imp:n=1 u=4126  $ SS top cap                          
 412615   105 -7.85     312306 -312307 -311303          imp:n=1 u=4126  $ Tri-flute                          
-412616   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4126 tmp=2.533494e-08 $ Water around tri-flute                          
+412616   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4126 tmp=2.526170e-08 $ Water around tri-flute                          
 412617   105 -7.85     312307 -312308 -311302          imp:n=1 u=4126  $ Fuel tip                         
-412618   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4126 tmp=2.533494e-08 $ Water around fuel tip                         
-412619   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4126 tmp=2.533494e-08 $ Water above fuel element                         
+412618   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4126 tmp=2.526170e-08 $ Water around fuel tip                         
+412619   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4126 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4127 - SS clad (T0S210D210) universe --- 
 c                         
 412701   105 -7.85     312300 -312301 -311302          imp:n=1 u=4127  $ Lower grid plate pin                         
-412702   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4127 tmp=2.533494e-08 $ Water around grid plate pin                          
+412702   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4127 tmp=2.526170e-08 $ Water around grid plate pin                          
 412703   105 -7.85     312301 -312302 -311305          imp:n=1 u=4127  $ Bottom casing                          
-412704   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4127 tmp=2.533494e-08 $ Water around fuel element                         
+412704   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4127 tmp=2.526170e-08 $ Water around fuel element                         
 412705   106 -1.56     312302 -312303 -311304          imp:n=1 u=4127  $ Lower graphite slug                          
 412706   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4127  $ Fuel cladding                         
 412707   108  0.042234 312303 -312304 -311301          imp:n=1 u=4127  tmp=2.533494e-08 $ Zirc pin                          
@@ -2475,18 +2475,18 @@ c
 412713   106 -1.56     312304 -312305 -311304          imp:n=1 u=4127  $ Upper graphite spacer                         
 412714   105 -7.85     312305 -312306 -311305          imp:n=1 u=4127  $ SS top cap                          
 412715   105 -7.85     312306 -312307 -311303          imp:n=1 u=4127  $ Tri-flute                          
-412716   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4127 tmp=2.533494e-08 $ Water around tri-flute                          
+412716   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4127 tmp=2.526170e-08 $ Water around tri-flute                          
 412717   105 -7.85     312307 -312308 -311302          imp:n=1 u=4127  $ Fuel tip                         
-412718   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4127 tmp=2.533494e-08 $ Water around fuel tip                         
-412719   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4127 tmp=2.533494e-08 $ Water above fuel element                         
+412718   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4127 tmp=2.526170e-08 $ Water around fuel tip                         
+412719   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4127 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4129 - SS clad (T0S210D210) universe --- 
 c                         
 412901   105 -7.85     312300 -312301 -311302          imp:n=1 u=4129  $ Lower grid plate pin                         
-412902   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4129 tmp=2.533494e-08 $ Water around grid plate pin                          
+412902   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4129 tmp=2.526170e-08 $ Water around grid plate pin                          
 412903   105 -7.85     312301 -312302 -311305          imp:n=1 u=4129  $ Bottom casing                          
-412904   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4129 tmp=2.533494e-08 $ Water around fuel element                         
+412904   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4129 tmp=2.526170e-08 $ Water around fuel element                         
 412905   106 -1.56     312302 -312303 -311304          imp:n=1 u=4129  $ Lower graphite slug                          
 412906   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4129  $ Fuel cladding                         
 412907   108  0.042234 312303 -312304 -311301          imp:n=1 u=4129  tmp=2.533494e-08 $ Zirc pin                          
@@ -2498,18 +2498,18 @@ c
 412913   106 -1.56     312304 -312305 -311304          imp:n=1 u=4129  $ Upper graphite spacer                         
 412914   105 -7.85     312305 -312306 -311305          imp:n=1 u=4129  $ SS top cap                          
 412915   105 -7.85     312306 -312307 -311303          imp:n=1 u=4129  $ Tri-flute                          
-412916   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4129 tmp=2.533494e-08 $ Water around tri-flute                          
+412916   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4129 tmp=2.526170e-08 $ Water around tri-flute                          
 412917   105 -7.85     312307 -312308 -311302          imp:n=1 u=4129  $ Fuel tip                         
-412918   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4129 tmp=2.533494e-08 $ Water around fuel tip                         
-412919   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4129 tmp=2.533494e-08 $ Water above fuel element                         
+412918   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4129 tmp=2.526170e-08 $ Water around fuel tip                         
+412919   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4129 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4130 - SS clad (T0S210D210) universe --- 
 c                         
 413001   105 -7.85     312300 -312301 -311302          imp:n=1 u=4130  $ Lower grid plate pin                         
-413002   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4130 tmp=2.533494e-08 $ Water around grid plate pin                          
+413002   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4130 tmp=2.526170e-08 $ Water around grid plate pin                          
 413003   105 -7.85     312301 -312302 -311305          imp:n=1 u=4130  $ Bottom casing                          
-413004   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4130 tmp=2.533494e-08 $ Water around fuel element                         
+413004   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4130 tmp=2.526170e-08 $ Water around fuel element                         
 413005   106 -1.56     312302 -312303 -311304          imp:n=1 u=4130  $ Lower graphite slug                          
 413006   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4130  $ Fuel cladding                         
 413007   108  0.042234 312303 -312304 -311301          imp:n=1 u=4130  tmp=2.533494e-08 $ Zirc pin                          
@@ -2521,18 +2521,18 @@ c
 413013   106 -1.56     312304 -312305 -311304          imp:n=1 u=4130  $ Upper graphite spacer                         
 413014   105 -7.85     312305 -312306 -311305          imp:n=1 u=4130  $ SS top cap                          
 413015   105 -7.85     312306 -312307 -311303          imp:n=1 u=4130  $ Tri-flute                          
-413016   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4130 tmp=2.533494e-08 $ Water around tri-flute                          
+413016   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4130 tmp=2.526170e-08 $ Water around tri-flute                          
 413017   105 -7.85     312307 -312308 -311302          imp:n=1 u=4130  $ Fuel tip                         
-413018   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4130 tmp=2.533494e-08 $ Water around fuel tip                         
-413019   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4130 tmp=2.533494e-08 $ Water above fuel element                         
+413018   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4130 tmp=2.526170e-08 $ Water around fuel tip                         
+413019   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4130 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4131 - SS clad (T0S210D210) universe --- 
 c                         
 413101   105 -7.85     312300 -312301 -311302          imp:n=1 u=4131  $ Lower grid plate pin                         
-413102   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4131 tmp=2.533494e-08 $ Water around grid plate pin                          
+413102   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4131 tmp=2.526170e-08 $ Water around grid plate pin                          
 413103   105 -7.85     312301 -312302 -311305          imp:n=1 u=4131  $ Bottom casing                          
-413104   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4131 tmp=2.533494e-08 $ Water around fuel element                         
+413104   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4131 tmp=2.526170e-08 $ Water around fuel element                         
 413105   106 -1.56     312302 -312303 -311304          imp:n=1 u=4131  $ Lower graphite slug                          
 413106   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4131  $ Fuel cladding                         
 413107   108  0.042234 312303 -312304 -311301          imp:n=1 u=4131  tmp=2.533494e-08 $ Zirc pin                          
@@ -2544,18 +2544,18 @@ c
 413113   106 -1.56     312304 -312305 -311304          imp:n=1 u=4131  $ Upper graphite spacer                         
 413114   105 -7.85     312305 -312306 -311305          imp:n=1 u=4131  $ SS top cap                          
 413115   105 -7.85     312306 -312307 -311303          imp:n=1 u=4131  $ Tri-flute                          
-413116   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4131 tmp=2.533494e-08 $ Water around tri-flute                          
+413116   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4131 tmp=2.526170e-08 $ Water around tri-flute                          
 413117   105 -7.85     312307 -312308 -311302          imp:n=1 u=4131  $ Fuel tip                         
-413118   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4131 tmp=2.533494e-08 $ Water around fuel tip                         
-413119   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4131 tmp=2.533494e-08 $ Water above fuel element                         
+413118   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4131 tmp=2.526170e-08 $ Water around fuel tip                         
+413119   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4131 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4132 - SS clad (T0S210D210) universe --- 
 c                         
 413201   105 -7.85     312300 -312301 -311302          imp:n=1 u=4132  $ Lower grid plate pin                         
-413202   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4132 tmp=2.533494e-08 $ Water around grid plate pin                          
+413202   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4132 tmp=2.526170e-08 $ Water around grid plate pin                          
 413203   105 -7.85     312301 -312302 -311305          imp:n=1 u=4132  $ Bottom casing                          
-413204   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4132 tmp=2.533494e-08 $ Water around fuel element                         
+413204   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4132 tmp=2.526170e-08 $ Water around fuel element                         
 413205   106 -1.56     312302 -312303 -311304          imp:n=1 u=4132  $ Lower graphite slug                          
 413206   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4132  $ Fuel cladding                         
 413207   108  0.042234 312303 -312304 -311301          imp:n=1 u=4132  tmp=2.533494e-08 $ Zirc pin                          
@@ -2567,18 +2567,18 @@ c
 413213   106 -1.56     312304 -312305 -311304          imp:n=1 u=4132  $ Upper graphite spacer                         
 413214   105 -7.85     312305 -312306 -311305          imp:n=1 u=4132  $ SS top cap                          
 413215   105 -7.85     312306 -312307 -311303          imp:n=1 u=4132  $ Tri-flute                          
-413216   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4132 tmp=2.533494e-08 $ Water around tri-flute                          
+413216   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4132 tmp=2.526170e-08 $ Water around tri-flute                          
 413217   105 -7.85     312307 -312308 -311302          imp:n=1 u=4132  $ Fuel tip                         
-413218   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4132 tmp=2.533494e-08 $ Water around fuel tip                         
-413219   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4132 tmp=2.533494e-08 $ Water above fuel element                         
+413218   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4132 tmp=2.526170e-08 $ Water around fuel tip                         
+413219   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4132 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4133 - SS clad (T0S210D210) universe --- 
 c                         
 413301   105 -7.85     312300 -312301 -311302          imp:n=1 u=4133  $ Lower grid plate pin                         
-413302   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4133 tmp=2.533494e-08 $ Water around grid plate pin                          
+413302   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4133 tmp=2.526170e-08 $ Water around grid plate pin                          
 413303   105 -7.85     312301 -312302 -311305          imp:n=1 u=4133  $ Bottom casing                          
-413304   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4133 tmp=2.533494e-08 $ Water around fuel element                         
+413304   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4133 tmp=2.526170e-08 $ Water around fuel element                         
 413305   106 -1.56     312302 -312303 -311304          imp:n=1 u=4133  $ Lower graphite slug                          
 413306   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4133  $ Fuel cladding                         
 413307   108  0.042234 312303 -312304 -311301          imp:n=1 u=4133  tmp=2.533494e-08 $ Zirc pin                          
@@ -2590,18 +2590,18 @@ c
 413313   106 -1.56     312304 -312305 -311304          imp:n=1 u=4133  $ Upper graphite spacer                         
 413314   105 -7.85     312305 -312306 -311305          imp:n=1 u=4133  $ SS top cap                          
 413315   105 -7.85     312306 -312307 -311303          imp:n=1 u=4133  $ Tri-flute                          
-413316   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4133 tmp=2.533494e-08 $ Water around tri-flute                          
+413316   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4133 tmp=2.526170e-08 $ Water around tri-flute                          
 413317   105 -7.85     312307 -312308 -311302          imp:n=1 u=4133  $ Fuel tip                         
-413318   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4133 tmp=2.533494e-08 $ Water around fuel tip                         
-413319   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4133 tmp=2.533494e-08 $ Water above fuel element                         
+413318   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4133 tmp=2.526170e-08 $ Water around fuel tip                         
+413319   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4133 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 4134 - SS clad (T0S210D210) universe --- 
 c                         
 413401   105 -7.85     312300 -312301 -311302          imp:n=1 u=4134  $ Lower grid plate pin                         
-413402   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=4134 tmp=2.533494e-08 $ Water around grid plate pin                          
+413402   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=4134 tmp=2.526170e-08 $ Water around grid plate pin                          
 413403   105 -7.85     312301 -312302 -311305          imp:n=1 u=4134  $ Bottom casing                          
-413404   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=4134 tmp=2.533494e-08 $ Water around fuel element                         
+413404   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=4134 tmp=2.526170e-08 $ Water around fuel element                         
 413405   106 -1.56     312302 -312303 -311304          imp:n=1 u=4134  $ Lower graphite slug                          
 413406   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=4134  $ Fuel cladding                         
 413407   108  0.042234 312303 -312304 -311301          imp:n=1 u=4134  tmp=2.533494e-08 $ Zirc pin                          
@@ -2613,18 +2613,18 @@ c
 413413   106 -1.56     312304 -312305 -311304          imp:n=1 u=4134  $ Upper graphite spacer                         
 413414   105 -7.85     312305 -312306 -311305          imp:n=1 u=4134  $ SS top cap                          
 413415   105 -7.85     312306 -312307 -311303          imp:n=1 u=4134  $ Tri-flute                          
-413416   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=4134 tmp=2.533494e-08 $ Water around tri-flute                          
+413416   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=4134 tmp=2.526170e-08 $ Water around tri-flute                          
 413417   105 -7.85     312307 -312308 -311302          imp:n=1 u=4134  $ Fuel tip                         
-413418   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=4134 tmp=2.533494e-08 $ Water around fuel tip                         
-413419   102 -0.997748     312308 -312309 -311306          imp:n=1 u=4134 tmp=2.533494e-08 $ Water above fuel element                         
+413418   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=4134 tmp=2.526170e-08 $ Water around fuel tip                         
+413419   102 -0.997936     312308 -312309 -311306          imp:n=1 u=4134 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 8732 - SS clad (T13S210D210) universe --- 
 c                         
 873201   105 -7.85     312300 -312301 -311302          imp:n=1 u=8732  $ Lower grid plate pin                         
-873202   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=8732 tmp=2.533494e-08 $ Water around grid plate pin                          
+873202   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=8732 tmp=2.526170e-08 $ Water around grid plate pin                          
 873203   105 -7.85     312301 -312302 -311305          imp:n=1 u=8732  $ Bottom casing                          
-873204   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=8732 tmp=2.533494e-08 $ Water around fuel element                         
+873204   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=8732 tmp=2.526170e-08 $ Water around fuel element                         
 873205   106 -1.56     312302 -312303 -311304          imp:n=1 u=8732  $ Lower graphite slug                          
 873206   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=8732  $ Fuel cladding                         
 873207   108  0.042234 312303 -312304 -311301          imp:n=1 u=8732  tmp=2.533494e-08 $ Zirc pin                          
@@ -2636,18 +2636,18 @@ c
 873213   106 -1.56     312304 -312305 -311304          imp:n=1 u=8732  $ Upper graphite spacer                         
 873214   105 -7.85     312305 -312306 -311305          imp:n=1 u=8732  $ SS top cap                          
 873215   105 -7.85     312306 -312307 -311303          imp:n=1 u=8732  $ Tri-flute                          
-873216   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=8732 tmp=2.533494e-08 $ Water around tri-flute                          
+873216   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=8732 tmp=2.526170e-08 $ Water around tri-flute                          
 873217   105 -7.85     312307 -312308 -311302          imp:n=1 u=8732  $ Fuel tip                         
-873218   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=8732 tmp=2.533494e-08 $ Water around fuel tip                         
-873219   102 -0.997748     312308 -312309 -311306          imp:n=1 u=8732 tmp=2.533494e-08 $ Water above fuel element                         
+873218   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=8732 tmp=2.526170e-08 $ Water around fuel tip                         
+873219   102 -0.997936     312308 -312309 -311306          imp:n=1 u=8732 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 8733 - SS clad (T13S210D210) universe --- 
 c                         
 873301   105 -7.85     312300 -312301 -311302          imp:n=1 u=8733  $ Lower grid plate pin                         
-873302   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=8733 tmp=2.533494e-08 $ Water around grid plate pin                          
+873302   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=8733 tmp=2.526170e-08 $ Water around grid plate pin                          
 873303   105 -7.85     312301 -312302 -311305          imp:n=1 u=8733  $ Bottom casing                          
-873304   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=8733 tmp=2.533494e-08 $ Water around fuel element                         
+873304   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=8733 tmp=2.526170e-08 $ Water around fuel element                         
 873305   106 -1.56     312302 -312303 -311304          imp:n=1 u=8733  $ Lower graphite slug                          
 873306   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=8733  $ Fuel cladding                         
 873307   108  0.042234 312303 -312304 -311301          imp:n=1 u=8733  tmp=2.533494e-08 $ Zirc pin                          
@@ -2659,18 +2659,18 @@ c
 873313   106 -1.56     312304 -312305 -311304          imp:n=1 u=8733  $ Upper graphite spacer                         
 873314   105 -7.85     312305 -312306 -311305          imp:n=1 u=8733  $ SS top cap                          
 873315   105 -7.85     312306 -312307 -311303          imp:n=1 u=8733  $ Tri-flute                          
-873316   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=8733 tmp=2.533494e-08 $ Water around tri-flute                          
+873316   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=8733 tmp=2.526170e-08 $ Water around tri-flute                          
 873317   105 -7.85     312307 -312308 -311302          imp:n=1 u=8733  $ Fuel tip                         
-873318   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=8733 tmp=2.533494e-08 $ Water around fuel tip                         
-873319   102 -0.997748     312308 -312309 -311306          imp:n=1 u=8733 tmp=2.533494e-08 $ Water above fuel element                         
+873318   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=8733 tmp=2.526170e-08 $ Water around fuel tip                         
+873319   102 -0.997936     312308 -312309 -311306          imp:n=1 u=8733 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 8734 - SS clad (T13S210D210) universe --- 
 c                         
 873401   105 -7.85     312300 -312301 -311302          imp:n=1 u=8734  $ Lower grid plate pin                         
-873402   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=8734 tmp=2.533494e-08 $ Water around grid plate pin                          
+873402   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=8734 tmp=2.526170e-08 $ Water around grid plate pin                          
 873403   105 -7.85     312301 -312302 -311305          imp:n=1 u=8734  $ Bottom casing                          
-873404   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=8734 tmp=2.533494e-08 $ Water around fuel element                         
+873404   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=8734 tmp=2.526170e-08 $ Water around fuel element                         
 873405   106 -1.56     312302 -312303 -311304          imp:n=1 u=8734  $ Lower graphite slug                          
 873406   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=8734  $ Fuel cladding                         
 873407   108  0.042234 312303 -312304 -311301          imp:n=1 u=8734  tmp=2.533494e-08 $ Zirc pin                          
@@ -2682,18 +2682,18 @@ c
 873413   106 -1.56     312304 -312305 -311304          imp:n=1 u=8734  $ Upper graphite spacer                         
 873414   105 -7.85     312305 -312306 -311305          imp:n=1 u=8734  $ SS top cap                          
 873415   105 -7.85     312306 -312307 -311303          imp:n=1 u=8734  $ Tri-flute                          
-873416   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=8734 tmp=2.533494e-08 $ Water around tri-flute                          
+873416   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=8734 tmp=2.526170e-08 $ Water around tri-flute                          
 873417   105 -7.85     312307 -312308 -311302          imp:n=1 u=8734  $ Fuel tip                         
-873418   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=8734 tmp=2.533494e-08 $ Water around fuel tip                         
-873419   102 -0.997748     312308 -312309 -311306          imp:n=1 u=8734 tmp=2.533494e-08 $ Water above fuel element                         
+873418   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=8734 tmp=2.526170e-08 $ Water around fuel tip                         
+873419   102 -0.997936     312308 -312309 -311306          imp:n=1 u=8734 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 8735 - SS clad (T13S210D210) universe --- 
 c                         
 873501   105 -7.85     312300 -312301 -311302          imp:n=1 u=8735  $ Lower grid plate pin                         
-873502   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=8735 tmp=2.533494e-08 $ Water around grid plate pin                          
+873502   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=8735 tmp=2.526170e-08 $ Water around grid plate pin                          
 873503   105 -7.85     312301 -312302 -311305          imp:n=1 u=8735  $ Bottom casing                          
-873504   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=8735 tmp=2.533494e-08 $ Water around fuel element                         
+873504   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=8735 tmp=2.526170e-08 $ Water around fuel element                         
 873505   106 -1.56     312302 -312303 -311304          imp:n=1 u=8735  $ Lower graphite slug                          
 873506   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=8735  $ Fuel cladding                         
 873507   108  0.042234 312303 -312304 -311301          imp:n=1 u=8735  tmp=2.533494e-08 $ Zirc pin                          
@@ -2705,18 +2705,18 @@ c
 873513   106 -1.56     312304 -312305 -311304          imp:n=1 u=8735  $ Upper graphite spacer                         
 873514   105 -7.85     312305 -312306 -311305          imp:n=1 u=8735  $ SS top cap                          
 873515   105 -7.85     312306 -312307 -311303          imp:n=1 u=8735  $ Tri-flute                          
-873516   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=8735 tmp=2.533494e-08 $ Water around tri-flute                          
+873516   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=8735 tmp=2.526170e-08 $ Water around tri-flute                          
 873517   105 -7.85     312307 -312308 -311302          imp:n=1 u=8735  $ Fuel tip                         
-873518   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=8735 tmp=2.533494e-08 $ Water around fuel tip                         
-873519   102 -0.997748     312308 -312309 -311306          imp:n=1 u=8735 tmp=2.533494e-08 $ Water above fuel element                         
+873518   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=8735 tmp=2.526170e-08 $ Water around fuel tip                         
+873519   102 -0.997936     312308 -312309 -311306          imp:n=1 u=8735 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --- 8736 - SS clad (T13S210D210) universe --- 
 c                         
 873601   105 -7.85     312300 -312301 -311302          imp:n=1 u=8736  $ Lower grid plate pin                         
-873602   102 -0.997748     312300 -312301  311302 -311306  imp:n=1 u=8736 tmp=2.533494e-08 $ Water around grid plate pin                          
+873602   102 -0.997936     312300 -312301  311302 -311306  imp:n=1 u=8736 tmp=2.526170e-08 $ Water around grid plate pin                          
 873603   105 -7.85     312301 -312302 -311305          imp:n=1 u=8736  $ Bottom casing                          
-873604   102 -0.997748     312301 -312306  311305 -311306  imp:n=1 u=8736 tmp=2.533494e-08 $ Water around fuel element                         
+873604   102 -0.997936     312301 -312306  311305 -311306  imp:n=1 u=8736 tmp=2.526170e-08 $ Water around fuel element                         
 873605   106 -1.56     312302 -312303 -311304          imp:n=1 u=8736  $ Lower graphite slug                          
 873606   105 -7.85     312302 -312305  311304 -311305  imp:n=1 u=8736  $ Fuel cladding                         
 873607   108  0.042234 312303 -312304 -311301          imp:n=1 u=8736  tmp=2.533494e-08 $ Zirc pin                          
@@ -2728,10 +2728,10 @@ c
 873613   106 -1.56     312304 -312305 -311304          imp:n=1 u=8736  $ Upper graphite spacer                         
 873614   105 -7.85     312305 -312306 -311305          imp:n=1 u=8736  $ SS top cap                          
 873615   105 -7.85     312306 -312307 -311303          imp:n=1 u=8736  $ Tri-flute                          
-873616   102 -0.997748     312306 -312307  311303 -311306  imp:n=1 u=8736 tmp=2.533494e-08 $ Water around tri-flute                          
+873616   102 -0.997936     312306 -312307  311303 -311306  imp:n=1 u=8736 tmp=2.526170e-08 $ Water around tri-flute                          
 873617   105 -7.85     312307 -312308 -311302          imp:n=1 u=8736  $ Fuel tip                         
-873618   102 -0.997748     312307 -312308  311302 -311306  imp:n=1 u=8736 tmp=2.533494e-08 $ Water around fuel tip                         
-873619   102 -0.997748     312308 -312309 -311306          imp:n=1 u=8736 tmp=2.533494e-08 $ Water above fuel element                         
+873618   102 -0.997936     312307 -312308  311302 -311306  imp:n=1 u=8736 tmp=2.526170e-08 $ Water around fuel tip                         
+873619   102 -0.997936     312308 -312309 -311306          imp:n=1 u=8736 tmp=2.526170e-08 $ Water above fuel element                         
 c                         
 c
 c --End Fuel Cells--
@@ -2829,7 +2829,7 @@ c
 c
 c
 c
-2000 102 -0.997748 312300 -312309 -311306 imp:n=1 u=2 tmp=2.533494e-08 $ Water test cell
+2000 102 -0.997936 312300 -312309 -311306 imp:n=1 u=2 tmp=2.526170e-08 $ Water test cell
 c
 c
 c
@@ -3883,67 +3883,67 @@ c ------------------------------
 c
 c  ---- replacement water for debugging ----
 c
-13501  102  -0.997748   10     -112304  111397 -131302
-                   902019  902029  902039  902049  902059  902069   imp:n=1 tmp=2.533494e-08   $ Inner core water B ring
+13501  102  -0.997936   10     -112304  111397 -131302
+                   902019  902029  902039  902049  902059  902069   imp:n=1 tmp=2.526170e-08   $ Inner core water B ring
 c
 c
-13502  102  -0.997748   10     -112304  131302 -131303
+13502  102  -0.997936   10     -112304  131302 -131303
                    903019  903029  903039  903049  903059  903069
-                   903079  903089  903099  903109  903119  903129   imp:n=1  tmp=2.533494e-08  $ Inner core water C ring
+                   903079  903089  903099  903109  903119  903129   imp:n=1  tmp=2.526170e-08  $ Inner core water C ring
 c
 c
-13503  102  -0.997748   10     -112304  131303 -131304
+13503  102  -0.997936   10     -112304  131303 -131304
                    904019  904029  904039  904049  904059  904069
                    904079  904089  904099  904109  904119  904129
-                   904139  904149  904159  904169  904179  904189   imp:n=1  tmp=2.533494e-08  $ Inner core water D ring
+                   904139  904149  904159  904169  904179  904189   imp:n=1  tmp=2.526170e-08  $ Inner core water D ring
 c
 c
-13504  102  -0.997748   10     -112304  131304 -131305
+13504  102  -0.997936   10     -112304  131304 -131305
                    905019  905029  905039  905049  905059  905069
                    905079  905089  905099  905109  905119  905129
                    905139  905149  905159  905169  905179  905189
-                   905199  905209  905219  905229  905239  905249   imp:n=1  tmp=2.533494e-08  $ Inner core water E ring
+                   905199  905209  905219  905229  905239  905249   imp:n=1  tmp=2.526170e-08  $ Inner core water E ring
 c
 c
-13505  102  -0.997748   10     -112304  131305 -121301
+13505  102  -0.997936   10     -112304  131305 -121301
                    906019  906029  906039  906049  906059  906069
                    906079  906089  906099  906109  906119  906129
                    906139  906149  906159  906169  906179  906189
                    906199  906209  906219  906229  906239  906249
-                   906259  906269  906279  906289  906299  906309   imp:n=1 tmp=2.533494e-08   $ Inner core water E ring
+                   906259  906269  906279  906289  906299  906309   imp:n=1 tmp=2.526170e-08   $ Inner core water E ring
 c
 c
 c
 c
 c
-13601  102  -0.997748   112305 -11      111397 -131302
-                   902019  902029  902039  902049  902059  902069   imp:n=1 tmp=2.533494e-08   $ upper core water B ring
+13601  102  -0.997936   112305 -11      111397 -131302
+                   902019  902029  902039  902049  902059  902069   imp:n=1 tmp=2.526170e-08   $ upper core water B ring
 c
 c
-13602  102  -0.997748   112305 -11      131302 -131303
+13602  102  -0.997936   112305 -11      131302 -131303
                    903019  903029  903039  903049  903059  903069
-                   903079  903089  903099  903109  903119  903129   imp:n=1  tmp=2.533494e-08  $ upper core water C ring
+                   903079  903089  903099  903109  903119  903129   imp:n=1  tmp=2.526170e-08  $ upper core water C ring
 c
 c
-13603  102  -0.997748   112305 -11      131303 -131304
+13603  102  -0.997936   112305 -11      131303 -131304
                    904019  904029  904039  904049  904059  904069
                    904079  904089  904099  904109  904119  904129
-                   904139  904149  904159  904169  904179  904189   imp:n=1  tmp=2.533494e-08  $ upper core water D ring
+                   904139  904149  904159  904169  904179  904189   imp:n=1  tmp=2.526170e-08  $ upper core water D ring
 c
 c
-13604  102  -0.997748   112305 -11      131304 -131305  501307
+13604  102  -0.997936   112305 -11      131304 -131305  501307
                    905019  905029  905039  905049  905059  905069
                    905079  905089  905099  905109  905119  905129
                    905139  905149  905159  905169  905179  905189
-                   905199  905209  905219  905229  905239  905249   imp:n=1  tmp=2.533494e-08  $ upper core water E ring
+                   905199  905209  905219  905229  905239  905249   imp:n=1  tmp=2.526170e-08  $ upper core water E ring
 c
 c
-13605  102  -0.997748   112305 -11      131305 -121390
+13605  102  -0.997936   112305 -11      131305 -121390
                    906019  906029  906039  906049  906059  906069
                    906079  906089  501307  906109  906119  906129
                    906139  906149  906159  906169  906179  906189
                    906199  906209  906219  906229  906239  906249
-                   906259  906269  906279  906289  906299  906309   imp:n=1  tmp=2.533494e-08  $ upper core water E ring
+                   906259  906269  906279  906289  906299  906309   imp:n=1  tmp=2.526170e-08  $ upper core water E ring
 c
 c
 c
@@ -3952,19 +3952,19 @@ c
 c ------ Main outer core water cells ------- 
 c
 c
-13301  102   -0.997748   11     -192301  111397 -121390  
-                  903059  903099  905019  501307   imp:n=1 tmp=2.533494e-08   $ Water above upper grid plate
+13301  102   -0.997936   11     -192301  111397 -121390  
+                  903059  903099  905019  501307   imp:n=1 tmp=2.526170e-08   $ Water above upper grid plate
 c
-13302  102   -0.997748   122306 -112304  121301 -121390   imp:n=1  tmp=2.533494e-08 $ Water under upper grid plate
-13303  102   -0.997748   112304 -112305  111399 -121390   imp:n=1  tmp=2.533494e-08 $ Water above upper grid plate
+13302  102   -0.997936   122306 -112304  121301 -121390   imp:n=1  tmp=2.526170e-08 $ Water under upper grid plate
+13303  102   -0.997936   112304 -112305  111399 -121390   imp:n=1  tmp=2.526170e-08 $ Water above upper grid plate
 c
-13304  102   -0.997748   122310 -192301  121390 -121305   imp:n=1  tmp=2.533494e-08 $ Water above LS assy
-13305  102   -0.997748   122306 -192301  121305 -121308   imp:n=1  tmp=2.533494e-08 $ Water above outer section of reflector assy
-13306  102   -0.997748   192399 -192301  121308 -191301   imp:n=1  tmp=2.533494e-08 $ Water around reflector assy
+13304  102   -0.997936   122310 -192301  121390 -121305   imp:n=1  tmp=2.526170e-08 $ Water above LS assy
+13305  102   -0.997936   122306 -192301  121305 -121308   imp:n=1  tmp=2.526170e-08 $ Water above outer section of reflector assy
+13306  102   -0.997936   192399 -192301  121308 -191301   imp:n=1  tmp=2.526170e-08 $ Water around reflector assy
 c
-13307  102   -0.997748   192399 -112301  111397 -121308   imp:n=1  tmp=2.533494e-08 $ Water below lower grid plate
-13308  102   -0.997748   112301 -122301  121301 -121308   imp:n=1  tmp=2.533494e-08 $ Water below reflector assy
-13309  102   -0.997748   112301 -10      111398 -121301   imp:n=1  tmp=2.533494e-08 $ Water around lower grid plate
+13307  102   -0.997936   192399 -112301  111397 -121308   imp:n=1  tmp=2.526170e-08 $ Water below lower grid plate
+13308  102   -0.997936   112301 -122301  121301 -121308   imp:n=1  tmp=2.526170e-08 $ Water below reflector assy
+13309  102   -0.997936   112301 -10      111398 -121301   imp:n=1  tmp=2.526170e-08 $ Water around lower grid plate
 c
 c --End Core Water Cells--
 c
@@ -3973,14 +3973,14 @@ c ------ Central Thimble -------
 c ------------------------------
 c
 14000  103  -2.7   142302 -192301  141300 -111300   imp:n=1   $ Central thimble main tube
-14001  102  -0.997748   142302 -142303 -141300           imp:n=1  tmp=2.533494e-08 $ Central thimble inevacuable water
+14001  102  -0.997936   142302 -142303 -141300           imp:n=1  tmp=2.526170e-08 $ Central thimble inevacuable water
 c
-14002  102  -0.997748   142303 -192301 -141300  imp:n=1   tmp=2.533494e-08 $ Central thimble evacuable water      ------ change material to air to open beam ------
+14002  102  -0.997936   142303 -192301 -141300  imp:n=1   tmp=2.526170e-08 $ Central thimble evacuable water      ------ change material to air to open beam ------
 c
 14003  103  -2.7   142301 -142302 -111300           imp:n=1   $ Central thimble bottom cap
-14004  102   -0.997748    142301 -112304  111300 -111397   imp:n=1  tmp=2.533494e-08 $ Water around central thimble below upper grid plate
-14005  102   -0.997748    112305 -192301  111300 -111397   imp:n=1  tmp=2.533494e-08 $ Water around central thimble above upper grid plate
-14006  102   -0.997748    192399 -142301 -111397           imp:n=1  tmp=2.533494e-08 $ Water below central thimble
+14004  102   -0.997936    142301 -112304  111300 -111397   imp:n=1  tmp=2.526170e-08 $ Water around central thimble below upper grid plate
+14005  102   -0.997936    112305 -192301  111300 -111397   imp:n=1  tmp=2.526170e-08 $ Water around central thimble above upper grid plate
+14006  102   -0.997936    192399 -142301 -111397           imp:n=1  tmp=2.526170e-08 $ Water below central thimble
 c
 c
 c
@@ -3988,22 +3988,22 @@ c ------------------------------
 c --------- Flux wires ---------
 c ------------------------------
 c
-17001  102  -0.997748  -111301  112304 -112305  imp:n=1 tmp=2.533494e-08 $ Flux wire insertion hole A  upper grid area
-17002  102  -0.997748  -111302  112304 -112305  imp:n=1 tmp=2.533494e-08 $ Flux wire insertion hole B  upper grid area
-17003  102  -0.997748  -111303  112304 -112305  imp:n=1 tmp=2.533494e-08 $ Flux wire insertion hole C  upper grid area
-17004  102  -0.997748  -111304  112304 -112305  imp:n=1 tmp=2.533494e-08 $ Flux wire insertion hole D  upper grid area
-17005  102  -0.997748  -111305  112304 -112305  imp:n=1 tmp=2.533494e-08 $ Flux wire insertion hole E  upper grid area
-17006  102  -0.997748  -111306  112304 -112305  imp:n=1 tmp=2.533494e-08 $ Flux wire insertion hole F  upper grid area
-17007  102  -0.997748  -111307  112304 -112305  imp:n=1 tmp=2.533494e-08 $ Flux wire insertion hole G  upper grid area
-17008  102  -0.997748  -111308  112304 -112305  imp:n=1 tmp=2.533494e-08 $ Flux wire insertion hole H  upper grid area
-17009  102  -0.997748  -111309  112304 -112305  imp:n=1 tmp=2.533494e-08 $ Flux wire insertion hole J  upper grid area
-17010  102  -0.997748  -111310  112304 -112305  imp:n=1 tmp=2.533494e-08 $ Flux wire insertion hole K  upper grid area
-17011  102  -0.997748  -111311  112304 -112305  imp:n=1 tmp=2.533494e-08 $ Flux wire insertion hole L  upper grid area
-17012  102  -0.997748  -111312  112304 -112305  imp:n=1 tmp=2.533494e-08 $ Flux wire insertion hole A1 upper grid area
-17013  102  -0.997748  -111313  112304 -112305  imp:n=1 tmp=2.533494e-08 $ Flux wire insertion hole B1 upper grid area
-17014  102  -0.997748  -111314  112304 -112305  imp:n=1 tmp=2.533494e-08 $ Flux wire insertion hole C1 upper grid area
-17015  102  -0.997748  -111315  112304 -112305  imp:n=1 tmp=2.533494e-08 $ Flux wire insertion hole D1 upper grid area
-17016  102  -0.997748  -111316  112304 -112305  imp:n=1 tmp=2.533494e-08 $ Flux wire insertion hole E1 upper grid area
+17001  102  -0.997936  -111301  112304 -112305  imp:n=1 tmp=2.526170e-08 $ Flux wire insertion hole A  upper grid area
+17002  102  -0.997936  -111302  112304 -112305  imp:n=1 tmp=2.526170e-08 $ Flux wire insertion hole B  upper grid area
+17003  102  -0.997936  -111303  112304 -112305  imp:n=1 tmp=2.526170e-08 $ Flux wire insertion hole C  upper grid area
+17004  102  -0.997936  -111304  112304 -112305  imp:n=1 tmp=2.526170e-08 $ Flux wire insertion hole D  upper grid area
+17005  102  -0.997936  -111305  112304 -112305  imp:n=1 tmp=2.526170e-08 $ Flux wire insertion hole E  upper grid area
+17006  102  -0.997936  -111306  112304 -112305  imp:n=1 tmp=2.526170e-08 $ Flux wire insertion hole F  upper grid area
+17007  102  -0.997936  -111307  112304 -112305  imp:n=1 tmp=2.526170e-08 $ Flux wire insertion hole G  upper grid area
+17008  102  -0.997936  -111308  112304 -112305  imp:n=1 tmp=2.526170e-08 $ Flux wire insertion hole H  upper grid area
+17009  102  -0.997936  -111309  112304 -112305  imp:n=1 tmp=2.526170e-08 $ Flux wire insertion hole J  upper grid area
+17010  102  -0.997936  -111310  112304 -112305  imp:n=1 tmp=2.526170e-08 $ Flux wire insertion hole K  upper grid area
+17011  102  -0.997936  -111311  112304 -112305  imp:n=1 tmp=2.526170e-08 $ Flux wire insertion hole L  upper grid area
+17012  102  -0.997936  -111312  112304 -112305  imp:n=1 tmp=2.526170e-08 $ Flux wire insertion hole A1 upper grid area
+17013  102  -0.997936  -111313  112304 -112305  imp:n=1 tmp=2.526170e-08 $ Flux wire insertion hole B1 upper grid area
+17014  102  -0.997936  -111314  112304 -112305  imp:n=1 tmp=2.526170e-08 $ Flux wire insertion hole C1 upper grid area
+17015  102  -0.997936  -111315  112304 -112305  imp:n=1 tmp=2.526170e-08 $ Flux wire insertion hole D1 upper grid area
+17016  102  -0.997936  -111316  112304 -112305  imp:n=1 tmp=2.526170e-08 $ Flux wire insertion hole E1 upper grid area
 c
 c
 c
@@ -4035,15 +4035,15 @@ c
 c 
 c ----- Water components -----
 c
-60920  102  -0.997748   10     -502301  503301 -906099          imp:n=1  tmp=2.533494e-08 $ Water around lower bevel
-60921  102  -0.997748   502301 -502302  501306 -906099          imp:n=1  tmp=2.533494e-08 $ Water around lower section
-60922  102  -0.997748   502302 -502303  503302 -906099          imp:n=1  tmp=2.533494e-08 $ Water around lower section upper bevel
-60923  102  -0.997748   502303 -502304  503303 -906099          imp:n=1  tmp=2.533494e-08 $ Water around mid section lower bevel
-60924  102  -0.997748   502304 -502305  501306 -906099          imp:n=1  tmp=2.533494e-08 $ Water around mid section
-60925  102  -0.997748   502305 -502306  503304 -906099  501301  imp:n=1  tmp=2.533494e-08 $ Water around mid section upper bevel
-60926  102  -0.997748   502306 -502307  501301 -906099          imp:n=1  tmp=2.533494e-08 $ Water around post
-60927  102  -0.997748   502307 -502310  501306 -906099          imp:n=1  tmp=2.533494e-08 $ Water around rabbit tube
-60928  102  -0.997748   112305 -502310  906099 -501307          imp:n=1  tmp=2.533494e-08 $ Water above upper grid plate around thin tube    ----- so many problems ----- 
+60920  102  -0.997936   10     -502301  503301 -906099          imp:n=1  tmp=2.526170e-08 $ Water around lower bevel
+60921  102  -0.997936   502301 -502302  501306 -906099          imp:n=1  tmp=2.526170e-08 $ Water around lower section
+60922  102  -0.997936   502302 -502303  503302 -906099          imp:n=1  tmp=2.526170e-08 $ Water around lower section upper bevel
+60923  102  -0.997936   502303 -502304  503303 -906099          imp:n=1  tmp=2.526170e-08 $ Water around mid section lower bevel
+60924  102  -0.997936   502304 -502305  501306 -906099          imp:n=1  tmp=2.526170e-08 $ Water around mid section
+60925  102  -0.997936   502305 -502306  503304 -906099  501301  imp:n=1  tmp=2.526170e-08 $ Water around mid section upper bevel
+60926  102  -0.997936   502306 -502307  501301 -906099          imp:n=1  tmp=2.526170e-08 $ Water around post
+60927  102  -0.997936   502307 -502310  501306 -906099          imp:n=1  tmp=2.526170e-08 $ Water around rabbit tube
+60928  102  -0.997936   112305 -502310  906099 -501307          imp:n=1  tmp=2.526170e-08 $ Water above upper grid plate around thin tube    ----- so many problems ----- 
 c
 c
 c ----- Air elements ---- 
@@ -4167,13 +4167,13 @@ c
 62316   103  -2.7        -172315  172314 -173305           imp:n=1 u=60   $ upper half of corset on knob
 62317   103  -2.7        -172316  172315 -171305           imp:n=1 u=60   $ upper cylindrical part of knob
 62318   103  -2.7        -172317  172316 -173306           imp:n=1 u=60   $ upper cone on knob
-62319   102  -0.997748        -172314  172313 -171305  173304   imp:n=1 u=60  tmp=2.533494e-08 $ water in nook of bottom half of corset on knob 
-62320   102  -0.997748        -172315  172314 -171305  173305   imp:n=1 u=60  tmp=2.533494e-08 $ water in nook of top half of corset on knob
-62321   102  -0.997748        -172317  172316 -171305  173306   imp:n=1 u=60  tmp=2.533494e-08 $ water around cone on end of knob
-62322   102  -0.997748         172302 -112305  171301 -171306   imp:n=1 u=60  tmp=2.533494e-08 $ water around source
-62323   102  -0.997748         10 -172302 -171306               imp:n=1 u=60  tmp=2.533494e-08 $ water below source
-62324   102  -0.997748         172312 -11  171305 -171306       imp:n=1 u=60  tmp=2.533494e-08 $ Water around top
-62325   102  -0.997748         172317 -11 -171305               imp:n=1 u=60  tmp=2.533494e-08 $ Water above top
+62319   102  -0.997936        -172314  172313 -171305  173304   imp:n=1 u=60  tmp=2.526170e-08 $ water in nook of bottom half of corset on knob 
+62320   102  -0.997936        -172315  172314 -171305  173305   imp:n=1 u=60  tmp=2.526170e-08 $ water in nook of top half of corset on knob
+62321   102  -0.997936        -172317  172316 -171305  173306   imp:n=1 u=60  tmp=2.526170e-08 $ water around cone on end of knob
+62322   102  -0.997936         172302 -112305  171301 -171306   imp:n=1 u=60  tmp=2.526170e-08 $ water around source
+62323   102  -0.997936         10 -172302 -171306               imp:n=1 u=60  tmp=2.526170e-08 $ water below source
+62324   102  -0.997936         172312 -11  171305 -171306       imp:n=1 u=60  tmp=2.526170e-08 $ Water around top
+62325   102  -0.997936         172317 -11 -171305               imp:n=1 u=60  tmp=2.526170e-08 $ Water above top
 c
 c
 c
@@ -4197,13 +4197,13 @@ c
 62516   103  -2.7        -172315  172314 -173314          imp:n=1 u=70  $ upper half of corset on knob
 62517   103  -2.7        -172316  172315 -171314          imp:n=1 u=70  $ upper cylindrical part of knob
 62518   103  -2.7        -172317  172316 -173315          imp:n=1 u=70  $ upper cone on knob
-62519   102  -0.997748        -172314  172313 -171314  173313  imp:n=1 u=70 tmp=2.533494e-08 $ water in nook of bottom half of corset on knob 
-62520   102  -0.997748        -172315  172314 -171314  173314  imp:n=1 u=70 tmp=2.533494e-08 $ water in nook of top half of corset on knob
-62521   102  -0.997748        -172317  172316 -171314  173315  imp:n=1 u=70 tmp=2.533494e-08 $ water around cone on end of knob
-62522   102  -0.997748         172302 -112305  171310 -171315  imp:n=1 u=70 tmp=2.533494e-08 $ water around source
-62523   102  -0.997748         10 -172302 -171315              imp:n=1 u=70 tmp=2.533494e-08 $ water below source
-62524   102  -0.997748         172312 -11  171314 -171315      imp:n=1 u=70 tmp=2.533494e-08 $ Water around top
-62525   102  -0.997748         172317 -11 -171314              imp:n=1 u=70 tmp=2.533494e-08 $ Water above top
+62519   102  -0.997936        -172314  172313 -171314  173313  imp:n=1 u=70 tmp=2.526170e-08 $ water in nook of bottom half of corset on knob 
+62520   102  -0.997936        -172315  172314 -171314  173314  imp:n=1 u=70 tmp=2.526170e-08 $ water in nook of top half of corset on knob
+62521   102  -0.997936        -172317  172316 -171314  173315  imp:n=1 u=70 tmp=2.526170e-08 $ water around cone on end of knob
+62522   102  -0.997936         172302 -112305  171310 -171315  imp:n=1 u=70 tmp=2.526170e-08 $ water around source
+62523   102  -0.997936         10 -172302 -171315              imp:n=1 u=70 tmp=2.526170e-08 $ water below source
+62524   102  -0.997936         172312 -11  171314 -171315      imp:n=1 u=70 tmp=2.526170e-08 $ Water around top
+62525   102  -0.997936         172317 -11 -171314              imp:n=1 u=70 tmp=2.526170e-08 $ Water above top
 c
 c
 c
@@ -4228,29 +4228,29 @@ c
 c --- safe rod ---
 c
 30501   103  -2.7      -192301  812301 -811301                  imp:n=1  $ control rod connecting rod
-30502   102  -0.997748      -192301  812301 -811304  811301          imp:n=1 tmp=2.533494e-08 $ water ring above control rod
-30503   102  -0.997748       812302 -812301 -811304  811302  813301  imp:n=1 tmp=2.533494e-08 $ water above upper bevel
+30502   102  -0.997936      -192301  812301 -811304  811301          imp:n=1 tmp=2.526170e-08 $ water ring above control rod
+30503   102  -0.997936       812302 -812301 -811304  811302  813301  imp:n=1 tmp=2.526170e-08 $ water above upper bevel
 30504   103  -2.7       812302 -812301 -811304  811302 -813301  imp:n=1  $ control rod upper bevel
 30505   103  -2.7      -812301  812302 -811302                  imp:n=1  $ top control rod inactive region
 30506   103  -2.7      -812302  812303 -811304                  imp:n=1  $ upper control rod inactive region
 c
-30507   107  -1.806693   -811303 -812303  812304                imp:n=1  $ control rod poison section
+30507   107  -1.72066   -811303 -812303  812304                imp:n=1  $ control rod poison section
 30508   103  -2.7       812305 -812303  811303 -811304          imp:n=1  $ control rod cladding
 c
 30509   103  -2.7      -812304  812305 -811303                  imp:n=1  $ lower control rod inactive section
 30510   103  -2.7      -812305  812306 -811302                  imp:n=1  $ bottom control rod inactive section
 30511   103  -2.7       811302 -811304 -812305  812306 -813302  imp:n=1  $ Outer lower bevel  
 30512   103  -2.7      -811302 -812306  812307 -813303          imp:n=1  $ inner lower bevel  
-30513   102  -0.997748       811302 -811304 -812305  812306  813302  imp:n=1 tmp=2.533494e-08 $ water around outer lower bevel   
-30514   102  -0.997748      -811302 -812306  812307  813303          imp:n=1 tmp=2.533494e-08 $ water around inner lower bevel  
-30515   102  -0.997748       811302 -811304  812307 -812306          imp:n=1 tmp=2.533494e-08 $ water under control rod bevels
+30513   102  -0.997936       811302 -811304 -812305  812306  813302  imp:n=1 tmp=2.526170e-08 $ water around outer lower bevel   
+30514   102  -0.997936      -811302 -812306  812307  813303          imp:n=1 tmp=2.526170e-08 $ water around inner lower bevel  
+30515   102  -0.997936       811302 -811304  812307 -812306          imp:n=1 tmp=2.526170e-08 $ water under control rod bevels
 c
-30516   102  -0.997748      -812307  902301 -811304                  imp:n=1 tmp=2.533494e-08 $ water under control rod
+30516   102  -0.997936      -812307  902301 -811304                  imp:n=1 tmp=2.526170e-08 $ water under control rod
 c
-30517   102  -0.997748       811304 -903057  902303 -192301          imp:n=1 tmp=2.533494e-08 $ water between safe rod and gride tube
+30517   102  -0.997936       811304 -903057  902303 -192301          imp:n=1 tmp=2.526170e-08 $ water between safe rod and gride tube
 30518   103  -2.7       903057 -903058  902303 -902399          imp:n=1  $ control rod guide tube main section
-30519   102  -0.997748       903057 -903058  902399 -192301          imp:n=1 tmp=2.533494e-08 $ water above guide tube
-30520   102  -0.997748       903058 -903059  10     -192301          imp:n=1 tmp=2.533494e-08 $ water around guide tube
+30519   102  -0.997936       903057 -903058  902399 -192301          imp:n=1 tmp=2.526170e-08 $ water above guide tube
+30520   102  -0.997936       903058 -903059  10     -192301          imp:n=1 tmp=2.526170e-08 $ water around guide tube
 30521   103  -2.7       811304 -903058  902301 -902303          imp:n=1  $ guide tube thick section
 30522   103  -2.7      -903058  10     -902301                  imp:n=1  $ guide tube grid plate adapter
 c
@@ -4260,29 +4260,29 @@ c
 c --- shim rod ---
 c
 30901   103  -2.7      -192301  822301 -821301                  imp:n=1  $ control rod connecting rod
-30902   102  -0.997748      -192301  822301 -821304  821301          imp:n=1 tmp=2.533494e-08 $ water ring above control rod
-30903   102  -0.997748       822302 -822301 -821304  821302  823301  imp:n=1 tmp=2.533494e-08 $ water above upper bevel
+30902   102  -0.997936      -192301  822301 -821304  821301          imp:n=1 tmp=2.526170e-08 $ water ring above control rod
+30903   102  -0.997936       822302 -822301 -821304  821302  823301  imp:n=1 tmp=2.526170e-08 $ water above upper bevel
 30904   103  -2.7       822302 -822301 -821304  821302 -823301  imp:n=1  $ control rod upper bevel
 30905   103  -2.7      -822301  822302 -821302                  imp:n=1  $ top control rod inactive region
 30906   103  -2.7      -822302  822303 -821304                  imp:n=1  $ upper control rod inactive region
 c
-30907   107  -1.806693   -821303 -822303  822304                imp:n=1  $ control rod poison section
+30907   107  -1.72066   -821303 -822303  822304                imp:n=1  $ control rod poison section
 30908   103  -2.7       822305 -822303  821303 -821304          imp:n=1  $ control rod cladding
 c
 30909   103  -2.7      -822304  822305 -821303                  imp:n=1  $ lower control rod inactive section
 30910   103  -2.7      -822305  822306 -821302                  imp:n=1  $ bottom control rod inactive section
 30911   103  -2.7       821302 -821304 -822305  822306 -823302  imp:n=1  $ Outer lower bevel  
 30912   103  -2.7      -821302 -822306  822307 -823303          imp:n=1  $ inner lower bevel  
-30913   102  -0.997748       821302 -821304 -822305  822306  823302  imp:n=1 tmp=2.533494e-08 $ water around outer lower bevel   
-30914   102  -0.997748      -821302 -822306  822307  823303          imp:n=1 tmp=2.533494e-08 $ water around inner lower bevel  
-30915   102  -0.997748       821302 -821304  822307 -822306          imp:n=1 tmp=2.533494e-08 $ water under control rod bevels
+30913   102  -0.997936       821302 -821304 -822305  822306  823302  imp:n=1 tmp=2.526170e-08 $ water around outer lower bevel   
+30914   102  -0.997936      -821302 -822306  822307  823303          imp:n=1 tmp=2.526170e-08 $ water around inner lower bevel  
+30915   102  -0.997936       821302 -821304  822307 -822306          imp:n=1 tmp=2.526170e-08 $ water under control rod bevels
 c
-30916   102  -0.997748      -822307  902301 -821304                  imp:n=1 tmp=2.533494e-08 $ water under control rod
+30916   102  -0.997936      -822307  902301 -821304                  imp:n=1 tmp=2.526170e-08 $ water under control rod
 c
-30917   102  -0.997748       821304 -903097  902303 -192301          imp:n=1 tmp=2.533494e-08 $ water between safe rod and gride tube
+30917   102  -0.997936       821304 -903097  902303 -192301          imp:n=1 tmp=2.526170e-08 $ water between safe rod and gride tube
 30918   103  -2.7       903097 -903098  902303 -902399          imp:n=1  $ control rod guide tube main section
-30919   102  -0.997748       903097 -903098  902399 -192301          imp:n=1 tmp=2.533494e-08 $ water above guide tube
-30920   102  -0.997748       903098 -903099  10     -192301          imp:n=1 tmp=2.533494e-08 $ water around guide tube
+30919   102  -0.997936       903097 -903098  902399 -192301          imp:n=1 tmp=2.526170e-08 $ water above guide tube
+30920   102  -0.997936       903098 -903099  10     -192301          imp:n=1 tmp=2.526170e-08 $ water around guide tube
 30921   103  -2.7       821304 -903098  902301 -902303          imp:n=1  $ guide tube thick section
 30922   103  -2.7      -903098  10     -902301                  imp:n=1  $ guide tube grid plate adapter
 c
@@ -4291,29 +4291,29 @@ c
 c --- reg rod ---
 c
 50101   103  -2.7      -192301  832301 -831301                  imp:n=1  $ control rod connecting rod
-50102   102  -0.997748      -192301  832301 -831304  831301          imp:n=1 tmp=2.533494e-08 $ water ring above control rod
-50103   102  -0.997748       832302 -832301 -831304  831302  833301  imp:n=1 tmp=2.533494e-08 $ water above upper bevel
+50102   102  -0.997936      -192301  832301 -831304  831301          imp:n=1 tmp=2.526170e-08 $ water ring above control rod
+50103   102  -0.997936       832302 -832301 -831304  831302  833301  imp:n=1 tmp=2.526170e-08 $ water above upper bevel
 50104   103  -2.7       832302 -832301 -831304  831302 -833301  imp:n=1  $ control rod upper bevel
 50105   103  -2.7      -832301  832302 -831302                  imp:n=1  $ top control rod inactive region
 50106   103  -2.7      -832302  832303 -831304                  imp:n=1  $ upper control rod inactive region
 c
-50107   107  -1.806693   -831303 -832303  832304                imp:n=1  $ control rod poison section
+50107   107  -1.72066   -831303 -832303  832304                imp:n=1  $ control rod poison section
 50108   103  -2.7       832305 -832303  831303 -831304          imp:n=1  $ control rod cladding
 c
 50109   103  -2.7      -832304  832305 -831303                  imp:n=1  $ lower control rod inactive section
 50110   103  -2.7      -832305  832306 -831302                  imp:n=1  $ bottom control rod inactive section
 50111   103  -2.7       831302 -831304 -832305  832306 -833302  imp:n=1  $ Outer lower bevel  
 50112   103  -2.7      -831302 -832306  832307 -833303          imp:n=1  $ inner lower bevel  
-50113   102  -0.997748       831302 -831304 -832305  832306  833302  imp:n=1 tmp=2.533494e-08 $ water around outer lower bevel   
-50114   102  -0.997748      -831302 -832306  832307  833303          imp:n=1 tmp=2.533494e-08 $ water around inner lower bevel  
-50115   102  -0.997748       831302 -831304  832307 -832306          imp:n=1 tmp=2.533494e-08 $ water under control rod bevels
+50113   102  -0.997936       831302 -831304 -832305  832306  833302  imp:n=1 tmp=2.526170e-08 $ water around outer lower bevel   
+50114   102  -0.997936      -831302 -832306  832307  833303          imp:n=1 tmp=2.526170e-08 $ water around inner lower bevel  
+50115   102  -0.997936       831302 -831304  832307 -832306          imp:n=1 tmp=2.526170e-08 $ water under control rod bevels
 c
-50116   102  -0.997748      -832307  902301 -831304                  imp:n=1 tmp=2.533494e-08 $ water under control rod
+50116   102  -0.997936      -832307  902301 -831304                  imp:n=1 tmp=2.526170e-08 $ water under control rod
 c
-50117   102  -0.997748       831304 -905017  902303 -192301          imp:n=1 tmp=2.533494e-08 $ water between safe rod and gride tube
+50117   102  -0.997936       831304 -905017  902303 -192301          imp:n=1 tmp=2.526170e-08 $ water between safe rod and gride tube
 50118   103  -2.7       905017 -905018  902303 -902399          imp:n=1  $ control rod guide tube main section
-50119   102  -0.997748       905017 -905018  902399 -192301          imp:n=1 tmp=2.533494e-08 $ water above guide tube
-50120   102  -0.997748       905018 -905019  10     -192301          imp:n=1 tmp=2.533494e-08 $ water around guide tube
+50119   102  -0.997936       905017 -905018  902399 -192301          imp:n=1 tmp=2.526170e-08 $ water above guide tube
+50120   102  -0.997936       905018 -905019  10     -192301          imp:n=1 tmp=2.526170e-08 $ water around guide tube
 50121   103  -2.7       831304 -905018  902301 -902303          imp:n=1  $ guide tube thick section
 50122   103  -2.7      -905018  10     -902301                  imp:n=1  $ guide tube grid plate adapter    FIXME (probably not actually broken, just the last cell)
 c
@@ -5206,7 +5206,7 @@ c c/z surfaces
 c
 811301   c/z   6.91134   -3.99034   0.508   $ Upper connecting rod cylinder
 811302   c/z   6.91134   -3.99034   1.2573   $ Lower conic section cylinder
-811303   c/z   6.91134   -3.99034   1.5300   $ Poison section cylinder
+811303   c/z   6.91134   -3.99034   1.3000   $ Poison section cylinder
 811304   c/z   6.91134   -3.99034   1.5875   $ Outer diameter
 c
 c
@@ -5240,7 +5240,7 @@ c c/z surfaces
 c
 821301   c/z   -6.91134   -3.99034   0.508   $ Upper connecting rod cylinder
 821302   c/z   -6.91134   -3.99034   1.2573   $ Lower conic section cylinder
-821303   c/z   -6.91134   -3.99034   1.5300   $ Poison section cylinder
+821303   c/z   -6.91134   -3.99034   1.3000   $ Poison section cylinder
 821304   c/z   -6.91134   -3.99034   1.5875   $ Outer diameter
 c
 c
@@ -5274,7 +5274,7 @@ c c/z surfaces
 c
 831301   c/z   0   15.9156   0.508   $ Upper connecting rod cylinder
 831302   c/z   0   15.9156   1.2573   $ Lower conic section cylinder
-831303   c/z   0   15.9156   1.5300   $ Poison section cylinder
+831303   c/z   0   15.9156   1.3000   $ Poison section cylinder
 831304   c/z   0   15.9156   1.5875   $ Outer diameter
 c
 c
@@ -5575,7 +5575,7 @@ c   Assumed to be (1/3) Oxygen and (2/3) Hydrogen
 c
 c
 c m102   1001.80c 0.6667  
-m102   1001.80c  2.000000 
+m102   1001.86c 0.037159    1001.80c 1.962841 
        8016.80c 1.0000
 c
 mt102  

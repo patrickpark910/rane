@@ -29,22 +29,21 @@ class Kinetics(MCNP_File):
     def find_kinetic_parameters(self):
 
         print(f'\n extracting data from: {self.output_filename}')
-        self.extract_keff() # gets self.keff, self.keff_unc or raises warnings if not found
 
         results_filepath = f"{self.results_folder}/{self.base_filename}_results.csv"
+        self.index_data = BANK_HEIGHTS_KNTC
 
         print(f'  Processing: {self.output_filepath}')
         if os.path.exists(results_filepath):
             print(' * loading existing results file')
             df_kntc = pd.read_csv(results_filepath, encoding='utf8')
-            df_kntc.set_index('Cycle state', inplace=True)
-            core_numbers = list(df_kntc.index.values)
+            df_kntc.set_index('Bank Height (%)', inplace=True)
         else:
-            core_numbers = [self.core_number]
             print(' * creating new results file')
-            df_kntc = pd.DataFrame(core_numbers, columns=['Cycle state'])
-            df_kntc.set_index('Core', inplace=True)
-            cols = ['Lifetime (us)','Lifetime unc (us)']+\
+            df_kntc = pd.DataFrame(self.index_data, columns=['Bank Height (%)']) # first arg must be list
+            df_kntc.set_index('Bank Height (%)', inplace=True)
+            cols = ['keff','keff unc']+\
+                   ['Lifetime (us)','Lifetime unc (us)']+\
                    ['Beff','Beff unc']+\
                    [f'B_{i}' for i in range(1,7)]+\
                    [f'L_{i}' for i in range(1,7)]+\
@@ -77,27 +76,32 @@ class Kinetics(MCNP_File):
         with open(self.output_filepath) as f:
             print(f' * seaching {self.output_filepath} for kinetics parameters')
             get_precursors = False
+
+            self.extract_keff() # gets self.keff, self.keff_unc or raises warnings if not found
+            df_kntc.loc[self.rod_heights_dict['bank'],'keff'] = self.keff
+            df_kntc.loc[self.rod_heights_dict['bank'],'keff unc'] = self.keff_unc
+
             for line in f:
                 if len(line.split()) >= 1:
                     if line.split()[0] == 'gen.':
-                        df_kntc.loc[self.core_number,'Lifetime (us)'] = float(line.split()[2])
-                        df_kntc.loc[self.core_number,'Lifetime unc (us)'] = float(line.split()[3])
+                        df_kntc.loc[self.rod_heights_dict['bank'],'Lifetime (us)'] = float(line.split()[2])
+                        df_kntc.loc[self.rod_heights_dict['bank'],'Lifetime unc (us)'] = float(line.split()[3])
                     elif line.split()[0] == 'beta-eff':
-                        df_kntc.loc[self.core_number,'Beff'] = float(line.split()[1])
-                        df_kntc.loc[self.core_number,'Beff unc'] = float(line.split()[2])
+                        df_kntc.loc[self.rod_heights_dict['bank'],'Beff'] = float(line.split()[1])
+                        df_kntc.loc[self.rod_heights_dict['bank'],'Beff unc'] = float(line.split()[2])
                         get_precursors, lines_skipped = True, 0
                     elif get_precursors:
                         lines_skipped += 1 
                         if lines_skipped >= 6:
                             group = line.split()[0]
                             beta, beta_unc, E, E_unc, Lambda, Lambda_unc, HL = [float(value) for value in line.split()[1:]]
-                            df_kntc.loc[self.core_number,f'B_{group}'] = beta
-                            df_kntc.loc[self.core_number,f'B_{group} unc'] = beta_unc
-                            df_kntc.loc[self.core_number,f'L_{group}'] = Lambda
-                            df_kntc.loc[self.core_number,f'L_{group} unc'] = Lambda_unc
-                            df_kntc.loc[self.core_number,f'E_{group}'] = E
-                            df_kntc.loc[self.core_number,f'E_{group} unc'] = E_unc
-                            df_kntc.loc[self.core_number,'half life (s)'] = HL
+                            df_kntc.loc[self.rod_heights_dict['bank'],f'B_{group}'] = beta
+                            df_kntc.loc[self.rod_heights_dict['bank'],f'B_{group} unc'] = beta_unc
+                            df_kntc.loc[self.rod_heights_dict['bank'],f'L_{group}'] = Lambda
+                            df_kntc.loc[self.rod_heights_dict['bank'],f'L_{group} unc'] = Lambda_unc
+                            df_kntc.loc[self.rod_heights_dict['bank'],f'E_{group}'] = E
+                            df_kntc.loc[self.rod_heights_dict['bank'],f'E_{group} unc'] = E_unc
+                            df_kntc.loc[self.rod_heights_dict['bank'],'half life (s)'] = HL
                             if group == '6':
                                 df_kntc.to_csv(results_filepath, encoding='ascii')
                                 print(f'   Updated: {results_filepath}')

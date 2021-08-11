@@ -1,0 +1,48 @@
+c
+f114:n   30507
+fc114:n flux in safe rod poison - cell 30507
+fm114 1.9276E16 $ 250 kW
+e114:n 1E-6 1 20
+c
+c
+f124:n   30907
+fc124:n flux in shim rod poison - cell 30907
+fm124 1.9276E16 $ 250 kW
+e124:n 1E-6 1 20
+c
+c
+f134:n   50107
+fc134:n flux in reg rod poison - cell 50107
+fm134 1.9276E16 $ 250 kW
+e134:n 1E-6 1 20
+c
+c
+f204:n   42069
+fc204:n flux in rabbit inner vial - cell 42069
+fm204 1.9276E16 $ 250 kW
+e204:n 1E-6 1 20
+c
+c
+f214:n   12101
+fc214:n flux in lazy susan position 1 (east) air inside sample tube - cell 12101
+fm214 1.9276E16 $ 250 kW
+e214:n 1E-6 1 20
+c
+c
+f224:n   12111
+fc224:n flux in lazy susan position 11 (south) air inside sample tube - cell 12111
+fm224 1.9276E16 $ 250 kW
+e224:n 1E-6 1 20
+c
+c
+f234:n   12121
+fc234:n flux in lazy susan position 21 (west) air inside sample tube - cell 12121
+fm234 1.9276E16 $ 250 kW
+e234:n 1E-6 1 20
+c
+c
+f244:n   12131
+fc244:n flux in lazy susan position 31 (north) air inside sample tube - cell 12131
+fm244 1.9276E16 $ 250 kW
+e244:n 1E-6 1 20
+c

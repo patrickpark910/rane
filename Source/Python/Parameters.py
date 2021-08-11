@@ -10,17 +10,22 @@ OUTPUTS_FOLDER_NAME = "outputs"
 F4_TALLY_ID_POWER_DENSITY = "684"
 W_PER_CM3_TO_KW_PER_FUEL_ELEMENT = (3.14*381*(18.2245**2)/(1000**2)) # -2.8575**2
 
-INV_M_CSV_NAME = "inv_M.csv"
-KEFF_CSV_NAME = "keff.csv"
-RHO_CSV_NAME = "rho.csv"
-PARAMS_XLSX_NAME = "params.xlsx"
 
 """ Fuel & Core """
 
-FUEL_REMOVED_SOP = "C10,D15,D14,F20,D16,E19,C11,F21"
-ROD_MOTOR_SPEEDS_INCH_PER_MIN = {"safe":19,"shim":11,"reg":24,"bank":0}
+FUEL_REMOVED_SOP = ['C10','D15','D14','F20','D16','E19','C11','F21']
+ROD_MOTOR_SPEEDS_INCH_PER_MIN = {"safe":19,"shim":11,"reg":24}
+BANK_HEIGHTS = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100] # should be >= granular than ROD_CAL_HEIGHTS
 ROD_CAL_HEIGHTS = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 ROD_CAL_BANK_HEIGHT = 100
+FIVE_W_BANK_HEIGHT = 73
+
+BANK_HEIGHTS_KNTC = [0,10,20,30,40,50,55,57,59,60,70,72,74,76,80,90,100]
+BANK_HEIGHTS_FLUX = [0,73,100]
+
+F4_TALLIES_DICT = {'16':'neutron E','24':'beta E','26':'gamma E',
+                                      '36':'neutron W','44':'beta W','46':'gamma W',
+                                      '56':'neutron blade','54':'beta blade','66':'gamma blade'}
 
 
 CORE_POS = ['A1', 'B1', 'B2', 'B3', 'B4', 'B5', 'B6',
@@ -35,7 +40,7 @@ CORE_POS = ['A1', 'B1', 'B2', 'B3', 'B4', 'B5', 'B6',
 
 CONTROL_ROD_POS = ['E1','C5','C9']
 
-""" not used in v2 of RANE -- core configs moved to {core_number}.core files in ./Source/Core/
+""" not used in v>=2 of RANE -- core configs moved to {core_number}.core files in ./Source/Core/
 
 CELL_NUM_TO_CORE_RING_DICT = {2:"B",3:"C",4:"D",5:"E",6:"F"}
 

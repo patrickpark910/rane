@@ -130,7 +130,7 @@ c
 c    2021-02-13
 c    - Rewrote fuel mats with 2020 burnup data
 c    - Consolidated invidual fuel meat section mat cards into one mat card for each FE
-c    - Removed vol(ume)=77.096 argument from each fuel meat cell
+c    - Removed vol=77..096 argument from each fuel meat cell
 c
 c    2021-02-16
 c    - Added fuel mat start/end markers
@@ -140,16 +140,16 @@ c    - Changed AmBe and Ir-192 cells from hard-coded cells to fill universes (fi
 c
 c    2021-06-19
 c    - Changed from 1 to 5 KSRC points per core position at mid-plane of each fuel meat axial zone
-c    - Changed from averaged (5.66 g/cc) to unique (avg = 5.78 g/cc) fuel meat densities for every FE based 
+c    - Changed from averaged (5..66 g/cc) to unique (avg = 5..78 g/cc) fuel meat densities for every FE based 
 c      on Core Burnup spreadsheet
 c    - Control rod B4C densities changed from 1..72066 to 1..806693 (reverting the 5% depletion modeled by OSU in 2010)
 c      as that depletion approximation was based on OSU experiments of the OSTR core, not the RRR core
 c
+c    2021-08-08
+c    - Added Sm-149 to fuel mat cards based on poison formula (1 Sm-149 atom per 6880 U-235 atoms)
 c
-c
-c
-c
-c
+c    2021-08-09
+c    - Re-added 5% depletion and radius reduction
 c
 c
 c
@@ -4234,7 +4234,7 @@ c
 30505   103  -2.7      -812301  812302 -811302                  imp:n=1  $ top control rod inactive region
 30506   103  -2.7      -812302  812303 -811304                  imp:n=1  $ upper control rod inactive region
 c
-30507   107  -1.806693   -811303 -812303  812304                imp:n=1  $ control rod poison section
+30507   107  -1.72066   -811303 -812303  812304                imp:n=1  $ control rod poison section
 30508   103  -2.7       812305 -812303  811303 -811304          imp:n=1  $ control rod cladding
 c
 30509   103  -2.7      -812304  812305 -811303                  imp:n=1  $ lower control rod inactive section
@@ -4266,7 +4266,7 @@ c
 30905   103  -2.7      -822301  822302 -821302                  imp:n=1  $ top control rod inactive region
 30906   103  -2.7      -822302  822303 -821304                  imp:n=1  $ upper control rod inactive region
 c
-30907   107  -1.806693   -821303 -822303  822304                imp:n=1  $ control rod poison section
+30907   107  -1.72066   -821303 -822303  822304                imp:n=1  $ control rod poison section
 30908   103  -2.7       822305 -822303  821303 -821304          imp:n=1  $ control rod cladding
 c
 30909   103  -2.7      -822304  822305 -821303                  imp:n=1  $ lower control rod inactive section
@@ -4297,7 +4297,7 @@ c
 50105   103  -2.7      -832301  832302 -831302                  imp:n=1  $ top control rod inactive region
 50106   103  -2.7      -832302  832303 -831304                  imp:n=1  $ upper control rod inactive region
 c
-50107   107  -1.806693   -831303 -832303  832304                imp:n=1  $ control rod poison section
+50107   107  -1.72066   -831303 -832303  832304                imp:n=1  $ control rod poison section
 50108   103  -2.7       832305 -832303  831303 -831304          imp:n=1  $ control rod cladding
 c
 50109   103  -2.7      -832304  832305 -831303                  imp:n=1  $ lower control rod inactive section
@@ -5206,7 +5206,7 @@ c c/z surfaces
 c
 811301   c/z   6.91134   -3.99034   0.508   $ Upper connecting rod cylinder
 811302   c/z   6.91134   -3.99034   1.2573   $ Lower conic section cylinder
-811303   c/z   6.91134   -3.99034   1.5300   $ Poison section cylinder
+811303   c/z   6.91134   -3.99034   1.3000   $ Poison section cylinder
 811304   c/z   6.91134   -3.99034   1.5875   $ Outer diameter
 c
 c
@@ -5240,7 +5240,7 @@ c c/z surfaces
 c
 821301   c/z   -6.91134   -3.99034   0.508   $ Upper connecting rod cylinder
 821302   c/z   -6.91134   -3.99034   1.2573   $ Lower conic section cylinder
-821303   c/z   -6.91134   -3.99034   1.5300   $ Poison section cylinder
+821303   c/z   -6.91134   -3.99034   1.3000   $ Poison section cylinder
 821304   c/z   -6.91134   -3.99034   1.5875   $ Outer diameter
 c
 c
@@ -5274,7 +5274,7 @@ c c/z surfaces
 c
 831301   c/z   0   15.9156   0.508   $ Upper connecting rod cylinder
 831302   c/z   0   15.9156   1.2573   $ Lower conic section cylinder
-831303   c/z   0   15.9156   1.5300   $ Poison section cylinder
+831303   c/z   0   15.9156   1.3000   $ Poison section cylinder
 831304   c/z   0   15.9156   1.5875   $ Outer diameter
 c
 c
@@ -5961,31 +5961,7 @@ c
 c
 c
 c
-mode {{mode}}                                                $ neutrons! 
+mode {{mode}} 
 c
-kcode {{n_per_cycle}} 1 5 {{kcode_cycles}} $ kcode card, NIST default is 20000 neutrons, discard 5, run 105 total active cycles
-kopts kinetics=yes precursor=yes
+kcode {{n_per_cycle}} 1 {{discard_cycles}} {{kcode_cycles}} $ kcode card, NIST default is 20000 neutrons, discard 5, run 105 total active cycles
 c
-c esplt:n  2 0.1 2 0.001 2 0.0001 2 0.000001 0.75 5e-7    $ split energy
-c
-c
-c Arguments for f684
-c fm684:n -3164.0625 7202 (-6 -8)
-c -3164: multiplier to convert n/cm^2/fission_neutron --> Watts/cm^3
-c  7202: sample material in cell
-c    -6: identifier for mascroscopic fission cross-section (barns*fissions/neutrons/atom)
-c    -8: identifier for fission energy (MeV/fission)
-c
-c fmesh4:n  GEOM= xyz    ORIGIN= -75 -75 -25
-c           IMESH= 150     IINTS= 150
-c           JMESH= 150     JINTS= 150
-c           KMESH= 175     KINTS= 175
-c
-c TO COLOR THE MCPLOT, PRESS "PLOT>" AT THE BOTTOM OF THE IMAGE AND TYPE THE FOLLOWING LINES:
-c color by mat
-c shade 101=PaleTurquoise 102=DodgerBlue 103=AntiqueWhite 104=AntiqueWhite 105=DarkSeaGreen 106=SlateGray 107=OrangeRed
-c
-c IN PLOT LINE: TO SHOW XY
-c px 0 py 0 pz 0 
-c IN PLOT LINE: TO SHOW YZ
-c py 0 pz 0 px 0
