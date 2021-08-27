@@ -24,6 +24,7 @@ class MCNP_File:
     def __init__(self, run_type,
                        tasks,
                        print_input=True,       # default: only defines self variables and does not print input template
+                       index_data=None,
                        template_filepath=None, # default: uses ./Source/reed.template
                        core_number=49,         # default: reads fuel load positions from ./Source/Core/49.core 
                        MCNP_folder=None,
@@ -31,12 +32,13 @@ class MCNP_File:
                        source_folder=f"./Source",
                        delete_extensions=['.s'],  # default: '.s'
                        fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
-                       rod_heights={'safe': None, 'shim': None, 'reg':None}, # used in: all run types
+                       rod_heights={'ecp':None}, # used in: all run types
                        rod_config_id=None,     # used in: sdm
                        ct_mat=102,             # used in: rcty, 102 is mat code for light water in reed.template
                        ct_mat_density=None,    #  
-                       h2o_temp_K=293.15,      # used in: rcty, 293.15 K = 20 C = room temp = default temp in mcnp
+                       h2o_temp_K=293.15,      # used in: rcty, 293 K = 20 C = room temp = default temp in mcnp
                        h2o_density=None,       # used in: rcty, set None to calculate h2o_density from h2o_temp_K
+                       h2o_void_percent=0,     # 
                        uzrh_temp_K=294,        # used in: rcty
                        add_samarium=True,
                        ):     
@@ -44,6 +46,7 @@ class MCNP_File:
         """
         Define core parameters
         """
+        self.index_data = index_data
         self.print_input = print_input
         self.datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.template_filepath = template_filepath
@@ -55,17 +58,19 @@ class MCNP_File:
         self.fuel_filepath = fuel_filepath
         self.source_folder = source_folder
 
+
+
         # rod heights
         self.rod_config_id = rod_config_id
         self.rod_heights_dict = rod_heights
         for rod in ['safe','shim','reg']:
-            if rod not in self.rod_heights_dict.keys():
+            if rod not in self.rod_heights_dict.keys() or self.rod_heights_dict[rod] is None: # order matters in 'or' clause
                 try:
                     self.rod_heights_dict[rod] = self.rod_heights_dict['bank']
-
                 except:
                     print("\n   fatal. (MCNP_File.py) failed to set rod heights")
-                    print("   fatal.   check input rod heights in NeutronicsEngine.py, or make sure bank height is defined")
+                    print("   fatal.   check input rod heights in NeutronicsEngine.py")
+                    print("   fatal.   or make sure bank height is defined")
                     print("   fatal.   current self.rod_heights_dict = " + str(self.rod_heights_dict))
                     print("   fatal.   if a rod height is not defined, it is programmed to be set to bank height")
                     print("   fatal.   ex. (input in NeutronicsEngine.py) 'shim':100,'bank':50 --> (MCNP_File.py) 'safe':50,'shim':100,'reg':50,'bank':50") 
@@ -75,9 +80,12 @@ class MCNP_File:
 
         # light water moderator properties - all mat and mt libs defined in functions below
         self.h2o_temp_K = h2o_temp_K
-        self.h2o_density = h2o_density
+        self.h2o_void_percent = h2o_void_percent
+        
         if not h2o_density:
-          self.h2o_density = find_h2o_temp_K_density(h2o_temp_K) # if h2o_density == None, calculate density from temp 
+            self.h2o_density = (1-0.01*self.h2o_void_percent)*find_h2o_temp_K_density(h2o_temp_K) # if h2o_density == None, calculate density from temp 
+        else:
+            self.h2o_density = (1-0.01*self.h2o_void_percent)*h2o_density
 
         # fuel properties
         self.uzrh_temp_K = uzrh_temp_K
@@ -165,13 +173,13 @@ class MCNP_File:
                            'h2o_density':    f'-{self.h2o_density}', # - for mass density, + for atom density
                            'h_mats':         self.h2o_mat_interpolated_str,
                            'o_mat_lib':      self.o_mat_lib,
-                           'h2o_mt_lib':     "", # self.h2o_mt_lib,
+                           'h2o_mt_lib':     self.h2o_mt_lib,
                            'h2o_temp_MeV':   '{:.6e}'.format(self.h2o_temp_K * MEV_PER_KELVIN),
                            'uzrh_temp_MeV':  '{:.6e}'.format(self.uzrh_temp_K * MEV_PER_KELVIN),
                            'zr_temp_MeV':    '{:.6e}'.format(self.uzrh_temp_K * MEV_PER_KELVIN),
                            'ct_temp_MeV':    '{:.6e}'.format(self.ct_temp_K * MEV_PER_KELVIN),
                            'fuel_mats'  :  self.fuel_mat_cards,
-                           'n_per_cycle':    40000,
+                           'n_per_cycle':    100000,
                            'discard_cycles': 15,
                            'kcode_cycles':   115,
                            }
@@ -192,11 +200,11 @@ class MCNP_File:
                                   f"_r{str(self.parameters['reg_height']).zfill(3)}.i"
         elif self.run_type.startswith('rcty'):
             if 'modr' in self.run_type:
-                var = str(round(self.h2o_temp_K-273.15)).zfill(2) + "C" # ex: 01C, 10C, 20C, etc.
+                var = str(round(self.h2o_temp_K-273)).zfill(2) + "C" # ex: 01C, 10C, 20C, etc.
             elif 'fuel' in self.run_type:
                 var = str(round(self.uzrh_temp_K)).zfill(4) + "K" # ex: 0001K, 0100K, 2720K, etc.
             elif 'void' in self.run_type:
-                var = str(round(self.h2o_density*10)).zfill(2) + "gcc" # ex: 01gcc, 10gcc, 99gcc, etc.
+                var = str(round(self.h2o_void_percent)).zfill(2) + "at" # ex: 00at,10at,99at, etc.
             self.input_filename = f"{self.base_filename}_{self.run_type}"\
                         f"_{var}"\
                         f"_a{str(self.parameters['safe_height']).zfill(3)}"\
@@ -270,13 +278,13 @@ class MCNP_File:
         """
         find mat libraries for fuel isotopes 
         """
-        mat_list = [[None, U235_TEMPS_K_MAT_DICT, 'U-235'], 
-                    [None, U238_TEMPS_K_MAT_DICT, 'U-238'],
-                    [None, PU239_TEMPS_K_MAT_DICT, 'Pu-239'],
-                    [None, SM149_TEMPS_K_MAT_DICT, 'Sm-149'],
-                    [None, ZR_TEMPS_K_MAT_DICT, 'zirconium'],
-                    [None, H_TEMPS_K_MAT_DICT, 'hydrogen'], # used in fuel mats, NOT when interpolating h mats
-                    [None, O_TEMPS_K_MAT_DICT, 'oxygen'],]  # used in light water mat, EVEN WHEN interpolating h mats
+        mat_list = [[None, U235_TEMPS_K_XS_DICT, 'U-235'], 
+                    [None, U238_TEMPS_K_XS_DICT, 'U-238'],
+                    [None, PU239_TEMPS_K_XS_DICT, 'Pu-239'],
+                    [None, SM149_TEMPS_K_XS_DICT, 'Sm-149'],
+                    [None, ZR_TEMPS_K_XS_DICT, 'zirconium'],
+                    [None, H_TEMPS_K_XS_DICT, 'hydrogen'], # used in fuel mats, NOT when interpolating h mats
+                    [None, O_TEMPS_K_XS_DICT, 'oxygen'],]  # used in light water mat, EVEN WHEN interpolating h mats
         
         for i in range(0,len(mat_list)):
           try:
@@ -284,7 +292,7 @@ class MCNP_File:
           except:
             closest_temp_K = find_closest_value(self.uzrh_temp_K,list(mat_list[i][1].keys()))
             mat_list[i][0] = mat_list[i][1][closest_temp_K]
-            print(f"\n   comment. {mat_list[i][2]} cross-section (xs) data at {self.uzrh_temp_K} does not exist")
+            print(f"\n   comment. {mat_list[i][2]} cross-section (xs) data at {self.uzrh_temp_K} K does not exist")
             print(f"   comment.   using closest available xs data at temperature: {closest_temp_K} K")
 
         self.u235_mat_lib, self.u238_mat_lib, = mat_list[0][0], mat_list[1][0], 
@@ -297,10 +305,10 @@ class MCNP_File:
         """
         self.h2o_mat_interpolated_str = h2o_temp_K_interpolate_mat(self.h2o_temp_K) # Utilities.py
         try:
-            self.o_mat_lib = O_TEMPS_K_MAT_DICT[self.h2o_temp_K]
+            self.o_mat_lib = O_TEMPS_K_XS_DICT[self.h2o_temp_K]
         except:
-            closest_temp_K = find_closest_value(self.h2o_temp_K,list(O_TEMPS_K_MAT_DICT.keys()))
-            self.o_mat_lib = O_TEMPS_K_MAT_DICT[closest_temp_K]
+            closest_temp_K = find_closest_value(self.h2o_temp_K,list(O_TEMPS_K_XS_DICT.keys()))
+            self.o_mat_lib = O_TEMPS_K_XS_DICT[closest_temp_K]
             print(f"\n   comment. oxygen cross-section (xs) data at {self.h2o_temp_K} K does not exist")
             print(f"   comment.   using closest available xs data at temperature: {closest_temp_K} K")
 
@@ -311,15 +319,15 @@ class MCNP_File:
         # zr mt lib not available
 
         try:
-          self.h2o_mt_lib = H2O_TEMPS_K_MT_DICT[self.h2o_temp_K]
+          self.h2o_mt_lib = H2O_TEMPS_K_SAB_DICT[self.h2o_temp_K]
         except:
-          closest_temp_K = find_closest_value(self.h2o_temp_K,list(H2O_TEMPS_K_MT_DICT.keys()))
-          self.h2o_mt_lib = H2O_TEMPS_K_MT_DICT[closest_temp_K]
+          closest_temp_K = find_closest_value(self.h2o_temp_K,list(H2O_TEMPS_K_SAB_DICT.keys()))
+          self.h2o_mt_lib = H2O_TEMPS_K_SAB_DICT[closest_temp_K]
           print(f"\n   comment. light water scattering S(a,B) data at {self.h2o_temp_K} K does not exist")
           print(f"   comment.   using closest available S(a,B) data at temperature: {closest_temp_K} K")
 
-        mt_list = [[None, ZR_H_TEMPS_K_MT_DICT, 'zr_h'],
-                   [None, H_ZR_TEMPS_K_MT_DICT, 'h_zr']]
+        mt_list = [[None, ZR_H_TEMPS_K_SAB_DICT, 'zr_h'],
+                   [None, H_ZR_TEMPS_K_SAB_DICT, 'h_zr']]
 
         for i in range(0,len(mt_list)):
           try:

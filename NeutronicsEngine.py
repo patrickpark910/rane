@@ -152,7 +152,7 @@ def ReedAutomatedNeutronicsEngine(argv):
     for run_type in run_types:
         print(f"\n Currently calculating: {RUN_DESCRIPTIONS_DICT[run_type]}")
 
-        if run_type not in ['bank']:
+        if run_type not in ['bank','rodcal']:
             try:
                 ecp_filepath = f"./Results/bank/reed_core{core_number}_bank_params.csv"
                 df = pd.read_csv(ecp_filepath, encoding='utf8')
@@ -169,6 +169,7 @@ def ReedAutomatedNeutronicsEngine(argv):
 
         if run_type == 'bank':
             """ BANKED RODS - calibrate all rods as single bank
+                       also - calculate Beff, B_1-6, L, lambda
             """
             for bank_height in BANK_HEIGHTS:
                 current_run = RodCalibration(run_type,
@@ -183,6 +184,18 @@ def ReedAutomatedNeutronicsEngine(argv):
                 current_run.process_rod_worth()
             current_run.process_rod_params()
             current_run.plot_rod_worth()
+
+            for bank_height in BANK_HEIGHTS:
+                current_run = Kinetics(run_type,
+                                             tasks,
+                                             core_number=core_number,
+                                             index_data=BANK_HEIGHTS,
+                                             rod_heights={'bank': bank_height},
+                                             rod_config_id='bank',
+                                             )
+                current_run.find_kinetic_parameters()
+            current_run.plot_kinetic_parameters() # -- keep outside for loop
+
 
         elif run_type == 'crit':
             """ CRITICAL LOADING EXPERIMENT
@@ -205,23 +218,9 @@ def ReedAutomatedNeutronicsEngine(argv):
 
             CriticalLoading(rane_cwd, base_file_path=base_file_name, check_mcnp=check_mcnp, tasks=tasks, fuel_to_remove=fuel_to_remove)
 
+
         elif run_type == 'heat':
             """ HEAT LOAD - calculate Beff, B_1-6, L, lambda
-                uses kopts card in mcnp6, needs to be as close to keff=1 as possible for best results (MCNP6.2 manual 3-168)
-            """ 
-            for bank_height in BANK_HEIGHTS_KNTC:
-                current_run = Kinetics(run_type,
-                                       tasks,
-                                       core_number=core_number,
-                                       print_input=check_mcnp,
-                                       rod_heights={'bank':bank_height},)
-                if check_mcnp:
-                    current_run.run_mcnp() 
-                    current_run.move_mcnp_files(output_types_to_move=['.o']) # keep as separate step from run_mcnp()
-                current_run.find_kinetic_parameters()
-
-        elif run_type == 'kntc':
-            """ KINETICS PARAMETERS - calculate Beff, B_1-6, L, lambda
                 uses kopts card in mcnp6, needs to be as close to keff=1 as possible for best results (MCNP6.2 manual 3-168)
             """ 
             for bank_height in BANK_HEIGHTS_KNTC:
@@ -243,11 +242,11 @@ def ReedAutomatedNeutronicsEngine(argv):
                 current_run = Flux(run_type,
                                    tasks,
                                    core_number=core_number,
-                                   rod_heights={'bank':bank_height},)
+                                   rod_heights={'bank':bank_height,'ecp':ECP},)
                 if check_mcnp:
                     current_run.run_mcnp() 
                     current_run.move_mcnp_files(output_types_to_move=['.o','.r','.msht']) # keep as separate step from run_mcnp()
-                # current_run.process_flux_tallies()
+                current_run.process_flux_tallies()
 
         elif run_type == 'plot':
             # plot the geometry and save plot figures
@@ -275,8 +274,8 @@ def ReedAutomatedNeutronicsEngine(argv):
                                         tasks,
                                         template_filepath=None,
                                         core_number=core_number,
-                                        rod_heights={'bank':ECP},
-                                        h2o_temp_K=float('{:.2f}'.format(float(h2o_temp_C)+273.15)),
+                                        rod_heights={'bank':100},#ECP},
+                                        h2o_temp_K=float(h2o_temp_C+273),
                                         )
                 if check_mcnp:
                     current_run.run_mcnp() 
@@ -284,6 +283,7 @@ def ReedAutomatedNeutronicsEngine(argv):
                 current_run.process_rcty_keff()
             current_run.process_rcty_rho() # keep outside 'for' loop-- needs all keffs before calculating rho
             current_run.process_rcty_coef()
+            current_run.plot_rcty_coef()
             
         elif run_type == 'rcty_fuel':
             """ FUEL TEMPERATURE COEFFICIENT
@@ -293,7 +293,7 @@ def ReedAutomatedNeutronicsEngine(argv):
                                          tasks,
                                          template_filepath=None,
                                          core_number=core_number,
-                                         rod_heights={'bank':ECP},
+                                         rod_heights={'bank':100},#ECP},
                                          uzrh_temp_K=u235_temp_K,
                                          )
                 if check_mcnp:
@@ -302,18 +302,19 @@ def ReedAutomatedNeutronicsEngine(argv):
                 current_run.process_rcty_keff()
             current_run.process_rcty_rho() # keep outside 'for' loop-- needs all keffs before calculating rho
             current_run.process_rcty_coef()
+            current_run.plot_rcty_coef()
 
         elif run_type == 'rcty_void':
             """ VOID COEFFICIENT (MODERATOR)
             """
-            for h2o_density in H2O_VOID_DENSITIES:
+            for h2o_void_percent in H2O_VOID_PERCENTS:
                 current_run = Reactivity(run_type,
                                         tasks,
                                         print_input=True,
                                         template_filepath=None,
                                         core_number=core_number,
-                                        rod_heights={'bank':ECP},
-                                        h2o_density=float('{:.2f}'.format(float(h2o_density))),
+                                        rod_heights={'bank':100},#ECP},
+                                        h2o_void_percent=h2o_void_percent,
                                         )
                 if check_mcnp:
                     current_run.run_mcnp() 
@@ -321,6 +322,7 @@ def ReedAutomatedNeutronicsEngine(argv):
                 current_run.process_rcty_keff()
             current_run.process_rcty_rho() # keep outside 'for' loop-- needs all keffs before calculating rho
             current_run.process_rcty_coef()
+            current_run.plot_rcty_coef()
 
         elif run_type == 'void':
             if check_mcnp:
@@ -341,7 +343,9 @@ def ReedAutomatedNeutronicsEngine(argv):
             # calibrate individual rods
             for rod in RODS:   
                 for rod_height in ROD_CAL_HEIGHTS:
-                    rod_heights_dict = {'safe': ROD_CAL_BANK_HEIGHT, 'shim': ROD_CAL_BANK_HEIGHT, 'reg': ROD_CAL_BANK_HEIGHT}
+                    rod_heights_dict = {'bank':100}
+                    if rod == 'reg':
+                        rod_heights_dict = {'bank':80}#80}
                     rod_heights_dict[rod] = rod_height
                     
                     current_run = RodCalibration(run_type,
@@ -350,10 +354,11 @@ def ReedAutomatedNeutronicsEngine(argv):
                                                  core_number=core_number,
                                                  rod_heights=rod_heights_dict,
                                                  rod_config_id=rod,
+                                                 add_samarium=True,
                                                  )
                     if check_mcnp:
                         current_run.run_mcnp() 
-                        current_run.move_mcnp_files()
+                        current_run.move_mcnp_files(output_types_to_move=['.o'])
                     current_run.extract_keff()
                     current_run.process_rod_worth()
             current_run.process_rod_params()

@@ -17,7 +17,7 @@ LINE_STYLES =  {'safe': '-', 'shim':'--', 'reg':':', 'bank':'-',
                 'rcty_fuel':'-', 'rcty_void':'-', 'rcty_modr':'-'}
 # linestyle = ['-': solid, '--': dashed, '-.' dashdot, ':': dot]
 MARKER_STYLES = {'safe': 'o', 'shim':'^', 'reg':'s', 'bank':'o',
-                     'rcty_fuel':'o', 'vrcty_voidid':'o', 'rcty_modr':'o'}
+                     'rcty_fuel':'o', 'rcty_void':'o', 'rcty_modr':'o'}
 MARKER_SIZE = 8 # default marker sizes: 6
 plt.rc('font', size=MEDIUM_SIZE)          # controls default text sizes
 plt.rc('axes', titlesize=LARGE_SIZE)     # fontsize of the axes title

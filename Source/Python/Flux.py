@@ -25,107 +25,150 @@ from plotStyles import *
 
 class Flux(MCNP_File):
 
-
     def process_flux_tallies(self):
 
-        lines_to_skip = 0
+        """ ex: F4 tally output
+        1tally       46        nps =     1998748
+        +                                   gamma-ray heating(watts/gram), .149 g/cc 6% LH2                            
+                   tally type 6    track length estimate of heating.                                   
+                   particle(s): photons  
+         number of histories used for normalizing tallies =      1900000.00        
+
+                   this tally is all multiplied by  2.44000E+05
+                   cell  f is (807 808 809 810 812)                                                                                                                                                                     
+
+                   masses  
+                           cell:      807          f     
+                                 5.68096E+02  3.53413E+03
+         
+         cell  807                                                                                                                             
+              energy   
+            2.0000E+01   2.17972E-01 0.0151
+         
+        cell (807 808 809 810 812)                                                                                                            
+             energy   
+           2.0000E+01   2.19261E-01 0.0076
+        """
+
+        """ ex: F6 tally output snippet
+        1tally       46        nps =     1998748
+        +                                   gamma-ray heating(watts/gram), .149 g/cc 6% LH2                            
+                   tally type 6    track length estimate of heating.                                   
+                   particle(s): photons  
+         number of histories used for normalizing tallies =      1900000.00        
+
+                   this tally is all multiplied by  2.44000E+05
+                   cell  f is (807 808 809 810 812)                                                                                                                                                                     
+
+                   masses  
+                           cell:      807          f     
+                                 5.68096E+02  3.53413E+03
+         
+         cell  807                                                                                                                             
+              energy   
+            2.0000E+01   2.17972E-01 0.0151
+         
+        cell (807 808 809 810 812)                                                                                                            
+             energy   
+           2.0000E+01   2.19261E-01 0.0076
+        """
+        if self.run_type == 'flux':
+            self.index_header, self.index_data = "tally number", FLUX_TALLIES_DICT.keys()
+            self.tallies_dict = FLUX_TALLIES_DICT
+            self.tally_filepath = f"{self.results_folder}/{self.base_filename}_tally"\
+                                  f"_a{str(self.parameters['safe_height']).zfill(3)}"\
+                                  f"_h{str(self.parameters['shim_height']).zfill(3)}"\
+                                  f"_r{str(self.parameters['reg_height']).zfill(3)}.csv"
+        elif self.run_type == 'heat':
+            self.tallies_dict = HEAT_TALLIES_DICT
+            self.tally_filepath = f"{self.results_folder}/{self.base_filename}_tally.csv"
+            # self.tallies_dict = 
+
+        """
+        Setup or read keff dataframe
+        """
+        df_tally = pd.DataFrame(self.index_data, columns=[self.index_header])
+        df_tally.set_index(self.index_header, inplace=True)
+
+        """
+        Parse tally cards (holy fuck troubleshooting this was ass)
+        """
+        lines_to_skip = 0 # 6000 or length of original input
         tally = False
         current_tally = []
         tally_number = ''
-        debug = False
 
         heat_loads = {}
-        with open(self.output_file) as f:
-            read_volumes = False
-            read_masses = False
+        with open(self.output_filepath) as f:
+            read_volume = False
+            read_mass = False
             read_tally = False
             found_tally = False
             cells = []
             masses = []
             volumes = []
-            cell_dict = {}
-            heat_load_dict = {'neutron E':{},'gamma E':{},'beta E':{},
-                              'neutron W':{},'gamma W':{},'beta W':{},
-                              'neutron blade':{}, 'beta blade':{}, 'gamma blade':{},}
-            mass_dict = {}
-            vol_dict = {}
+            cells_dict = {}
+            masses_dict = {}
+            volumes_dict = {}
+            tally_results_dict = {}
+
             for line in f:
+                entries = line.split()
                 if lines_to_skip > 0:
                     lines_to_skip -= 1
-                    continue
-                elif line.startswith('1tally       '):
-                    found_tally = True
-                    try:
-                        tally_type = {'16':'neutron E','24':'beta E','26':'gamma E',
-                                      '36':'neutron W','44':'beta W','46':'gamma W',
-                                      '56':'neutron blade','54':'beta blade','66':'gamma blade'}[line.split()[1]]
-                    except:
-                        print(f"\n   warning. (HeatLoadsOutputFile.py) tally {line.split()[1]} not recognized")
-                        print(f"   warning. Skipping... \n")
-                elif found_tally and line.startswith('           masses'):
-                    read_masses = True
-                elif found_tally and line.startswith('           volumes'):
-                    read_volumes = True
-                elif found_tally and line.startswith('           cell'):
-                    cell_dict[line.split()[1]] = line[21:].strip()
-                elif read_masses:
-                    if len(line) < 5:
-                        read_masses = False
+
+                elif line.lstrip().startswith('1tally'): # do not use 'entries[0]' since line may be empty
+                    """ okay, let's read the first line:
+                    1tally      214        nps =     4613649
+                    we want to record that we parsed the start of this tally, its tally number (214), and the tally description from the dictionary
+                    """
+                    tally_recognized = False
+                    for k in self.tallies_dict.keys():
+                        if k in entries[1]:
+                            found_tally = True
+                            tally_recognized = True
+                            bin_number = 1 # resets bin number from parsing tally result energy bins
+                            tally_number, tally_desc = k, self.tallies_dict[k]
+                            df_tally.loc[tally_number, 'tally desc'] = tally_desc
+                            print(f"\n   comment. (Flux.py) found tally {line.split()[1]} ({tally_desc})")
+                    if not tally_recognized and 'fluctuation' not in line: 
+                        print(f"\n   warning. (Flux.py) tally number '{line.split()[1]}' not recognized in user-defined flux tally dictionary")
+                        print(f"   warning. skipping... \n") 
+
+                if found_tally:
+                    if line.lstrip().startswith('masses'): # used in F6 tally
+                        read_mass = True
+                    elif line.lstrip().startswith('volumes'): # used in F4 tally
+                        read_volume = True
+
+                    elif read_volume and 'cell:' not in entries:
+                        df_tally.loc[tally_number, 'volume'] = entries[0]
+                        read_volume = False
+                        if len(entries) > 1:
+                            print(f"\n   warning. (Flux.py) seems like more than one volume is listed for tally number {tally_number} ")
+                            print(f" warning. but rane can only parse one per tally")
+
+                    elif not read_volume and not read_mass and line.lstrip().startswith('energy'):
                         read_tally = True
-                        for cell, mass in zip(cells, masses):
-                            if cell in cell_dict.keys():
-                                mass_dict[cell_dict[cell]] = float(mass)
-                            else:
-                                mass_dict[cell] = float(mass)
-                        cells, masses = [], []
-                    elif line.startswith('                   cell'):
-                        cells += line.split()[1:]
-                    else:
-                        masses += line.split()  
-                elif read_volumes:
-                    if len(line) < 5:
-                        read_volumes = False
-                        read_tally = True
-                        for cell, volume in zip(cells, volumes):
-                            if cell in cell_dict.keys():
-                                vol_dict[cell_dict[cell]] = float(volume)
-                            else:
-                                vol_dict[cell] = float(volume)
-                        cells, volumes = [], []
-                    elif line.startswith('                   cell'):
-                        cells += line.split()[1:]
-                    else:
-                        volumes += line.split()  
-                elif read_tally:
-                    items = len(line.split())
-                    if len(line) < 5:
-                        continue
-                    elif line.startswith(' *****') or line.startswith(' ======'):
-                        read_tally = False
-                    elif line.startswith(' cell'):
-                        tally_cell = line[6:].strip()
-                        # print(f'strip tally {line}')
-                    elif items == 3:
-                        # print(tally_type)
-                        if tally_type.startswith('neutron') or tally_type.startswith('gamma'):
-                            # print(f'read tally {line}')
-                            heat_load_dict[tally_type][tally_cell] = float(line.split()[1])*mass_dict[tally_cell]/self.keff
-                        elif tally_type.startswith('beta'):
-                            heat_load_dict[tally_type][tally_cell] = float(line.split()[1])*vol_dict[tally_cell]/self.keff
 
-            all_cells = []
-            for heat_load, values in heat_load_dict.items():
-                for cell in values.keys():
-                    if cell not in all_cells:
-                        all_cells += [cell]
+                    elif read_tally:
+                        if tally_number.endswith('4'):
+                            df_tally.loc[tally_number, f'energy {bin_number} (MeV)'] = entries[0]
+                            df_tally.loc[tally_number, f'f4 bin {bin_number} (flux)'] = entries[1]
+                            df_tally.loc[tally_number, f'f4 unc {bin_number} (flux)'] = entries[2]
+                            bin_number += 1
+                        else:
+                            print(f"\n   warning. (Flux.py) f{tally_number[-1]} for tally number {tally_number} is not yet supported in rane")
+                        if entries[0] == 'total':
+                            read_tally = False
+        ###### exit for loop
 
-            df = pd.DataFrame(all_cells, columns=['cell(s)'])
-            df.set_index('cell(s)', inplace=True)
+        print(tally_results_dict)
 
-            # print(heat_load_dict)
-            for heat_load, values in heat_load_dict.items():
-                for cell, value in values.items():
-                    print(heat_load, value)
-                    df.loc[cell,heat_load] = value
+        for t in tally_results_dict.keys():
+            df_tally.loc[t, 'tally desc']   = tally_results_dict[t]['tally desc']
+            df_tally.loc[t, 'volume']       = tally_results_dict[t]['volume']
 
-            df.to_csv(self.results_folder+f'heat_loads_{self.cycle_state}.csv')
+
+
+        df_tally.to_csv(self.tally_filepath)

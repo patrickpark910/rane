@@ -1,48 +1,221 @@
 c
+c tally cards auto-generated from './Source/Tallies/flux.tal'
+c do not rename tally numbers without also changing tally dictionary in Parameters.py
+c
+c i know you can combine some of these tallies by putting multiple groups of cells on one card
+c but holy jesus christ it makes python parsing so much harder (and 3x longer)
+c so please do not do that - i gave up on it
+c
+c use energy bins 'e4:n  0.625E-6  1E-3  20' to use thermal/intermediate/fast groups that MCNP output uses
+c
+c use 'fm4 7.7104E10 $ 1 W'    to compute flux at 1 W
+c use 'fm4 3.8552E11 $ 5 W'    to compute flux at 5 W
+c use 'fm4 1.9276E16 $ 250 kW' to compute flux at 250 kW
+c
+c mcnp cannot calculate power based on rod heights alone (since power is based on a balance of rod heights vs. pntc)
+c so the flux results here are not final values
+c to get final values, multiply mcnp flux tally by the real watts (W, not kW!) that the rod heights correspond to
+c as calculated in the logbook banked rod tables
+c
+c if energy bins are not specified in a tally card, it will default to e0 card
+c
+c 
+c
+c ------ 5 W tallies ------
+c
 f114:n   30507
-fc114:n flux in safe rod poison - cell 30507
-fm114 1.9276E16 $ 250 kW
-e114:n 1E-6 1 20
+fc114:n flux 1W in safe rod poison at 5 W - cell 30507
+fm114 3.8552E11 $ 5 W
+e114:n  0.625E-6  1E-3  20
 c
 c
 f124:n   30907
-fc124:n flux in shim rod poison - cell 30907
-fm124 1.9276E16 $ 250 kW
-e124:n 1E-6 1 20
+fc124:n flux in shim rod poison at 5 W - cell 30907
+fm124 3.8552E11 $ 5 W
+e124:n  0.625E-6  1E-3  20
 c
 c
 f134:n   50107
-fc134:n flux in reg rod poison - cell 50107
-fm134 1.9276E16 $ 250 kW
-e134:n 1E-6 1 20
+fc134:n flux in reg rod poison at 5 W - cell 50107
+fm134 3.8552E11 $ 5 W
+e134:n  0.625E-6  1E-3  20
 c
 c
 f204:n   42069
-fc204:n flux in rabbit inner vial - cell 42069
-fm204 1.9276E16 $ 250 kW
-e204:n 1E-6 1 20
+fc204:n flux in rabbit inner vial at 5 W - cell 42069
+fm204 3.8552E11 $ 5 W
+e204:n  0.625E-6  1E-3  20
 c
 c
 f214:n   12101
-fc214:n flux in lazy susan position 1 (east) air inside sample tube - cell 12101
-fm214 1.9276E16 $ 250 kW
-e214:n 1E-6 1 20
+fc214:n flux in lazy susan position 1 (east) air inside sample tube at 5 W - cell 12101
+fm214 3.8552E11 $ 5 W
+e214:n  0.625E-6  1E-3  20
 c
 c
 f224:n   12111
-fc224:n flux in lazy susan position 11 (south) air inside sample tube - cell 12111
-fm224 1.9276E16 $ 250 kW
-e224:n 1E-6 1 20
+fc224:n flux in lazy susan position 11 (south) air inside sample tube at 5 W - cell 12111
+fm224 3.8552E11 $ 5 W
+e224:n  0.625E-6  1E-3  20
 c
 c
 f234:n   12121
-fc234:n flux in lazy susan position 21 (west) air inside sample tube - cell 12121
-fm234 1.9276E16 $ 250 kW
-e234:n 1E-6 1 20
+fc234:n flux in lazy susan position 21 (west) air inside sample tube at 5 W - cell 12121
+fm234 3.8552E11 $ 5 W
+e234:n  0.625E-6  1E-3  20
 c
 c
 f244:n   12131
-fc244:n flux in lazy susan position 31 (north) air inside sample tube - cell 12131
-fm244 1.9276E16 $ 250 kW
-e244:n 1E-6 1 20
+fc244:n flux in lazy susan position 31 (north) air inside sample tube at 5 W - cell 12131
+fm244 3.8552E11 $ 5 W
+e244:n  0.625E-6  1E-3  20
+c
+c ------ 250 kW tallies ------
+c
+f1114:n   30507
+fc1114:n flux in safe rod poison at 250 kW - cell 30507
+fm1114 1.9276E16 $ 250 kW
+e1114:n  0.625E-6  1E-3  20
+c
+c
+f1124:n   30907
+fc1124:n flux in shim rod poison at 250 kW - cell 30907
+fm1124 1.9276E16 $ 250 kW
+e1124:n  0.625E-6  1E-3  20
+c
+c
+f1134:n   50107
+fc1134:n flux in reg rod poison at 250 kW - cell 50107
+fm1134 1.9276E16 $ 250 kW
+e1134:n  0.625E-6  1E-3  20
+c
+c
+f1204:n   42069
+fc1204:n flux in rabbit inner vial at 250 kW - cell 42069
+fm1204 1.9276E16 $ 250 kW
+e1204:n  0.625E-6  1E-3  20
+c
+c
+f1214:n   12101
+fc1214:n flux in lazy susan position 1 (east) air inside sample tube at 250 kW - cell 12101
+fm1214 1.9276E16 $ 250 kW
+e1214:n  0.625E-6  1E-3  20
+c
+c
+f1224:n   12111
+fc1224:n flux in lazy susan position 11 (south) air inside sample tube at 250 kW - cell 12111
+fm1224 1.9276E16 $ 250 kW
+e1224:n  0.625E-6  1E-3  20
+c
+c
+f1234:n   12121
+fc1234:n flux in lazy susan position 21 (west) air inside sample tube at 250 kW - cell 12121
+fm1234 1.9276E16 $ 250 kW
+e1234:n  0.625E-6  1E-3  20
+c
+c
+f1244:n   12131
+fc1244:n flux in lazy susan position 31 (north) air inside sample tube at 250 kW - cell 12131
+fm1244 1.9276E16 $ 250 kW
+e1244:n  0.625E-6  1E-3  20
+c
+c
+c
+c if e0 card is unspecified, tally occurs over all energies
+c ------ change default energy bins to e0 card ------
+e0:n 1e-8 2e-8 3e-8 4e-8 5e-8 6e-8 7e-8 8e-8 9e-8
+     1e-7 2e-7 3e-7 4e-7 5e-7 6e-7 7e-7 8e-7 9e-7
+     1e-6 2e-6 3e-6 4e-6 5e-6 6e-6 7e-6 8e-6 9e-6
+     1e-5 2e-5 3e-5 4e-5 5e-5 6e-5 7e-5 8e-5 9e-5
+     1e-4 2e-4 3e-4 4e-4 5e-4 6e-4 7e-4 8e-4 9e-4
+     1e-3 2e-3 3e-3 4e-3 5e-3 6e-3 7e-3 8e-3 9e-3
+     1e-2 2e-2 3e-2 4e-2 5e-2 6e-2 7e-2 8e-2 9e-2
+     1e-1 2e-1 3e-1 4e-1 5e-1 6e-1 7e-1 8e-1 9e-1
+     1e+0 2e+0 3e+0 4e+0 5e+0 6e+0 7e+0 8e+0 9e+0
+     1e+1 2e+1 3e+1 4e+1 5e+1 6e+1 7e+1 8e+1 9e+1
+     1e+2 2e+2 3e+2 4e+2 5e+2 6e+2 7e+2 8e+2 9e+2
+     1e+3 2e+3 3e+3 4e+3 5e+3 6e+3 7e+3 8e+3 9e+3
+c
+c ------ 5 W spectrum tallies ------
+c
+f2114:n   30507
+fc2114:n flux spectrum in safe rod poison at 5 W - cell 30507
+fm2114 3.8552E11 $ 5 W
+c
+c
+f2124:n   30907
+fc2124:n flux spectrum in shim rod poison at 5 W - cell 30907
+fm2124 3.8552E11 $ 5 W
+c
+c
+f2134:n   50107
+fc2134:n flux spectrum in reg rod poison at 5 W - cell 50107
+fm2134 3.8552E11 $ 5 W
+c
+c
+f2204:n   42069
+fc2204:n flux spectrum in rabbit inner vial at 5 W - cell 42069
+fm2204 3.8552E11 $ 5 W
+c
+c
+f2214:n   12101
+fc2214:n flux spectrum in lazy susan position 1 (east) air inside sample tube at 5 W - cell 12101
+fm2214 3.8552E11 $ 5 W
+c
+c
+f2224:n   12111
+fc2224:n flux spectrum in lazy susan position 11 (south) air inside sample tube at 5 W - cell 12111
+fm2224 3.8552E11 $ 5 W
+c
+c
+f2234:n   12121
+fc2234:n flux spectrum in lazy susan position 21 (west) air inside sample tube at 5 W - cell 12121
+fm2234 3.8552E11 $ 5 W
+c
+c
+f2244:n   12131
+fc2244:n flux spectrum in lazy susan position 31 (north) air inside sample tube at 5 W - cell 12131
+fm2244 3.8552E11 $ 5 W
+c
+c
+c ------ 250 kW spectrum tallies ------
+c
+f3114:n   30507
+fc3114:n flux spectrum in safe rod poison at 250 kW - cell 30507
+fm3114 1.9276E16 $ 250 kW
+c
+c
+f3124:n   30907
+fc3124:n flux spectrum in shim rod poison at 250 kW - cell 30907
+fm3124 1.9276E16 $ 250 kW
+c
+c
+f3134:n   50107
+fc3134:n flux spectrum in reg rod poison at 250 kW - cell 50107
+fm3134 1.9276E16 $ 250 kW
+c
+c
+f3204:n   42069
+fc3204:n flux spectrum in rabbit inner vial at 250 kW - cell 42069
+fm3204 1.9276E16 $ 250 kW
+c
+c
+f3214:n   12101
+fc3214:n flux spectrum in lazy susan position 1 (east) air inside sample tube at 250 kW - cell 12101
+fm3214 1.9276E16 $ 250 kW
+c
+c
+f3224:n   12111
+fc3224:n flux spectrum in lazy susan position 11 (south) air inside sample tube at 250 kW - cell 12111
+fm3224 1.9276E16 $ 250 kW
+c
+c
+f3234:n   12121
+fc3234:n flux spectrum in lazy susan position 21 (west) air inside sample tube at 250 kW - cell 12121
+fm3234 1.9276E16 $ 250 kW
+c
+c
+f3244:n   12131
+fc3244:n flux spectrum in lazy susan position 31 (north) air inside sample tube at 250 kW - cell 12131
+fm3244 1.9276E16 $ 250 kW
 c

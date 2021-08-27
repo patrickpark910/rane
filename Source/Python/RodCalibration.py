@@ -63,10 +63,6 @@ class RodCalibration(MCNP_File):
         df_keff.loc[self.rod_heights_dict[self.rod_config_id], self.rod_config_id] = self.keff
         df_keff.loc[self.rod_heights_dict[self.rod_config_id], self.rod_config_id+" unc"] = self.keff_unc
         
-        # to put df in increasing order based on the index column, USE inplace=False
-        df_keff = df_keff.sort_values(by=self.index_header, ascending=True,inplace=False) 
-        df_keff.to_csv(self.keff_filepath, encoding='utf8')
-
         ''' Drop rows if index is not in self.index_data
         - Necessary if 'fuel_temperatures_C' or 'h2o_tempeartures_C' or 'h2o_void_percents' is redefined in a new run,
         as this code overwrites existing keff csv instead of creating new file, so old list values will otherwise stay on the df
@@ -74,8 +70,13 @@ class RodCalibration(MCNP_File):
         for idx in list(df_keff.index.values):
             if idx not in self.index_data:
                 df_keff = df_keff.drop([idx])
-       
 
+        # to put df in increasing order based on the index column, USE inplace=False
+        df_keff = df_keff.sort_values(by=self.index_header, ascending=True,inplace=False) 
+        df_keff.to_csv(self.keff_filepath, encoding='utf8')
+
+
+       
         df_rho = df_keff.copy()
         heights = list(df_rho.index.values)
         """
@@ -198,26 +199,19 @@ class RodCalibration(MCNP_File):
 
             for i in [0,1,2]:
                 axs[i].set_xlim([0,100])
+                axs[i].set_xlabel(r'Height withdrawn [%]')
                 axs[i].xaxis.set_major_locator(MultipleLocator(10))
                 axs[i].autoscale(axis='y')
-                axs[i].grid(b=True, which='major', color='#999999', linestyle='-', linewidth='1')
+                axs[i].tick_params(axis='both', which='major', length=10, direction='in', bottom=True, top=True, left=True, right=True)
+                # axs[i].grid(b=True, which='major', color='#999999', linestyle='-', linewidth='1')
             
-            axs[0].set_xlabel(r'Height withdrawn [%] ($3\sigma$ errors)')
-            axs[0].set_ylabel(r'Effective multiplication factor [$k_{eff}$]')
-            axs[0].tick_params(axis='both', which='major')
-
-            axs[1].set_xlabel(r'Height withdrawn [%] ($3\sigma$ errors)')
-            axs[1].set_ylabel('Integral worth [%Δρ]')
-            axs[1].tick_params(axis='both', which='major')
+            axs[0].set_ylabel(r'Eff. multiplication factor [$k_{eff}\pm 3\sigma$]')
+            axs[1].set_ylabel(r'Integral worth [$\%\Delta\rho\pm 3\sigma$]')
+            axs[2].set_ylabel(r'Differential worth [$\%\Delta\rho$]')
             if rho_or_dollars == 'dollars':
-                axs[1].set_ylabel('Integral worth [$]')
+                axs[1].set_ylabel(r'Integral worth [$\$\pm 3\sigma$]')
                 axs[1].yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
-            
-            axs[2].set_xlabel(r'Height withdrawn [%] ($3\sigma$ errors)')
-            axs[2].set_ylabel('Differential worth [%Δρ/%]')
-            axs[2].tick_params(axis='both', which='major')
-            if rho_or_dollars == 'dollars':
-                axs[2].set_ylabel('Differential worth ($/%)')
+                axs[2].set_ylabel(r'Differential worth [$\$/\%$]')
                 axs[2].yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
 
 

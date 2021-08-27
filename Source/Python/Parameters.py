@@ -20,12 +20,43 @@ ROD_CAL_HEIGHTS = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 ROD_CAL_BANK_HEIGHT = 100
 FIVE_W_BANK_HEIGHT = 73
 
-BANK_HEIGHTS_KNTC = [0,10,20,30,40,50,55,57,59,60,70,72,74,76,80,90,100]
 BANK_HEIGHTS_FLUX = [0,73,100]
 
-F4_TALLIES_DICT = {'16':'neutron E','24':'beta E','26':'gamma E',
-                                      '36':'neutron W','44':'beta W','46':'gamma W',
-                                      '56':'neutron blade','54':'beta blade','66':'gamma blade'}
+HEAT_TALLIES_DICT = {}
+
+FLUX_TALLIES_DICT = {'114':'safe rod poison (5 W)',
+                     '124':'shim rod poison (5 W)',
+                     '134':'reg rod poison (5 W)',
+                     '204':'rabbit inner vial (5 W)',
+                     '214':'ls 1 triga tube (5 W)',
+                     '224':'ls 11 triga tube (5 W)',
+                     '234':'ls 21 triga tube (5 W)',
+                     '244':'ls 31 triga tube (5 W)',
+                     '1114':'safe rod poison (250 kW)',
+                     '1124':'shim rod poison (250 kW)',
+                     '1134':'reg rod poison (250 kW)',
+                     '1204':'rabbit inner vial (250 kW)',
+                     '1214':'ls 1 triga tube (250 kW)',
+                     '1224':'ls 11 triga tube (250 kW)',
+                     '1234':'ls 21 triga tube (250 kW)',
+                     '1244':'ls 31 triga tube (250 kW)',
+                     '2114':'safe rod poison (5 W spectrum)',
+                     '2124':'shim rod poison (5 W spectrum)',
+                     '2134':'reg rod poison (5 W spectrum)',
+                     '2204':'rabbit inner vial (5 W spectrum)',
+                     '2214':'ls 1 triga tube (5 W spectrum)',
+                     '2224':'ls 11 triga tube (5 W spectrum)',
+                     '2234':'ls 21 triga tube (5 W spectrum)',
+                     '2244':'ls 31 triga tube (5 W spectrum)',
+                     '3114':'safe rod poison (250 kW spectrum)',
+                     '3124':'shim rod poison (250 kW spectrum)',
+                     '3134':'reg rod poison (250 kW spectrum)',
+                     '3204':'rabbit inner vial (250 kW spectrum)',
+                     '3214':'ls 1 triga tube (250 kW spectrum)',
+                     '3224':'ls 11 triga tube (250 kW spectrum)',
+                     '3234':'ls 21 triga tube (250 kW spectrum)',
+                     '3244':'ls 31 triga tube (250 kW spectrum)',
+                     }
 
 
 CORE_POS = ['A1', 'B1', 'B2', 'B3', 'B4', 'B5', 'B6',
@@ -40,33 +71,13 @@ CORE_POS = ['A1', 'B1', 'B2', 'B3', 'B4', 'B5', 'B6',
 
 CONTROL_ROD_POS = ['E1','C5','C9']
 
-""" not used in v>=2 of RANE -- core configs moved to {core_number}.core files in ./Source/Core/
-
-CELL_NUM_TO_CORE_RING_DICT = {2:"B",3:"C",4:"D",5:"E",6:"F"}
-
-FE_ID = {'B1': '7202', 'B2': '9678', 'B3': '9679', 'B4': '7946', 'B5': '7945', 'B6': '8104',
-         'C1': '4086', 'C2': '4070', 'C3': '8102', 'C4': '3856', 'C6': '8103',
-         'C7': '4117', 'C8': '8105', 'C10': '8736', 'C11': '8735', 'C12': '1070',
-         # C12 is 10705 but only 4 digit IDs are supported here
-         'D1': '3679', 'D2': '8732', 'D3': '4103', 'D4': '8734', 'D5': '3685', 'D6': '4095',
-         'D7': '4104', 'D8': '4054', 'D9': '4118', 'D10': '3677', 'D11': '4131', 'D12': '4065',
-         'D13': '3851', 'D14': '3866', 'D15': '8733', 'D16': '4094', 'D17': '4129', 'D18': '3874',
-         'E2': '3872', 'E3': '4106', 'E4': '3671', 'E5': '4062', 'E6': '4121', 'E7': '4114',
-         'E8': '4077', 'E9': '3674', 'E10': '4071', 'E11': '4122', 'E12': '4083', 'E13': '3853',
-         'E14': '4134', 'E15': '4133', 'E16': '4085', 'E17': '4110', 'E18': '4055', 'E19': '3862',
-         'E20': '4064', 'E21': '3858', 'E22': '4053', 'E23': '3748', 'E24': '3852',
-         'F1': '4057', 'F2': '4125', 'F3': '4074', 'F4': '4069', 'F5': '4088', 'F7': '3868',
-         'F8': '4120', 'F14': '3810', 'F15': '4130', 'F16': '4091', 'F17': '3673', 'F18': '3682',
-         'F19': '4132', 'F20': '4046', 'F21': '3865', 'F22': '3743', 'F24': '3835', 'F26': '3676',
-         'F27': '3840', 'F28': '3854', 'F29': '4049', 'F30': '4127'}
-"""
-
 RODS = ["safe", "shim", "reg"]  # must be in lower case
 MOTOR_SPEEDS_DICT = {"safe": 19, "shim": 11, "reg": 24}  # inches/min
 
-H2O_VOID_DENSITIES = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0] # only allowed up to tenths (0.1) digit - else, change input naming scheme
-H2O_MOD_TEMPS_C = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 99] # MUST HAVE differences of >=1 or else input file naming will fail
-UZRH_FUEL_TEMPS_K = [77, 250, 294, 600, 900, 1200]
+H2O_VOID_PERCENTS = [0,2,4,6,8,10,12,14,16,18,20] # use <=2 digits only - else, change input naming scheme
+H2O_MOD_TEMPS_C = [20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 99] # MUST HAVE differences of >=1 or else input file naming will fail
+UZRH_FUEL_TEMPS_K = [294, 600, 900, 1200] # [250, 294, 400, 500, 600, 700, 800, 900, 1200]
+UZRH_FUEL_TEMPS_C = [x-273 for x in UZRH_FUEL_TEMPS_K]
 
 """
 - if you add/change config key (ex:'allrodsin') then also change in ShutdownMargin.py 
