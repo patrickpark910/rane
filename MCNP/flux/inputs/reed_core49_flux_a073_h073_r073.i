@@ -1,4 +1,4 @@
-1 Reed TRIGA (2021-06-19) - Core 49 - Run Type: flux - Printed: 2021-09-13 05:56:17
+1 Reed TRIGA (2021-06-19) - Core 49 - Run Type: flux - Printed: 2022-04-22 03:12:16
 c    __   ___  ___  __      __   ___  __   ___       __   __           __   ___       __  ___  __   __  
 c   |__) |__  |__  |  \    |__) |__  /__` |__   /\  |__) /  ` |__|    |__) |__   /\  /  `  |  /  \ |__) 
 c   |  \ |___ |___ |__/    |  \ |___ .__/ |___ /--\ |  \ \__, |  |    |  \ |___ /--\ \__,  |  \__/ |  \
@@ -7286,7 +7286,7 @@ c
 c
 mode  n  
 c
-kcode 100000 1 15 115 $ kcode card, NIST default is 20000 neutrons, discard 5, run 105 total active cycles
+kcode 40000 1 15 115 $ kcode card, NIST default is 20000 neutrons, discard 5, run 105 total active cycles
 c
 kopts blocksize=10 kinetics=yes precursor=yes
 c
@@ -7465,18 +7465,7 @@ c
 c if e0 card is unspecified, tally occurs over all energies
 c empty e bin specification defaults to e0 card
 c ------ change default energy bins to e0 card ------
-e0:n 1e-8 2e-8 3e-8 4e-8 5e-8 6e-8 7e-8 8e-8 9e-8
-     1e-7 2e-7 3e-7 4e-7 5e-7 6e-7 7e-7 8e-7 9e-7
-     1e-6 2e-6 3e-6 4e-6 5e-6 6e-6 7e-6 8e-6 9e-6
-     1e-5 2e-5 3e-5 4e-5 5e-5 6e-5 7e-5 8e-5 9e-5
-     1e-4 2e-4 3e-4 4e-4 5e-4 6e-4 7e-4 8e-4 9e-4
-     1e-3 2e-3 3e-3 4e-3 5e-3 6e-3 7e-3 8e-3 9e-3
-     1e-2 2e-2 3e-2 4e-2 5e-2 6e-2 7e-2 8e-2 9e-2
-     1e-1 2e-1 3e-1 4e-1 5e-1 6e-1 7e-1 8e-1 9e-1
-     1e+0 2e+0 3e+0 4e+0 5e+0 6e+0 7e+0 8e+0 9e+0
-     1e+1 2e+1 3e+1 4e+1 5e+1 6e+1 7e+1 8e+1 9e+1
-     1e+2 2e+2 3e+2 4e+2 5e+2 6e+2 7e+2 8e+2 9e+2
-     1e+3 2e+3 3e+3 4e+3 5e+3 6e+3 7e+3 8e+3 9e+3
+e0:n 1e-9 129ilog 1e+4
 c
 c ------ 5 W spectrum tallies ------
 c

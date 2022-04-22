@@ -181,7 +181,7 @@ class MCNP_File:
                            'zr_temp_MeV':    '{:.6e}'.format(self.uzrh_temp_K * MEV_PER_KELVIN),
                            'ct_temp_MeV':    '{:.6e}'.format(self.ct_temp_K * MEV_PER_KELVIN),
                            'fuel_mats'  :  self.fuel_mat_cards,
-                           'n_per_cycle':    100000,
+                           'n_per_cycle':    40000,
                            'discard_cycles': 15,
                            'kcode_cycles':   115,
                            }
