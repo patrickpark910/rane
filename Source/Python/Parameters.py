@@ -16,7 +16,7 @@ W_PER_CM3_TO_KW_PER_FUEL_ELEMENT = (3.14*381*(18.2245**2)/(1000**2)) # -2.8575**
 FUEL_REMOVED_SOP = ['C10','D15','D14','F20','D16','E19','C11','F21']
 ROD_MOTOR_SPEEDS_INCH_PER_MIN = {"safe":19,"shim":11,"reg":24}
 BANK_HEIGHTS = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100] # should be >= granular than ROD_CAL_HEIGHTS
-ROD_CAL_HEIGHTS = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+ROD_CAL_HEIGHTS = [0,100] # [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 ROD_CAL_BANK_HEIGHT = 100
 FIVE_W_BANK_HEIGHT = 73
 
@@ -32,6 +32,10 @@ FLUX_TALLIES_DICT = {'114':'safe rod poison (5 W)',
                      '224':'ls 11 triga tube (5 W)',
                      '234':'ls 21 triga tube (5 W)',
                      '244':'ls 31 triga tube (5 W)',
+                     '314':'linear channel (5 W)',
+                     '324':'percent channel (5 W)',
+                     '334':'log channel (5 W)',
+                     '344':'empty channel (5 W)',
                      '1114':'safe rod poison (250 kW)',
                      '1124':'shim rod poison (250 kW)',
                      '1134':'reg rod poison (250 kW)',
@@ -40,6 +44,10 @@ FLUX_TALLIES_DICT = {'114':'safe rod poison (5 W)',
                      '1224':'ls 11 triga tube (250 kW)',
                      '1234':'ls 21 triga tube (250 kW)',
                      '1244':'ls 31 triga tube (250 kW)',
+                     '1314':'linear channel (250 kW)',
+                     '1324':'percent channel (250 kW)',
+                     '1334':'log channel (250 kW)',
+                     '1344':'empty channel (250 kW)',
                      '2114':'safe rod poison (5 W spectrum)',
                      '2124':'shim rod poison (5 W spectrum)',
                      '2134':'reg rod poison (5 W spectrum)',
@@ -48,6 +56,10 @@ FLUX_TALLIES_DICT = {'114':'safe rod poison (5 W)',
                      '2224':'ls 11 triga tube (5 W spectrum)',
                      '2234':'ls 21 triga tube (5 W spectrum)',
                      '2244':'ls 31 triga tube (5 W spectrum)',
+                     '2314':'linear channel (5 W spectrum)',
+                     '2324':'percent channel (5 W spectrum)',
+                     '2334':'log channel (5 W spectrum)',
+                     '2344':'empty channel (5 W spectrum)',
                      '3114':'safe rod poison (250 kW spectrum)',
                      '3124':'shim rod poison (250 kW spectrum)',
                      '3134':'reg rod poison (250 kW spectrum)',
@@ -56,6 +68,10 @@ FLUX_TALLIES_DICT = {'114':'safe rod poison (5 W)',
                      '3224':'ls 11 triga tube (250 kW spectrum)',
                      '3234':'ls 21 triga tube (250 kW spectrum)',
                      '3244':'ls 31 triga tube (250 kW spectrum)',
+                     '3314':'linear channel (250 kW spectrum)',
+                     '3324':'percent channel (250 kW spectrum)',
+                     '3334':'log channel (250 kW spectrum)',
+                     '3344':'empty channel (250 kW spectrum)',
                      }
 
 

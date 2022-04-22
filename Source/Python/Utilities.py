@@ -7,6 +7,7 @@ RANE_INSTRUCTIONS_SHORT = "Usage: NeutronicsEngine.py -r <run_type> -t <tasks> -
 RANE_INSTRUCTIONS_LONG = "Instructions for Reed Automated Neutronics Engine"
 RUN_DESCRIPTIONS_DICT  = {'bank': 'banked rods', 
                           'crit': 'critical loading experiment',
+                          'prnt': 'print inputs for all rods down and up',
                           'flux': 'fluxes at irradiation and core positions',
                           'kntc': 'kinetics parameters',
                           'plot': 'plot geometry and take images',

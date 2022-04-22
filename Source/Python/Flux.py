@@ -130,7 +130,7 @@ class Flux(MCNP_File):
                             bin_number = 1 # resets bin number from parsing tally result energy bins
                             tally_number, tally_desc = k, self.tallies_dict[k]
                             df_tally.loc[tally_number, 'tally desc'] = tally_desc
-                            print(f"\n   comment. (Flux.py) found tally {line.split()[1]} ({tally_desc})")
+                            print(f"   comment. (Flux.py) found tally {line.split()[1]} ({tally_desc})")
                     if not tally_recognized and 'fluctuation' not in line: 
                         print(f"\n   warning. (Flux.py) tally number '{line.split()[1]}' not recognized in user-defined flux tally dictionary")
                         print(f"   warning. skipping... \n") 
@@ -152,15 +152,17 @@ class Flux(MCNP_File):
                         read_tally = True
 
                     elif read_tally:
-                        if tally_number.endswith('4'):
+                        if entries[0] == 'total':
+                            read_tally = False
+                        elif tally_number.endswith('4'):
+                            # print(tally_number, bin_number, entries)
                             df_tally.loc[tally_number, f'energy {bin_number} (MeV)'] = entries[0]
                             df_tally.loc[tally_number, f'f4 bin {bin_number} (flux)'] = entries[1]
                             df_tally.loc[tally_number, f'f4 unc {bin_number} (flux)'] = entries[2]
                             bin_number += 1
                         else:
                             print(f"\n   warning. (Flux.py) f{tally_number[-1]} for tally number {tally_number} is not yet supported in rane")
-                        if entries[0] == 'total':
-                            read_tally = False
+
         ###### exit for loop
 
         print(tally_results_dict)

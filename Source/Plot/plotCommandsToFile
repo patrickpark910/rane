@@ -7,9 +7,9 @@ shade 104=AntiqueWhite
 shade 105=DarkSeaGreen 
 shade 106=SlateGray 
 shade 107=OrangeRed
-basis 1 0 0  0 1 0  or 0 0 45  ex 60  label 0 0  scales 1 mesh 1
+basis 1 0 0  0 1 0  or 0 0 45  ex 70  label 0 0  scales 1 mesh 1
 file    
-basis 0 1 0  0 0 1  or 0 0 34.40684  ex 60
+basis 0 1 0  0 0 1  or 0 0 34.40684  ex 70
 file
 basis 1 0 0  0 1 0  or 0 0 45  ex 40
 file

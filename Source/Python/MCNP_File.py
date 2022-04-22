@@ -30,13 +30,14 @@ class MCNP_File:
                        MCNP_folder=None,
                        results_folder=None,
                        source_folder=f"./Source",
+                       skip_mcnp=False,
                        delete_extensions=['.s'],  # default: '.s'
                        fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx",
                        rod_heights={'ecp':None}, # used in: all run types
                        rod_config_id=None,     # used in: sdm
                        ct_mat=102,             # used in: rcty, 102 is mat code for light water in reed.template
                        ct_mat_density=None,    #  
-                       h2o_temp_K=293.15,      # used in: rcty, 293 K = 20 C = room temp = default temp in mcnp
+                       h2o_temp_K=294,         # used in: rcty, 293 K = 20 C = room temp = default temp in mcnp
                        h2o_density=None,       # used in: rcty, set None to calculate h2o_density from h2o_temp_K
                        h2o_void_percent=0,     # 
                        uzrh_temp_K=294,        # used in: rcty
@@ -57,6 +58,7 @@ class MCNP_File:
         self.username = getpass.getuser()
         self.fuel_filepath = fuel_filepath
         self.source_folder = source_folder
+        self.mcnp_skipped = skip_mcnp # set to False when MCNP is actually run by run_mcnp()
 
 
 
@@ -198,6 +200,13 @@ class MCNP_File:
                                   f"_a{str(self.parameters['safe_height']).zfill(3)}"\
                                   f"_h{str(self.parameters['shim_height']).zfill(3)}"\
                                   f"_r{str(self.parameters['reg_height']).zfill(3)}.i"
+        elif self.run_type == 'crit':
+            pass
+        elif self.run_type == 'prnt':
+            self.input_filename = f"{self.base_filename}"\
+                                  f"_a{str(self.parameters['safe_height']).zfill(3)}"\
+                                  f"_h{str(self.parameters['shim_height']).zfill(3)}"\
+                                  f"_r{str(self.parameters['reg_height']).zfill(3)}.i"  
         elif self.run_type.startswith('rcty'):
             if 'modr' in self.run_type:
                 var = str(round(self.h2o_temp_K-273)).zfill(2) + "C" # ex: 01C, 10C, 20C, etc.
@@ -210,8 +219,7 @@ class MCNP_File:
                         f"_a{str(self.parameters['safe_height']).zfill(3)}"\
                         f"_h{str(self.parameters['shim_height']).zfill(3)}"\
                         f"_r{str(self.parameters['reg_height']).zfill(3)}.i"
-        elif run_type == 'crit':
-            pass
+
         else:
             self.input_filename = f"{self.base_filename}_{self.run_type}"\
                                   f"_a{str(self.parameters['safe_height']).zfill(3)}"\
@@ -222,6 +230,8 @@ class MCNP_File:
         self.output_filename = f"o_{self.input_filename.split('.')[0]}.o"
         self.output_filepath = f"{self.MCNP_folder}/outputs/{self.output_filename}"
 
+        if self.run_type == 'prnt':
+            self.input_filepath = f"{self.results_folder}/{self.input_filename}"
 
         """
         Create input file by populating template with self.parameters dictionary
@@ -345,12 +355,11 @@ class MCNP_File:
         """ Moves files to appropriate folder.
         """
         # move input
-        src, dst = self.user_temp_folder, self.inputs_folder
-        shutil.move(self.input_filepath, os.path.join(dst, self.input_filename))
+        shutil.move(self.input_filepath, os.path.join(self.inputs_folder, self.input_filename))
 
         # move outputs
         output_file = f"{self.output_filename.split('.')[0]}" # general output filename without extension
-        dst = self.outputs_folder
+        src, dst = self.user_temp_folder, self.outputs_folder
 
         """ instead of programming it here, just define which outputs to move when function is called in NeutronicsEngine.py
         if self.run_type in ['banked', 'kntc', 'rodcal', 'rcty','sdm']:
@@ -359,15 +368,21 @@ class MCNP_File:
             output_types_to_move = ['.ps']
         """ 
 
-        if not self.mcnp_skipped:
+        print("\n\n\n test \n\n\n\n")
+
+        if not self.mcnp_skipped or self.run_type in ['plot']:
+            print("\n\n\n 1 \n\n\n\n")
             for extension in output_types_to_move:
+                print("\n\n\n 2 \n\n\n\n")
                 try:
                     filename = output_file+extension
                     shutil.move(os.path.join(src, filename), os.path.join(dst, filename))
                     print(f'\n   comment. moved {filename}')
                     print(f'   comment.   from {src} ')
                     print(f'   comment.   to   {dst}\n')
+                    print("\n\n\n 3 \n\n\n\n")
                 except:
+                    print("\n\n\n 4 \n\n\n\n")
                     print(f'   warning. error moving {filename}')
                     print(f'   warning.   from {src} ')
                     print(f'   warning.   to   {dst}')
@@ -504,25 +519,27 @@ class MCNP_File:
             if not os.path.exists(filepath):
                 os.mkdir(filepath)
 
-        ps_name = f'o_{self.base_filename}.ps'
-        tiff_name = f'o_{self.base_filename}.tiff'
+        ps_name = f"{self.output_filename.split('.')[0]}.ps"
+        tiff_name = f"{self.output_filename.split('.')[0]}.tiff"
         print(os.getcwd())
 
         if not debug:
             if ps_name not in os.listdir(outputs_dir):
-                os.system(f'mcnp6 ip i="{self.input_filepath}" n="{self.user_temp_folder}/o_{self.base_filename}." tasks {self.tasks} plotm={f"{self.user_temp_folder}/plotm"} com={plotcom_path}')
+                os.system(f'''mcnp6 ip i="{self.input_filepath}" n="{self.user_temp_folder}/{self.output_filename.split('.')[0]}." tasks {self.tasks} plotm={f"{self.user_temp_folder}/plotm"} com={plotcom_path}''')
                 self.delete_mcnp_files(self.user_temp_folder, self.delete_extensions)
                 os.rename(f"{self.user_temp_folder}/plotm.ps",f"{self.user_temp_folder}/{ps_name}")
-                self.move_mcnp_files()
+                self.move_mcnp_files(output_types_to_move=['.ps'])
 
             # ghostscript command is 'gs' for Linux, Mac
             # and 'gswin64.exe' or 'gswin32.exe' for Windows 64 and 32
             # you may have to change the path variables to call 'gs' from cmd
             print(f" operating system identified as: {platform.system()}")
             if platform.system().lower().startswith('win32'):
-                os.system(f'gswin32.exe -sDEVICE=tiff24nc -r300 -sOutputFile={results_dir}/{tiff_name} -dBATCH -dNOPAUSE {results_dir}/{ps_name}')
-            elif platform.system().lower().startswith('win62') or platform.system().lower().startswith('windows'):
-                os.system(f'gswin64.exe -sDEVICE=tiff24nc -r300 -sOutputFile={results_dir}/{tiff_name} -dBATCH -dNOPAUSE {results_dir}/{ps_name}')
+                os.system(f'"C:/Program Files/gs/gs9.54.0/bin/gswin32.exe" -sDEVICE=tiff24nc -r300 -sOutputFile={results_dir}/{tiff_name} -dBATCH -dNOPAUSE {results_dir}/{ps_name}')
+            elif platform.system().lower().startswith('win64') or platform.system().lower().startswith('windows'):
+                print(f'""C:/Program Files/gs/gs9.54.0/bin/gswin64.exe"" -sDEVICE=tiff24nc -r300 -sOutputFile={results_dir}/{tiff_name} -dBATCH -dNOPAUSE {results_dir}/{ps_name}')
+                os.system(f'""C:/Program Files/gs/gs9.54.0/bin/gswin64.exe"" -sDEVICE=tiff24nc -r300 -sOutputFile={results_dir}/{tiff_name} -dBATCH -dNOPAUSE {outputs_dir}/{ps_name}')
+                # you need ""two quotes"" for a path to translate into "this" in cmd for some reason
             else:
                 os.system(f'gs -sDEVICE=tiff24nc -r300 -sOutputFile={results_dir}/{tiff_name} -dBATCH -dNOPAUSE {results_dir}/{ps_name}')
 
@@ -561,7 +578,7 @@ class MCNP_File:
                                'reflector_load_zoomed_yz',
                                 ]
 
-                with Image.open(f"{outputs_dir}/{tiff_name}") as im:
+                with Image.open(f"{results_dir}/{tiff_name}") as im:
                     for name, frame in zip(image_names,ImageSequence.Iterator(im)):
                         frame = frame.rotate(270, expand=True)
                         # frame = frame.crop((450,780,2480,2910))

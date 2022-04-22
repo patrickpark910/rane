@@ -16,7 +16,7 @@ from plotStyles import *
 """
 This file uses PEP8 Python Style Guidelines.
 
-Constants are in CAPS and are most likely defined in ./Python/Parameters.py
+Global constants are in CAPS and are most likely defined in ./Python/Parameters.py
 
 The structure of this Python file is based on a similar engine for the
 National Institute of Standards and Technology, written by Dr. Danyal Turkoglu,
@@ -73,6 +73,9 @@ def ReedAutomatedNeutronicsEngine(argv):
         elif run_type.lower() in ['cl','cle','critical','criticalload']: 
             run_types = ['crit' if x==run_type else x for x in run_types]
 
+        elif run_type.lower() in ['pr','prnt','print']: 
+            run_types = ['prnt' if x==run_type else x for x in run_types]
+
         elif run_type.lower() in ['f','flux']: 
             run_types = ['flux' if x==run_type else x for x in run_types]
 
@@ -109,7 +112,11 @@ def ReedAutomatedNeutronicsEngine(argv):
     
     print("\n RANE will calculate the following:")
     for run_type in run_types:
-        print(f"    {RUN_DESCRIPTIONS_DICT[run_type]}")
+        try:
+            print(f"    {RUN_DESCRIPTIONS_DICT[run_type]}")
+        except:
+            print(f"\n  warning. Run description not found. It is necessary to print input file. Add in Utilities.py.")
+            sys.exit()
     proceed = None
     while proceed is None:
         proceed = input(f"\n Proceed (Y/N)? ")
@@ -150,9 +157,13 @@ def ReedAutomatedNeutronicsEngine(argv):
     rane_cwd = os.getcwd()
 
     for run_type in run_types:
-        print(f"\n Currently calculating: {RUN_DESCRIPTIONS_DICT[run_type]}")
+        try:
+            print(f"\n Currently calculating: {RUN_DESCRIPTIONS_DICT[run_type]}")
+        except:
+            print(f"\n  warning. Run description not found. It is necessary to print input file. Add in Utilities.py.")
+            sys.exit()
 
-        if run_type not in ['bank','rodcal']:
+        if run_type not in ['bank','print','rodcal']:
             try:
                 ecp_filepath = f"./Results/bank/reed_core{core_number}_bank_params.csv"
                 df = pd.read_csv(ecp_filepath, encoding='utf8')
@@ -218,6 +229,26 @@ def ReedAutomatedNeutronicsEngine(argv):
 
             CriticalLoading(rane_cwd, base_file_path=base_file_name, check_mcnp=check_mcnp, tasks=tasks, fuel_to_remove=fuel_to_remove)
 
+        elif run_type == 'prnt':
+            """ PRINT - prints basic inputs file with desired rod heights
+            """
+            rod_heights_dict = {'safe':None,'shim':None,'reg':None}
+            for rod in RODS:
+                height = None
+                while height is None:
+                    height_input = input(f" Input desired integer height between 0, 100 inclusive for {rod.upper()} rod: ")
+                    try:
+                        height = int(height_input)
+                    except:
+                        print(f"\n   comment. invalid input")
+                rod_heights_dict.update({rod:height})
+
+            current_run = RodCalibration(run_type,
+                                         tasks,
+                                         core_number=core_number,
+                                         rod_heights=rod_heights_dict,
+                                         )
+
 
         elif run_type == 'heat':
             """ HEAT LOAD - calculate Beff, B_1-6, L, lambda
@@ -252,7 +283,7 @@ def ReedAutomatedNeutronicsEngine(argv):
             # plot the geometry and save plot figures
             if check_mcnp:
                 print(f' Running geometry plotter.')
-                current_run = MCNP_InputFile(run_type,
+                current_run = MCNP_File(run_type,
                                              tasks,
                                              template_filepath=None,
                                              core_number=core_number,
@@ -345,7 +376,7 @@ def ReedAutomatedNeutronicsEngine(argv):
                 for rod_height in ROD_CAL_HEIGHTS:
                     rod_heights_dict = {'bank':100}
                     if rod == 'reg':
-                        rod_heights_dict = {'bank':80}#80}
+                        rod_heights_dict = {'bank':100} #80}
                     rod_heights_dict[rod] = rod_height
                     
                     current_run = RodCalibration(run_type,
@@ -354,7 +385,7 @@ def ReedAutomatedNeutronicsEngine(argv):
                                                  core_number=core_number,
                                                  rod_heights=rod_heights_dict,
                                                  rod_config_id=rod,
-                                                 add_samarium=True,
+                                                 # add_samarium=False,
                                                  )
                     if check_mcnp:
                         current_run.run_mcnp() 
