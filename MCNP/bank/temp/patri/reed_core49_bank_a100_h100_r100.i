@@ -1,4 +1,4 @@
-1 Reed TRIGA (2021-06-19) - Core 49 - Run Type: bank - Printed: 2021-09-13 05:16:40
+1 Reed TRIGA (2021-06-19) - Core 49 - Run Type: bank - Printed: 2022-08-01 22:23:17
 c    __   ___  ___  __      __   ___  __   ___       __   __           __   ___       __  ___  __   __  
 c   |__) |__  |__  |  \    |__) |__  /__` |__   /\  |__) /  ` |__|    |__) |__   /\  /  `  |  /  \ |__) 
 c   |  \ |___ |___ |__/    |  \ |___ .__/ |___ /--\ |  \ \__, |  |    |  \ |___ /--\ \__,  |  \__/ |  \
@@ -7286,7 +7286,7 @@ c
 c
 mode  n  
 c
-kcode 100000 1 15 115 $ kcode card, NIST default is 20000 neutrons, discard 5, run 105 total active cycles
+kcode 40000 1 15 115 $ kcode card, NIST default is 20000 neutrons, discard 5, run 105 total active cycles
 c
 kopts blocksize=10 kinetics=yes precursor=yes
 c

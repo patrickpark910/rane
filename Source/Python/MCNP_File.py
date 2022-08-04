@@ -117,8 +117,8 @@ class MCNP_File:
         except:
             print(f"\n   warning. fuel file not found or recognized at {self.read_fuel_data()}")
             print(f"   warning.   trying ./Source/Fuel/Core Burnup History 20201117.xlsx")
-            self.fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx"
             try:
+              self.fuel_filepath=f"./Source/Fuel/Core Burnup History 20201117.xlsx"  
               self.read_fuel_data()
             except:
               print(f"\n   fatal. fuel file not found or recognized at {self.read_fuel_data()}")

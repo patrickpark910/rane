@@ -362,4 +362,4 @@ def poly_to_latex(p):
             elif a < 0:
                 res += "({a}) \;x^{i} + ".format(a=a, i="{%d}" % i)
     return "$" + res[:-3] + "$" if res else ""
-print(poly_to_latex([1,2,3]))
+# print(poly_to_latex([1,2,3]))

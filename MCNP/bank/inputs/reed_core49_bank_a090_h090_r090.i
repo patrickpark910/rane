@@ -1,4 +1,4 @@
-1 Reed TRIGA (2021-06-19) - Core 49 - Run Type: bank - Printed: 2021-09-13 04:52:17
+1 Reed TRIGA (2021-06-19) - Core 49 - Run Type: bank - Printed: 2022-08-01 21:58:23
 c    __   ___  ___  __      __   ___  __   ___       __   __           __   ___       __  ___  __   __  
 c   |__) |__  |__  |  \    |__) |__  /__` |__   /\  |__) /  ` |__|    |__) |__   /\  /  `  |  /  \ |__) 
 c   |  \ |___ |___ |__/    |  \ |___ .__/ |___ /--\ |  \ \__, |  |    |  \ |___ /--\ \__,  |  \__/ |  \
@@ -5441,10 +5441,7 @@ c
 c ------------------------------
 c ---------- Tallies -----------
 c ------------------------------
-f31764:n  42069
-c if we don't have the E card, then 0 to 20 MeV neutrons are counted
-e31764:n 0.625E-6  1E-3   20
-c 
+c
 c
 c -----------------------------------------------------------------------------
 c
@@ -7289,7 +7286,7 @@ c
 c
 mode  n  
 c
-kcode 100000 1 15 115 $ kcode card, NIST default is 20000 neutrons, discard 5, run 105 total active cycles
+kcode 40000 1 15 115 $ kcode card, NIST default is 20000 neutrons, discard 5, run 105 total active cycles
 c
 kopts blocksize=10 kinetics=yes precursor=yes
 c

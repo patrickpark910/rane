@@ -207,28 +207,6 @@ def ReedAutomatedNeutronicsEngine(argv):
                 current_run.find_kinetic_parameters()
             current_run.plot_kinetic_parameters() # -- keep outside for loop
 
-
-        elif run_type == 'crit':
-            """ CRITICAL LOADING EXPERIMENT
-            """ 
-            pass
-            fuel_to_remove = [] 
-            while len(fuel_to_remove)==0:
-                user_input = input(f"Input core positions separated by a comma (ex: C1,C2,E4,F1), 'sop' to input the standard procedure for the 1/M experiment ({FUEL_REMOVED_SOP}), or 'quit' to quit: ")
-                if user_input.lower() in ['s','sop']:
-                    user_input = FUEL_REMOVED_SOP 
-                elif user_input.lower() in ['q','quit','kill']: 
-                    sys.exit()
-                
-                user_input = user_input.split(',')
-                for c in user_input: 
-                    if c.upper() in CORE_POS: 
-                        fuel_to_remove.append(c) # user_input is matched with a FE
-                    else: 
-                        print(f"\n  Warning. There is no fuel element in core position {c}.")
-
-            CriticalLoading(rane_cwd, base_file_path=base_file_name, check_mcnp=check_mcnp, tasks=tasks, fuel_to_remove=fuel_to_remove)
-
         elif run_type == 'prnt':
             """ PRINT - prints basic inputs file with desired rod heights
             """
@@ -248,22 +226,7 @@ def ReedAutomatedNeutronicsEngine(argv):
                                          core_number=core_number,
                                          rod_heights=rod_heights_dict,
                                          )
-
-
-        elif run_type == 'heat':
-            """ HEAT LOAD - calculate Beff, B_1-6, L, lambda
-                uses kopts card in mcnp6, needs to be as close to keff=1 as possible for best results (MCNP6.2 manual 3-168)
-            """ 
-            for bank_height in BANK_HEIGHTS_KNTC:
-                current_run = Kinetics(run_type,
-                                       tasks,
-                                       core_number=core_number,
-                                       print_input=check_mcnp,
-                                       rod_heights={'bank':bank_height},)
-                if check_mcnp:
-                    current_run.run_mcnp() 
-                    current_run.move_mcnp_files(output_types_to_move=['.o']) # keep as separate step from run_mcnp()
-                current_run.find_kinetic_parameters()
+        
 
         elif run_type == 'flux':
             """ FLUXES - calculate fluxes at ir positions and control rods
@@ -412,7 +375,22 @@ def ReedAutomatedNeutronicsEngine(argv):
 
 
 
-
+''' wip
+        elif run_type == 'heat':
+            """ HEAT LOAD - calculate Beff, B_1-6, L, lambda
+                uses kopts card in mcnp6, needs to be as close to keff=1 as possible for best results (MCNP6.2 manual 3-168)
+            """ 
+            for bank_height in BANK_HEIGHTS_KNTC:
+                current_run = Kinetics(run_type,
+                                       tasks,
+                                       core_number=core_number,
+                                       print_input=check_mcnp,
+                                       rod_heights={'bank':bank_height},)
+                if check_mcnp:
+                    current_run.run_mcnp() 
+                    current_run.move_mcnp_files(output_types_to_move=['.o']) # keep as separate step from run_mcnp()
+                current_run.find_kinetic_parameters() 
+'''
 
 
 if __name__ == "__main__":
