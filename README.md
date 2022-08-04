@@ -1,15 +1,15 @@
 
 
-## Style Guidelines:
+# Style Guidelines:
 
 PEP8 Python Style Guidelines
 Global constants are in CAPS and are most likely defined in ./Source/Python/Parameters.py
 
 
-## Functionalities
+# Functionalities
 The Reed Automated Neutronics has an individual "module" to calculate each reactivity parameter. To trace this code, open up `NeutronicsEngine.py` and start from there.
 
-# Banked rods
+## Banked rods
 
 `cd D:\MCNP6\facilities\reed\RANE_export`
 `python3 NeutronicsEngine.py -r bank`
@@ -17,17 +17,12 @@ The Reed Automated Neutronics has an individual "module" to calculate each react
 What this does: Calculates banked rods. In `./Results/bank`, produces a table of , calculates Estimated Critical Position (ECP), . Produces bank worth curve.
 
 <details>
-    <summary>Nitty Gritty Details</summary>
+    <summary> **Nitty Gritty Details** </summary>
     A total of 6 files are produced:
     `reed_core49_bank_keff.csv`
     `reed_core49_bank_params.csv`
     `reed_core49_bank_rho.csv`
     `reed_core49_kntc_results.csv`
-
-
-
-
-
 
 </details>
 
@@ -36,38 +31,38 @@ How to change things:
 To change 
 ...
 
-# Rod calibration
+## Rod calibration
 
 What this does: Calculates rod worths.
 
 
-# Flux calculations
+## Flux calculations
 
 What this does: Calculates thermal, intermediate, fast neutron flux at the core IR positions and control rods. In `./Results/flux`, produces a spreadsheet of energy bins and flux values. The energy bins are logarithmically spaced, since most flux graphs are on a log-log scale.
 
-# Plot
+## Plot
 
 What this does: 
 
 Warning: The MCNP plotter XMing may have slightly different commands from Windows to Mac. I don't expect this to work on other machines... The bulk of this module is the `run_geometry_plotter` function in `MCNP_File.py`, most problems will probably start from where RANE checks `platform.system()`.
 
 
-# Moderator temperature coefficient [rcty_modr]
+## Moderator temperature coefficient [rcty_modr]
 
 What this does: Calculates moderator temperature coefficient, or how core reactivity changes as a function of moderator (pool light water) temeprature. Produces a spreadsheet of values and a `.png` plot of it.
 
-# Fuel temperature coefficient [rcty_fuel]
+## Fuel temperature coefficient [rcty_fuel]
 
 What this does: Calculates moderator temperature coefficient, or how core reactivity changes as a function of moderator (pool light water) temeprature.
 
-# Void coefficient [rcty_void]
+## Void coefficient [rcty_void]
 
 What this does: Calculates moderator temperature coefficient, or how core reactivity changes as a function of moderator (pool light water) temeprature.
 
-# Heat Load (WIP)
+## Heat Load (WIP)
 
 
-## The Way This Thing Works:
+# The Way This Thing Works:
 Let's map out the file structure first. The basic items are:
 
 ./NeutronicsEngine.py
@@ -124,13 +119,13 @@ MCNP_File.py then calls upon `Core Burnup History 20201117.xlsx` file here to ca
 
 
 
-## FAQs: How can I do X?
-# Print a standard input deck
+# FAQs: How can I do X?
+<details>
+    <summary> **Print a normal input deck** </summary>
+</details>
 
-# Add a new core configuration
-
-I don't think
-
-# 
+<details>
+    <summary> **Add a new core configuration** </summary>
+</details>
 
 
