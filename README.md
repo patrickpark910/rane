@@ -46,6 +46,11 @@ What this does:
 
 Warning: The MCNP plotter XMing may have slightly different commands from Windows to Mac. I don't expect this to work on other machines... The bulk of this module is the `run_geometry_plotter` function in `MCNP_File.py`, most problems will probably start from where RANE checks `platform.system()`.
 
+### Power
+<details>
+    <summary> <b> Nitty Gritty Details </b> </summary>
+    The flux card for this is in `./Source/Tallies/powr.tal`. This tally card actually adds a flux tally for ALL fuel elements in the RRR inventory, not just the ones in the loaded core config (from `./Source/Core/`). This way we avoid the problem of having to read <i>that</i> file to write a <i>new</i> tally card every time. 
+</details>
 
 ### Moderator temperature coefficient [rcty_modr]
 
